@@ -7,7 +7,7 @@ export function useCreateLlmKey() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (key: string) => llmKeyService.createLlmKey(key),
+    mutationFn: (key: string) => llmKeyService.createLlmKey(key),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['llmKey'],
@@ -21,7 +21,7 @@ export function useGetLlmKey() {
 
   return useQuery({
     queryKey: ['llmKey'],
-    queryFn: async () => llmKeyService.getLlmKey(),
+    queryFn: () => llmKeyService.getLlmKey(),
     refetchOnWindowFocus: false,
   });
 }
@@ -31,7 +31,7 @@ export function useUpdateLlmKey() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (key: LlmKey) => llmKeyService.updateLlmKey(key),
+    mutationFn: (key: LlmKey) => llmKeyService.updateLlmKey(key),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['llmKey'],
@@ -45,7 +45,7 @@ export function useDeleteLlmKey() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async () => llmKeyService.deleteLlmKey(),
+    mutationFn: () => llmKeyService.deleteLlmKey(),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['llmKey'],
@@ -59,7 +59,7 @@ export function useHasLlmKey() {
 
   return useQuery({
     queryKey: ['llmKey'],
-    queryFn: async () => llmKeyService.hasLlmKey(),
+    queryFn: () => llmKeyService.hasLlmKey(),
     refetchOnWindowFocus: false,
   });
 }

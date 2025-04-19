@@ -2,6 +2,7 @@
   "llmKeyLabel": "LLM ключ",
   "llmKeyPlaceholder": "Введите ключ LLM",
   "llmKeySave": "Сохранить ключ",
+  "llmKeyError": "Не удалось сохранить ключ LLM",
   "welcome": "Welcome to MacroMate",
   "save": "Save",
   "apiKey": "API Key"
