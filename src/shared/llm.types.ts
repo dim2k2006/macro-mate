@@ -19,10 +19,6 @@ export type ChatMessage = {
   content: string;
 };
 
-export type ChatCompletion = {
-  content: string;
-};
-
 type Role = 'developer' | 'user';
 
 export type BuildChatMessageInput = {
