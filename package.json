@@ -15,21 +15,28 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@remix-run/node": "^2.16.5",
+    "@remix-run/react": "^2.16.5",
     "axios": "^1.8.3",
     "i18next": "^23.16.8",
     "lodash": "^4.17.21",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remix": "^2.16.5",
     "ts-pattern": "^4.3.0",
     "uuid": "^11.1.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
+    "@remix-run/dev": "^2.16.5",
     "@types/lodash": "^4.17.16",
     "@types/node": "18.x",
     "@types/uuid": "^10.0.0",
     "eslint": "^9.18.0",
     "prettier": "^3.5.3",
     "rimraf": "^5.0.0",
+    "typescript": "^5.8.3",
     "typescript-eslint": "^8.20.0"
   },
   "keywords": [],
