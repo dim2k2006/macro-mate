@@ -3,6 +3,8 @@
   "llmKeyPlaceholder": "Введите ключ LLM",
   "llmKeySave": "Сохранить ключ",
   "llmKeyError": "Не удалось сохранить ключ LLM",
+  "foodItemLabel": "Описание продукта",
+  "foodItemPlaceholder": "Введите описание продукта",
   "welcome": "Welcome to MacroMate",
   "save": "Save",
   "apiKey": "API Key"

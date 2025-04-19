@@ -1,7 +1,10 @@
-import { Box, TextInput, Button } from '@mantine/core';
+import { Box, TextInput, Button, Textarea } from '@mantine/core';
 import { useForm, hasLength, isEmail } from '@mantine/form';
+import { useTranslation } from 'react-i18next';
 
 function Home() {
+  const { t } = useTranslation();
+
   const form = useForm({
     mode: 'controlled',
     initialValues: { name: '', email: '' },
@@ -18,6 +21,8 @@ function Home() {
   return (
     <Box p="md">
       <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Textarea label={t('foodItemLabel')} placeholder={t('foodItemPlaceholder')} autosize minRows={10} />
+
         <TextInput {...form.getInputProps('name')} label="Name" placeholder="Name" />
 
         <TextInput {...form.getInputProps('email')} mt="md" label="Email" placeholder="Email" />
