@@ -1,4 +1,4 @@
-import { LlmKey } from './llmKey.nodel.ts';
+import { LlmKey } from './llmKey.model.ts';
 
 export interface LlmKeyRepository {
   createLlmKey(key: LlmKey): Promise<LlmKey>;

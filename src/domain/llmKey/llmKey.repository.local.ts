@@ -1,5 +1,5 @@
 import localForage from 'localforage';
-import { LlmKey } from './llmKey.nodel.ts';
+import { LlmKey } from './llmKey.model.ts';
 import { LlmKeyRepository } from './llmKey.repository.ts';
 
 class LlmKeyRepositoryLocal implements LlmKeyRepository {

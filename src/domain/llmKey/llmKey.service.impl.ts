@@ -1,5 +1,5 @@
 import { v4 as uuidV4 } from 'uuid';
-import { LlmKey } from './llmKey.nodel.ts';
+import { LlmKey } from './llmKey.model.ts';
 import { LlmKeyRepository } from './llmKey.repository.ts';
 import { LlmKeyService } from './llmKey.service.ts';
 
