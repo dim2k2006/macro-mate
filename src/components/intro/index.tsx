@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { AppShell, Box, TextInput, Button, Image, Group } from '@mantine/core';
+import { Box, TextInput, Button } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
+import Layout from '@/components/layout';
 
 function Intro() {
   const { t } = useTranslation();
@@ -22,33 +23,20 @@ function Intro() {
   };
 
   return (
-    <AppShell
-      padding={0}
-      header={{
-        height: 60,
-      }}
-    >
-      <AppShell.Header>
-        <Group justify="center" align="center">
-          <Image src="/logo.png" alt="MacroMate logo" h={40} w="auto" fit="contain" />
-        </Group>
-      </AppShell.Header>
-
-      <AppShell.Main>
-        <Box p="md">
-          <TextInput
-            label={t('llmKeyLabel')}
-            placeholder={t('llmKeyPlaceholder')}
-            value={apiKey}
-            onChange={(e) => setApiKey(e.currentTarget.value)}
-            required
-          />
-          <Button mt="sm" fullWidth onClick={handleSave} disabled={!apiKey}>
-            {saved ? 'Сохранено!' : t('llmKeySave')}
-          </Button>
-        </Box>
-      </AppShell.Main>
-    </AppShell>
+    <Layout>
+      <Box p="md">
+        <TextInput
+          label={t('llmKeyLabel')}
+          placeholder={t('llmKeyPlaceholder')}
+          value={apiKey}
+          onChange={(e) => setApiKey(e.currentTarget.value)}
+          required
+        />
+        <Button mt="sm" fullWidth onClick={handleSave} disabled={!apiKey}>
+          {saved ? 'Сохранено!' : t('llmKeySave')}
+        </Button>
+      </Box>
+    </Layout>
   );
 }
 
