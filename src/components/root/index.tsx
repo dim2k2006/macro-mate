@@ -23,12 +23,10 @@ function Root() {
         <Routes>
           <React.Fragment>
             <Route path="/" element={<ProtectedRoute />}>
-              <Route path="/" element={<Intro />} />
+              <Route path="/" element={<Home />} />
             </Route>
 
-            <Route path="/home" element={<ProtectedRoute />}>
-              <Route path="/home" element={<Home />} />
-            </Route>
+            <Route path="/intro" element={<Intro />} />
           </React.Fragment>
         </Routes>
       </FoodItemServiceProvider>

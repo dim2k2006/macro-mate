@@ -10,7 +10,7 @@ function ProtectedRoute() {
 
   const hasLlmKey = (llmKeyState.isSuccess || llmKeyState.isError) && !!llmKeyState.data;
 
-  return hasLlmKey ? <Outlet /> : <Navigate to="/" replace />;
+  return hasLlmKey ? <Outlet /> : <Navigate to="/intro" replace />;
 }
 
 export default ProtectedRoute;

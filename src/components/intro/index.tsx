@@ -1,26 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Box, TextInput, Button } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
+import { Navigate } from 'react-router-dom';
 import Layout from '@/components/layout';
+import { useCreateLlmKey } from '@/components/llmKey-service-provider';
 
 function Intro() {
   const { t } = useTranslation();
 
-  const [apiKey, setApiKey] = useState<string>('');
-  const [saved, setSaved] = useState<boolean>(false);
+  const createLlmKey = useCreateLlmKey();
 
-  // Загружаем сохранённый ключ при монтировании
-  useEffect(() => {
-    const stored = localStorage.getItem('OPENAI_API_KEY');
-    if (stored) setApiKey(stored);
-  }, []);
+  const [apiKey, setApiKey] = useState<string>('');
 
   const handleSave = () => {
-    localStorage.setItem('OPENAI_API_KEY', apiKey);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    createLlmKey.mutate(apiKey);
   };
+
+  if (createLlmKey.isSuccess) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <Layout>
@@ -31,9 +29,16 @@ function Intro() {
           value={apiKey}
           onChange={(e) => setApiKey(e.currentTarget.value)}
           required
+          disabled={createLlmKey.isPending}
         />
-        <Button mt="sm" fullWidth onClick={handleSave} disabled={!apiKey}>
-          {saved ? 'Сохранено!' : t('llmKeySave')}
+        <Button
+          mt="sm"
+          fullWidth
+          onClick={handleSave}
+          disabled={!apiKey || createLlmKey.isPending}
+          loading={createLlmKey.isPending}
+        >
+          {t('llmKeySave')}
         </Button>
       </Box>
     </Layout>
