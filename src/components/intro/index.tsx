@@ -17,7 +17,9 @@ function Intro() {
   function handleSave() {
     mutate(apiKey, {
       onSuccess: () => {
-        navigate('/', { replace: true });
+        setTimeout(() => {
+          navigate('/', { replace: true });
+        }, 0);
       },
     });
   }
