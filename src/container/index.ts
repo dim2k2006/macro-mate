@@ -1,4 +1,5 @@
 import { FoodItemService, FoodItemServiceImpl, FoodItemRepositoryLocal } from '../domain/foodItem';
+import { LlmKeyService, LlmKeyServiceImpl, LlmKeyRepositoryLocal } from '../domain/llmKey';
 import { LlmProvider } from '../shared/llm.types';
 import { LlmProviderOpenai } from '../providers/llm';
 
@@ -20,9 +21,13 @@ export function buildContainer(config: Config): Container {
   const foodItemRepository = new FoodItemRepositoryLocal();
   const foodItemService = new FoodItemServiceImpl({ foodItemRepository, llmProvider });
 
+  const llmKeyRepository = new LlmKeyRepositoryLocal();
+  const llmKeyService = new LlmKeyServiceImpl({ llmKeyRepository });
+
   return {
     config,
     foodItemService,
+    llmKeyService,
     llmProvider,
   };
 }
@@ -30,5 +35,6 @@ export function buildContainer(config: Config): Container {
 export type Container = {
   config: Config;
   foodItemService: FoodItemService;
+  llmKeyService: LlmKeyService;
   llmProvider: LlmProvider;
 };
