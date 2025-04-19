@@ -7,6 +7,7 @@ import { Routes, Route } from 'react-router-dom';
 import Intro from '@/components/intro';
 import Home from '@/components/home';
 import ProtectedRoute from '@/components/protected-route';
+import Layout from '@/components/layout';
 
 function Root() {
   const llmKeyFetchingState = useGetLlmKey();
@@ -20,15 +21,17 @@ function Root() {
   return (
     <ConfigProvider config={config}>
       <FoodItemServiceProvider service={container.foodItemService}>
-        <Routes>
-          <React.Fragment>
-            <Route path="/" element={<ProtectedRoute />}>
-              <Route path="/" element={<Home />} />
-            </Route>
+        <Layout>
+          <Routes>
+            <React.Fragment>
+              <Route path="/" element={<ProtectedRoute />}>
+                <Route path="/" element={<Home />} />
+              </Route>
 
-            <Route path="/intro" element={<Intro />} />
-          </React.Fragment>
-        </Routes>
+              <Route path="/intro" element={<Intro />} />
+            </React.Fragment>
+          </Routes>
+        </Layout>
       </FoodItemServiceProvider>
     </ConfigProvider>
   );
