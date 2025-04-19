@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../server.js"],
+  "sourcesContent": ["const path = require('path');\nconst express = require('express');\nconst { createRequestHandler } = require('@remix-run/express');\n\nconst app = express();\nconst port = process.env.PORT || 3000;\n\n// http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header\napp.disable('x-powered-by');\n\n// Remix fingerprints its assets so we can cache forever.\napp.use('/build', express.static('public/build', { immutable: true, maxAge: '1y' }));\n\n// Everything else (like favicon.ico) is cached for an hour. You may want to be\n// more aggressive with this caching.\napp.use(express.static('public', { maxAge: '1h' }));\n\napp.all(\n  '*',\n  createRequestHandler({\n    build: require(path.join(process.cwd(), 'build')),\n    mode: process.env.NODE_ENV,\n  }),\n);\n\napp.listen(port, () => {\n  console.log(`Express server listening on port ${port}`);\n});\n"],
+  "mappings": ";;;;;;;;;AAAA,IAAM,OAAO,UAAQ,MAAM,GACrB,UAAU,UAAQ,SAAS,GAC3B,EAAE,qBAAqB,IAAI,UAAQ,oBAAoB,GAEvD,MAAM,QAAQ,GACd,OAAO,QAAQ,IAAI,QAAQ;AAGjC,IAAI,QAAQ,cAAc;AAG1B,IAAI,IAAI,UAAU,QAAQ,OAAO,gBAAgB,EAAE,WAAW,IAAM,QAAQ,KAAK,CAAC,CAAC;AAInF,IAAI,IAAI,QAAQ,OAAO,UAAU,EAAE,QAAQ,KAAK,CAAC,CAAC;AAElD,IAAI;AAAA,EACF;AAAA,EACA,qBAAqB;AAAA,IACnB,OAAO,UAAQ,KAAK,KAAK,QAAQ,IAAI,GAAG,OAAO,CAAC;AAAA,IAChD,MAAM;AAAA,EACR,CAAC;AACH;AAEA,IAAI,OAAO,MAAM,MAAM;AACrB,UAAQ,IAAI,oCAAoC,MAAM;AACxD,CAAC;",
+  "names": []
+}

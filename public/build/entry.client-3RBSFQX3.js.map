@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../app/entry.client.tsx"],
+  "sourcesContent": ["// REMIX HMR BEGIN\nimport * as __hmr__ from \"remix:hmr\";\nif (import.meta) {\nimport.meta.hot = __hmr__.createHotContext(\n//@ts-expect-error\n\"app/entry.client.tsx\"\n);\nimport.meta.hot.lastModified = \"1745056638563.9736\";\n}\n// REMIX HMR END\n\nimport { RemixBrowser } from '@remix-run/react';\nimport { hydrateRoot } from 'react-dom/client';\n\ndeclare global {\n  interface Window {\n    __remixContext__: unknown;\n  }\n}\n\n// \u041F\u0440\u0438\u0432\u044F\u0437\u044B\u0432\u0430\u0435\u043C \u043A\u043B\u0438\u0435\u043D\u0442\u0441\u043A\u0438\u0439 React\nhydrateRoot(document, <RemixBrowser />);\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;AAYA,oBAA4B;AASN;AAnBtB,IAAI,aAAa;AACjB,cAAY,MAAc;AAAA;AAAA,IAE1B;AAAA,EACA;AACA,cAAY,IAAI,eAAe;AAC/B;AAAA,IAaA,2BAAY,UAAU,mDAAC,kBAAD;AAAA;AAAA;AAAA;AAAA,OAAc,CAAE;",
+  "names": []
+}
