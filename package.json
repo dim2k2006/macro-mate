@@ -4,14 +4,9 @@
   "description": "Your daily companion for tracking calories &amp; macros",
   "main": "dist/src/functions/*.js",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
-    "clean": "rimraf dist",
-    "prestart": "npm run clean && npm run build",
-    "start": "func start",
-    "test": "vitest",
-    "test:watch": "vitest --watch",
-    "test:ci": "vitest run --reporter=dot",
+    "dev": "remix dev",
+    "build": "remix build",
+    "start": "remix-serve build",
     "lint": "eslint"
   },
   "dependencies": {
