@@ -3,6 +3,7 @@ import { useForm, hasLength } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { Unit, FoodItem } from '@/domain/foodItem';
 import { useUpdateFoodItem } from '@/components/foodItem-service-provider';
+import { useEffect } from 'react';
 
 const units: Unit[] = ['g', 'ml'];
 
@@ -27,15 +28,7 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
     },
   });
 
-  function handleSubmit(values: {
-    description: string;
-    name: string;
-    unit: Unit;
-    calories: number | undefined;
-    proteins: number | undefined;
-    fats: number | undefined;
-    carbs: number | undefined;
-  }) {
+  function handleSubmit(values: SubmitValues) {
     const newFoodItem: FoodItem = {
       ...foodItem,
       description: values.description,
@@ -49,6 +42,25 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
 
     mutate(newFoodItem);
   }
+
+  const formValues = form.values;
+
+  console.log('formValues:', formValues);
+
+  useEffect(() => {
+    const newFoodItem: FoodItem = {
+      ...foodItem,
+      description: formValues.description,
+      name: formValues.name,
+      unit: formValues.unit,
+      calories: formValues.calories,
+      proteins: formValues.proteins,
+      fats: formValues.fats,
+      carbs: formValues.carbs,
+    };
+
+    mutate(newFoodItem);
+  }, [foodItem, formValues, mutate]);
 
   return (
     <Box p="md">
@@ -123,6 +135,16 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
 
 type CookingFoodItemProps = {
   foodItem: FoodItem;
+};
+
+type SubmitValues = {
+  description: string;
+  name: string;
+  unit: Unit;
+  calories: number | undefined;
+  proteins: number | undefined;
+  fats: number | undefined;
+  carbs: number | undefined;
 };
 
 export default CookingFoodItem;
