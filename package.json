@@ -2,7 +2,7 @@
   "name": "macro-mate",
   "version": "1.0.0",
   "description": "Your daily companion for tracking calories &amp; macros",
-  "main": "dist/src/functions/*.js",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
