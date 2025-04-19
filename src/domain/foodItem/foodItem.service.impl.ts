@@ -2,16 +2,21 @@ import { v4 as uuidV4 } from 'uuid';
 import { FoodItemService, CreateFoodItemInput } from './foodItem.service';
 import { FoodItemRepository } from './foodItem.repository';
 import { FoodItem } from './foodItem.model';
+import { LlmProvider } from '../../shared/llm.types.ts';
 
 type ConstructorInput = {
   foodItemRepository: FoodItemRepository;
+  llmProvider: LlmProvider;
 };
 
 class FoodItemServiceImpl implements FoodItemService {
   private readonly foodItemRepository: FoodItemRepository;
 
-  constructor({ foodItemRepository }: ConstructorInput) {
+  private readonly llmProvider: LlmProvider;
+
+  constructor({ foodItemRepository, llmProvider }: ConstructorInput) {
     this.foodItemRepository = foodItemRepository;
+    this.llmProvider = llmProvider;
   }
 
   async createFoodItem(input: CreateFoodItemInput): Promise<FoodItem> {
@@ -48,7 +53,31 @@ class FoodItemServiceImpl implements FoodItemService {
     return this.foodItemRepository.deleteFoodItem(id);
   }
 
-  async calculateMacros(id: string): Promise<FoodItem> {}
+  async calculateMacros(id: string): Promise<FoodItem> {
+    const foodItem = await this.foodItemRepository.getFoodItemById(id);
+
+    if (!foodItem) {
+      throw new Error('Food item not found');
+    }
+
+    const messages = [
+      this.llmProvider.buildChatMessage({
+        role: 'developer',
+        content: `Calculate macros for ${foodItem.description}`,
+      }),
+    ];
+
+    const { calories, proteins, fats, carbs } = await this.llmProvider.calculateMacros({
+      messages,
+    });
+
+    foodItem.calories = calories;
+    foodItem.proteins = proteins;
+    foodItem.fats = fats;
+    foodItem.carbs = carbs;
+
+    return this.foodItemRepository.updateFoodItem(id, foodItem);
+  }
 }
 
 export default FoodItemServiceImpl;
