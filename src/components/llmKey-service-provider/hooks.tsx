@@ -8,7 +8,9 @@ export function useCreateLlmKey() {
 
   return useMutation({
     mutationFn: (key: string) => llmKeyService.createLlmKey(key),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      queryClient.setQueryData(['llmKey'], data);
+
       queryClient.invalidateQueries({
         queryKey: ['llmKey'],
       });
@@ -23,6 +25,7 @@ export function useGetLlmKey() {
     queryKey: ['llmKey'],
     queryFn: () => llmKeyService.getLlmKey(),
     refetchOnWindowFocus: false,
+    retry: false,
   });
 }
 
@@ -51,15 +54,5 @@ export function useDeleteLlmKey() {
         queryKey: ['llmKey'],
       });
     },
-  });
-}
-
-export function useHasLlmKey() {
-  const llmKeyService = useLlmKeyService();
-
-  return useQuery({
-    queryKey: ['llmKey'],
-    queryFn: () => llmKeyService.hasLlmKey(),
-    refetchOnWindowFocus: false,
   });
 }

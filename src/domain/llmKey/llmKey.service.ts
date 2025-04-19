@@ -5,5 +5,4 @@ export interface LlmKeyService {
   getLlmKey(): Promise<LlmKey>;
   updateLlmKey(key: LlmKey): Promise<LlmKey>;
   deleteLlmKey(): Promise<void>;
-  hasLlmKey(): Promise<boolean>;
 }

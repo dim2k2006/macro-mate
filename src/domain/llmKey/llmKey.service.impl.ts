@@ -31,16 +31,6 @@ class LlmKeyServiceImpl implements LlmKeyService {
   async deleteLlmKey(): Promise<void> {
     return this.llmKeyRepository.deleteLlmKey();
   }
-
-  async hasLlmKey(): Promise<boolean> {
-    try {
-      const llmKey = await this.llmKeyRepository.getLlmKey();
-      return !!llmKey;
-    } catch (error) {
-      console.log('Error checking LLM key:', error);
-      return false;
-    }
-  }
 }
 
 export default LlmKeyServiceImpl;
