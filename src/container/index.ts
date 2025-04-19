@@ -3,19 +3,19 @@ import { LlmKeyService, LlmKeyServiceImpl, LlmKeyRepositoryLocal } from '../doma
 import { LlmProvider } from '../shared/llm.types';
 import { LlmProviderOpenai } from '../providers/llm';
 
-export function buildConfig(): Config {
+export function buildConfig(llmKey: string): Config {
   return {
-    test: 'test',
+    llmKey,
   };
 }
 
 export type Config = {
-  test: string;
+  llmKey: string;
 };
 
 export function buildContainer(config: Config): Container {
   const llmProvider = new LlmProviderOpenai({
-    apiKey: '',
+    apiKey: config.llmKey,
   });
 
   const foodItemRepository = new FoodItemRepositoryLocal();
