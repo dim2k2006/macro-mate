@@ -1,6 +1,7 @@
 {
   "extends": "@remix-run/dev/tsconfig.json",
   "compilerOptions": {
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "allowSyntheticDefaultImports": true
   }
 }
