@@ -20,6 +20,8 @@
   "foodItemCarbsLabel": "Углеводы",
   "foodItemCarbsPlaceholder": "Введите количество углеводов",
   "saveFoodItem": "Сохранить продукт",
+  "home": "Главная",
+  "foodItems": "Продукты",
   "welcome": "Welcome to MacroMate",
   "save": "Save",
   "apiKey": "API Key"
