@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 function Intro() {
   const { t } = useTranslation();
 
-  const [opened, { toggle }] = useDisclosure();
   const [apiKey, setApiKey] = useState<string>('');
   const [saved, setSaved] = useState<boolean>(false);
 

@@ -53,3 +53,13 @@ export function useDeleteLlmKey() {
     },
   });
 }
+
+export function useHasLlmKey() {
+  const llmKeyService = useLlmKeyService();
+
+  return useQuery({
+    queryKey: ['llmKey'],
+    queryFn: async () => llmKeyService.hasLlmKey(),
+    refetchOnWindowFocus: false,
+  });
+}
