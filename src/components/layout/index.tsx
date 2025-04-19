@@ -9,7 +9,7 @@ function Layout({ children }: LayoutProps) {
         height: 60,
       }}
     >
-      <AppShell.Header>
+      <AppShell.Header p="sm">
         <Group justify="center" align="center">
           <Image src="/logo.png" alt="MacroMate logo" h={40} w="auto" fit="contain" />
         </Group>
