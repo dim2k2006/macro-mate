@@ -17,6 +17,7 @@ class LlmProviderOpenai implements LlmProvider {
   constructor({ apiKey }: ConstructorInput) {
     this.openai = new OpenAI({
       apiKey,
+      dangerouslyAllowBrowser: true,
     });
   }
 
