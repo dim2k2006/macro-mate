@@ -2,14 +2,14 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFoodItemService } from './foodItem-service-provider.tsx';
 import { FoodItem, CreateFoodItemInput } from '@/domain/foodItem';
 
-export function useCreateFoodItem(input: CreateFoodItemInput) {
+export function useCreateFoodItem() {
   const service = useFoodItemService();
 
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: ['createFoodItem'],
-    mutationFn: () => service.createFoodItem(input),
+    mutationFn: (input: CreateFoodItemInput) => service.createFoodItem(input),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['listFoodItems'],
@@ -36,14 +36,14 @@ export function useListFoodItems() {
   });
 }
 
-export function useUpdateFoodItem(id: string, foodItem: FoodItem) {
+export function useUpdateFoodItem(id: string) {
   const service = useFoodItemService();
 
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: ['updateFoodItem', id],
-    mutationFn: () => service.updateFoodItem(id, foodItem),
+    mutationFn: (foodItem: FoodItem) => service.updateFoodItem(id, foodItem),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['listFoodItems'],

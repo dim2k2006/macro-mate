@@ -1,109 +1,44 @@
-import { Box, TextInput, Button, Textarea, NativeSelect, NumberInput, Space, SimpleGrid } from '@mantine/core';
-import { useForm, hasLength } from '@mantine/form';
-import { useTranslation } from 'react-i18next';
-import { Unit } from '@/domain/foodItem';
-
-const units: Unit[] = ['g', 'ml'];
+import { useListFoodItems } from '@/components/foodItem-service-provider';
+import { useMemo } from 'react';
+import { v4 as uuidV4 } from 'uuid';
+import CookingFoodItem from '@/components/cooking-foodItem-form';
+import { FoodItem } from '@/domain/foodItem';
 
 function Home() {
-  const { t } = useTranslation();
+  const foodItemsState = useListFoodItems();
 
-  const form = useForm({
-    mode: 'controlled',
-    initialValues: {
-      description: '',
-      name: '',
-      unit: 'g' as const,
-      calories: undefined,
-      proteins: undefined,
-      fats: undefined,
-      carbs: undefined,
-    },
-    validate: {
-      name: hasLength({ min: 3 }, 'Must be at least 3 characters'),
-    },
-  });
+  const foodItems = useMemo(() => foodItemsState.data ?? [], [foodItemsState.data]);
 
-  function handleSubmit(values: {
-    description: string;
-    name: string;
-    unit: Unit;
-    calories: number | undefined;
-    proteins: number | undefined;
-    fats: number | undefined;
-    carbs: number | undefined;
-  }) {
-    console.log('values:', values);
-  }
+  const cookingFoodItems = useMemo(() => foodItems.filter((item) => item.state === 'cooking'), [foodItems]);
+
+  const cookingFoodItemsWithDraft = useMemo(() => {
+    if (cookingFoodItems.length === 0) {
+      const draftFoodItem: FoodItem = {
+        id: uuidV4(),
+        name: '',
+        description: '',
+        unit: 'g',
+        calories: undefined,
+        proteins: undefined,
+        fats: undefined,
+        carbs: undefined,
+        state: 'cooking',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      return [draftFoodItem];
+    }
+
+    return cookingFoodItems;
+  }, [cookingFoodItems]);
 
   return (
-    <Box p="md">
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Textarea
-          {...form.getInputProps('description')}
-          label={t('foodItemLabel')}
-          placeholder={t('foodItemPlaceholder')}
-          autosize
-          minRows={10}
-        />
-
-        <Button type="button" mt="md" color="teal" fullWidth>
-          {t('calculateMacros')}
-        </Button>
-
-        <Space h="md" />
-
-        <TextInput
-          {...form.getInputProps('name')}
-          label={t('foodItemLabel')}
-          placeholder={t('foodItemNamePlaceholder')}
-        />
-
-        <Space h="md" />
-
-        <NativeSelect {...form.getInputProps('unit')} label={t('foodItemUnitLabel')} data={units} />
-
-        <Space h="md" />
-
-        <NumberInput
-          {...form.getInputProps('calories')}
-          label={t('foodItemCaloriesLabel')}
-          placeholder={t('foodItemCaloriesPlaceholder')}
-        />
-
-        <Space h="md" />
-
-        <SimpleGrid cols={3}>
-          <div>
-            <NumberInput
-              {...form.getInputProps('proteins')}
-              label={t('foodItemProteinLabel')}
-              placeholder={t('foodItemProteinPlaceholder')}
-            />
-          </div>
-
-          <div>
-            <NumberInput
-              {...form.getInputProps('fats')}
-              label={t('foodItemFatLabel')}
-              placeholder={t('foodItemFatPlaceholder')}
-            />
-          </div>
-
-          <div>
-            <NumberInput
-              {...form.getInputProps('carbs')}
-              label={t('foodItemCarbsLabel')}
-              placeholder={t('foodItemCarbsPlaceholder')}
-            />
-          </div>
-        </SimpleGrid>
-
-        <Button type="submit" mt="md" fullWidth>
-          {t('saveFoodItem')}
-        </Button>
-      </form>
-    </Box>
+    <>
+      {cookingFoodItemsWithDraft.map((foodItem) => (
+        <CookingFoodItem key={foodItem.id} foodItem={foodItem} />
+      ))}
+    </>
   );
 }
 
