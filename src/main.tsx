@@ -4,8 +4,10 @@ import './index.css';
 import '@mantine/core/styles.css';
 import './i18n';
 import Intro from './components/intro';
+import Home from './components/home';
 import { MantineProvider } from '@mantine/core';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ConfigProvider from './components/config-provider';
 import { FoodItemServiceProvider } from './components/foodItem-service-provider';
 // import { ParameterServiceProvider } from './components/parameter-service-provider';
@@ -23,9 +25,14 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <MantineProvider>
         <ConfigProvider config={config}>
-          <FoodItemServiceProvider service={container.foodItemService}>
-            <Intro />
-          </FoodItemServiceProvider>
+          <BrowserRouter>
+            <FoodItemServiceProvider service={container.foodItemService}>
+              <Routes>
+                <Route path="/" element={<Intro />} />
+                <Route path="/home" element={<Home />} />
+              </Routes>
+            </FoodItemServiceProvider>
+          </BrowserRouter>
         </ConfigProvider>
       </MantineProvider>
     </QueryClientProvider>

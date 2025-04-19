@@ -30,8 +30,8 @@ function Intro() {
       }}
     >
       <AppShell.Header>
-        <Group justify="center">
-          <Image src="/public/logo.png" alt="MacroMate logo" h={40} w="auto" fit="contain" />
+        <Group justify="center" align="center">
+          <Image src="/logo.png" alt="MacroMate logo" h={40} w="auto" fit="contain" />
         </Group>
       </AppShell.Header>
 
