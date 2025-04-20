@@ -1,5 +1,4 @@
 import {
-  Box,
   TextInput,
   Button,
   Textarea,
@@ -80,101 +79,79 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
   }
 
   return (
-    <Box p="md">
-      <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Textarea
-            {...form.getInputProps('description')}
-            label={t('foodItemLabel')}
-            placeholder={t('foodItemPlaceholder')}
-            autosize
-            minRows={10}
-          />
+    <Card shadow="sm" padding="lg" radius="md" withBorder>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Textarea
+          {...form.getInputProps('description')}
+          label={t('foodItemLabel')}
+          placeholder={t('foodItemPlaceholder')}
+          autosize
+          minRows={8}
+        />
 
-          <Button type="button" mt="md" color="teal" fullWidth>
-            {t('calculateMacros')}
+        <Button type="button" mt="md" color="teal" fullWidth>
+          {t('calculateMacros')}
+        </Button>
+
+        <Space h="md" />
+
+        <TextInput {...form.getInputProps('name')} label={t('foodItemNameLabel')} />
+
+        <Space h="md" />
+
+        <SimpleGrid cols={2}>
+          <NativeSelect {...form.getInputProps('unit')} label={t('foodItemUnitLabel')} data={units} />
+
+          <NumberInput {...form.getInputProps('calories')} label={t('foodItemCaloriesLabel')} />
+        </SimpleGrid>
+
+        <Space h="md" />
+
+        <SimpleGrid cols={3}>
+          <div>
+            <NumberInput {...form.getInputProps('proteins')} label={t('foodItemProteinLabel')} />
+          </div>
+
+          <div>
+            <NumberInput {...form.getInputProps('fats')} label={t('foodItemFatLabel')} />
+          </div>
+
+          <div>
+            <NumberInput {...form.getInputProps('carbs')} label={t('foodItemCarbsLabel')} />
+          </div>
+        </SimpleGrid>
+
+        <Group justify="center">
+          <Button type="submit" mt="md" fullWidth>
+            {t('saveFoodItem')}
           </Button>
 
           <Space h="md" />
 
-          <TextInput
-            {...form.getInputProps('name')}
-            label={t('foodItemLabel')}
-            placeholder={t('foodItemNamePlaceholder')}
-          />
+          <Popover width={150} position="bottom" withArrow shadow="md">
+            <Popover.Target>
+              <Button variant="filled" color="red" size="xs">
+                {t('deleteFoodItem')}
+              </Button>
+            </Popover.Target>
 
-          <Space h="md" />
+            <Popover.Dropdown>
+              <Group justify="center">
+                <Text fw={500} size="sm">
+                  {t('deleteFoodItemConfirmLabel')}
+                </Text>
 
-          <NativeSelect {...form.getInputProps('unit')} label={t('foodItemUnitLabel')} data={units} />
+                <Space h="sm" />
 
-          <Space h="md" />
-
-          <NumberInput
-            {...form.getInputProps('calories')}
-            label={t('foodItemCaloriesLabel')}
-            placeholder={t('foodItemCaloriesPlaceholder')}
-          />
-
-          <Space h="md" />
-
-          <SimpleGrid cols={3}>
-            <div>
-              <NumberInput
-                {...form.getInputProps('proteins')}
-                label={t('foodItemProteinLabel')}
-                placeholder={t('foodItemProteinPlaceholder')}
-              />
-            </div>
-
-            <div>
-              <NumberInput
-                {...form.getInputProps('fats')}
-                label={t('foodItemFatLabel')}
-                placeholder={t('foodItemFatPlaceholder')}
-              />
-            </div>
-
-            <div>
-              <NumberInput
-                {...form.getInputProps('carbs')}
-                label={t('foodItemCarbsLabel')}
-                placeholder={t('foodItemCarbsPlaceholder')}
-              />
-            </div>
-          </SimpleGrid>
-
-          <Group justify="center">
-            <Button type="submit" mt="md" fullWidth>
-              {t('saveFoodItem')}
-            </Button>
-
-            <Space h="md" />
-
-            <Popover width={150} position="bottom" withArrow shadow="md">
-              <Popover.Target>
-                <Button variant="filled" color="red" size="xs">
-                  {t('deleteFoodItem')}
+                <Button variant="filled" color="red" size="xs" onClick={handleDelete}>
+                  {t('deleteFoodItemConfirm')}
                 </Button>
-              </Popover.Target>
-
-              <Popover.Dropdown>
-                <Group justify="center">
-                  <Text fw={500} size="sm">
-                    {t('deleteFoodItemConfirmLabel')}
-                  </Text>
-
-                  <Space h="sm" />
-
-                  <Button variant="filled" color="red" size="xs" onClick={handleDelete}>
-                    {t('deleteFoodItemConfirm')}
-                  </Button>
-                </Group>
-              </Popover.Dropdown>
-            </Popover>
-          </Group>
-        </form>
-      </Card>
-    </Box>
+              </Group>
+            </Popover.Dropdown>
+          </Popover>
+        </Group>
+      </form>
+    </Card>
   );
 }
 

@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 import CookingFoodItem from '@/components/cooking-foodItem-form';
 import { FoodItem } from '@/domain/foodItem';
+import { Box } from '@mantine/core';
 
 function Home() {
   const foodItemsState = useListFoodItems();
@@ -42,11 +43,11 @@ function Home() {
   }, [foodItemsState.data, foodItemsState.isError, foodItemsState.isLoading, foodItemsState.isSuccess]);
 
   return (
-    <>
+    <Box p="md">
       {cookingFoodItemsWithDraft.map((foodItem) => (
         <CookingFoodItem key={foodItem.id} foodItem={foodItem} />
       ))}
-    </>
+    </Box>
   );
 }
 
