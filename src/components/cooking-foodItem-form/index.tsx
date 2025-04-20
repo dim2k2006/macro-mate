@@ -126,11 +126,13 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
     deleteFoodItem();
   }
 
-  const date = dayjs(foodItem.updatedAt).format('DD/MM/YYYY HH:mm:ss');
+  const date = dayjs(foodItem.updatedAt).format('YYYY-MM-DD HH:mm');
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
-      <Badge variant="outline">{date}</Badge>
+      <Badge variant="outline" color="gray" style={{ position: 'absolute', top: '10px', right: '10px' }}>
+        {date}
+      </Badge>
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Textarea
