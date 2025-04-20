@@ -10,13 +10,17 @@ import { z } from 'zod';
 
 const CalculateMacrosResponseSchema = z.object({
   dish: z.string(),
-  raw_weight_g: z.number(),
-  cooked_weight_g: z.number(),
-  yield: z.number(),
-  calories: z.number(),
-  proteins: z.number(),
-  fats: z.number(),
-  carbs: z.number(),
+  raw_weight_g: z.number().int(),
+  cooked_weight_g: z.number().int(),
+  yield: z.number().min(0).max(1),
+  total_calories: z.number().int(),
+  total_proteins: z.number().int(),
+  total_fats: z.number().int(),
+  total_carbs: z.number().int(),
+  per100_calories: z.number().min(0),
+  per100_proteins: z.number().min(0),
+  per100_fats: z.number().min(0),
+  per100_carbs: z.number().min(0),
 });
 
 type ConstructorInput = {
@@ -38,29 +42,70 @@ class LlmProviderOpenai implements LlmProvider {
       this.buildChatMessage({
         role: 'developer',
         content: `
-Рассчитай удельный кбжу блюда:
+You are a nutrition‑calculation assistant.
+The user provides two blocks:
 
-When called to the function "calculate_macros", you must *only* return a JSON object that matches the function’s schema—no extra text.
+Было
+<ingredient‑1> <amount> <unit>
+<ingredient‑2> <amount> <unit>
+…
 
-8. Output
-   Respond **ONLY** with a valid JSON object (no extra text or markup) exactly in this shape:
+Стало
+<number> г [optional dish name]
+
+Your job: calculate total macros of the cooked dish **and** macros per 100 g.
+
+Follow these steps exactly
+──────────────────────────
+1. **Dish name**
+   • If text follows the weight in “Стало”, use it.
+   • Otherwise invent a concise ≤ 3‑word name from key ingredients.
+
+2. **Parse raw ingredients**
+   • Extract \`name\`, \`amount\`, \`unit\` from every “Было” line.
+   • Convert all amounts to grams:
+     – kg → ×1000 – L → ×1000 ml → g (assume 1 ml = 1 g unless density is specified)
+     – ml / мл → g – “шт / pcs” → use typical mass (e.g. egg = 60 g) or ask.
+
+3. **Macros per 100 g**
+   Look up kcal, protein, fat, carbs per 100 g for each ingredient (or use values provided by the user).
+
+4. **Totals for raw mixture**
+    RAW_weight_g = Σ weight_g RAW_calories = Σ kcal_per100 * weight / 100 RAW_proteins = Σ protein_per100 * weight / 100 RAW_fats = Σ fat_per100 * weight / 100 RAW_carbs = Σ carb_per100 * weight / 100
+
+5. **Cooked weight**
+    Extract the integer grams in the “Стало” line → \`cooked_weight_g\`.
+
+6. **Yield**
+    yield = cooked_weight_g / RAW_weight_g // round to 2 decimals
+
+7. **Scale macros to cooked dish**
+    calories = round(RAW_calories) proteins = round(RAW_proteins) fats = round(RAW_fats) carbs = round(RAW_carbs)
+
+8. **Macros per 100 g cooked**
+    CAL_per100 = round(FINAL_calories * 100 / COOKED_weight_g, 1) PRO_per100 = round(FINAL_proteins * 100 / COOKED_weight_g, 1) FAT_per100 = round(FINAL_fats * 100 / COOKED_weight_g, 1) CARB_per100 = round(FINAL_carbs * 100 / COOKED_weight_g, 1)
+
+9. **Output**
+Respond **ONLY** with a valid JSON object in the exact shape below (no extra text):
 
 {
   "dish": "<dish name>",
   "raw_weight_g": <integer>,
   "cooked_weight_g": <integer>,
-  "yield": <float with 2 decimals>,
-  "calories": <integer>,
-  "proteins": <integer>,
-  "fats": <integer>,
-  "carbs": <integer>
+  "yield": <float 2‑dec>,
+  "total_calories": <integer>,
+  "total_proteins": <integer>,
+  "total_fats": <integer>,
+  "total_carbs": <integer>,
+  "per100_calories": <float 1‑dec>,
+  "per100_proteins": <float 1‑dec>,
+  "per100_fats": <float 1‑dec>,
+  "per100_carbs": <float 1‑dec>
 }
 
-Validation notes
-----------------
-* If a weight/unit cannot be determined, ask the user to clarify instead of guessing.
-* Ensure all JSON numbers are numeric (not strings).
-* Round yield to 2 decimals; all other values to whole numbers.
+9. **Validation**
+• If any amount or unit is missing/ambiguous, throw an error.
+• Ensure all JSON numbers are numeric, not strings.
   `.trim(),
       }),
 
@@ -78,12 +123,29 @@ Validation notes
             raw_weight_g: { type: 'integer' },
             cooked_weight_g: { type: 'integer' },
             yield: { type: 'number' },
-            calories: { type: 'integer' },
-            proteins: { type: 'integer' },
-            fats: { type: 'integer' },
-            carbs: { type: 'integer' },
+            total_calories: { type: 'integer' },
+            total_proteins: { type: 'integer' },
+            total_fats: { type: 'integer' },
+            total_carbs: { type: 'integer' },
+            per100_calories: { type: 'integer' },
+            per100_proteins: { type: 'integer' },
+            per100_fats: { type: 'integer' },
+            per100_carbs: { type: 'integer' },
           },
-          required: ['dish', 'raw_weight_g', 'cooked_weight_g', 'yield', 'calories', 'proteins', 'fats', 'carbs'],
+          required: [
+            'dish',
+            'raw_weight_g',
+            'cooked_weight_g',
+            'yield',
+            'total_calories',
+            'total_proteins',
+            'total_fats',
+            'total_carbs',
+            'per100_calories',
+            'per100_proteins',
+            'per100_fats',
+            'per100_carbs',
+          ],
         },
       },
     ];
@@ -91,7 +153,6 @@ Validation notes
     const response = await this.openai.chat.completions.create({
       model: 'o3',
       messages: messages,
-      temperature: 1,
       functions: functionDefinitions,
       function_call: { name: 'calculate_macros' },
     });
@@ -118,10 +179,10 @@ Validation notes
 
     return {
       dish: result.dish,
-      calories: result.calories,
-      proteins: result.proteins,
-      fats: result.fats,
-      carbs: result.carbs,
+      calories: result.per100_calories,
+      proteins: result.per100_proteins,
+      fats: result.per100_fats,
+      carbs: result.per100_carbs,
     };
   }
 
