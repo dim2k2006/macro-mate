@@ -127,6 +127,7 @@ Validation notes
     console.log('result:', result);
 
     return {
+      dish: result.dish,
       calories: result.calories,
       proteins: result.proteins,
       fats: result.fats,
