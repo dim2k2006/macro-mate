@@ -8,6 +8,7 @@ export type CalculateMacrosInput = {
 };
 
 export type CalculateMacrosOutput = {
+  dish: string;
   calories: number;
   proteins: number;
   fats: number;
