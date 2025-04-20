@@ -5,6 +5,7 @@ export interface FoodItemService {
   getFoodItemById: (id: string) => Promise<FoodItem>;
   listFoodItems: () => Promise<FoodItem[]>;
   updateFoodItem: (id: string, foodItem: FoodItem) => Promise<FoodItem>;
+  upsertFoodItem: (id: string, foodItem: FoodItem) => Promise<FoodItem>;
   deleteFoodItem: (id: string) => Promise<void>;
   calculateMacros: (id: string) => Promise<FoodItem>;
 }

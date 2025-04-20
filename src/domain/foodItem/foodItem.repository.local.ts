@@ -50,6 +50,21 @@ class FoodItemRepositoryLocal implements FoodItemRepository {
     return foodItems[index];
   }
 
+  async upsertFoodItem(id: string, foodItem: FoodItem): Promise<FoodItem> {
+    const foodItems = await this.listFoodItems();
+    const index = foodItems.findIndex((item) => item.id === id);
+
+    if (index === -1) {
+      foodItems.push(foodItem);
+    } else {
+      foodItems[index] = { ...foodItems[index], ...foodItem };
+    }
+
+    await localForage.setItem(this.storageKey, foodItems);
+
+    return foodItem;
+  }
+
   async deleteFoodItem(id: string): Promise<void> {
     const foodItems = await this.listFoodItems();
     const index = foodItems.findIndex((item) => item.id === id);

@@ -49,6 +49,10 @@ class FoodItemServiceImpl implements FoodItemService {
     return this.foodItemRepository.updateFoodItem(id, foodItem);
   }
 
+  async upsertFoodItem(id: string, foodItem: FoodItem): Promise<FoodItem> {
+    return this.foodItemRepository.upsertFoodItem(id, foodItem);
+  }
+
   async deleteFoodItem(id: string): Promise<void> {
     return this.foodItemRepository.deleteFoodItem(id);
   }
