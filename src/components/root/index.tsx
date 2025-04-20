@@ -6,6 +6,7 @@ import { FoodItemServiceProvider } from '@/components/foodItem-service-provider'
 import { Routes, Route } from 'react-router-dom';
 import Intro from '@/components/intro';
 import Home from '@/components/home';
+import Food from '@/components/food';
 import ProtectedRoute from '@/components/protected-route';
 import Layout from '@/components/layout';
 
@@ -26,6 +27,10 @@ function Root() {
             <React.Fragment>
               <Route path="/" element={<ProtectedRoute />}>
                 <Route path="/" element={<Home />} />
+              </Route>
+
+              <Route path="/food" element={<ProtectedRoute />}>
+                <Route path="/food" element={<Food />} />
               </Route>
 
               <Route path="/intro" element={<Intro />} />
