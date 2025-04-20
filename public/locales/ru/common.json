@@ -6,6 +6,7 @@
   "foodItemLabel": "Описание продукта",
   "foodItemPlaceholder": "Введите описание продукта",
   "calculateMacros": "Рассчитать КБЖУ",
+  "calculateMacrosError": "Произошла ошибка при расчете КБЖУ, попробуйте еще раз",
   "foodItemNameLabel": "Название продукта",
   "foodItemNamePlaceholder": "Введите название продукта",
   "foodItemUnitLabel": "Единица измерения",

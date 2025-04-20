@@ -2,7 +2,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { FoodItemService, CreateFoodItemInput } from './foodItem.service';
 import { FoodItemRepository } from './foodItem.repository';
 import { FoodItem } from './foodItem.model';
-import { LlmProvider } from '../../shared/llm.types.ts';
+import { LlmProvider } from '@/shared/llm.types.ts';
 
 type ConstructorInput = {
   foodItemRepository: FoodItemRepository;
@@ -71,7 +71,11 @@ class FoodItemServiceImpl implements FoodItemService {
     const messages = [
       this.llmProvider.buildChatMessage({
         role: 'developer',
-        content: `Calculate macros for ${foodItem.description}`,
+        content: `
+User input:
+
+${foodItem.description}
+`,
       }),
     ];
 

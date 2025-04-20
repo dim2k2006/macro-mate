@@ -26,9 +26,34 @@ class LlmProviderOpenai implements LlmProvider {
       this.buildChatMessage({
         role: 'developer',
         content: `
-TODO create promprt for calculating macros
-        `,
+You are a nutrition calculation assistant. The user will provide freeform input with raw ingredients under "Было" (one or more lines, each as "<name> <quantity> <unit>") and a final cooked weight line under "Стало" in the format "<number> г <dish name>".
+
+Your task:
+1. Parse all RAW lines to extract ingredient names, quantities and units. Convert quantities to grams.
+2. Sum up total raw macros:
+   RAW_calories, RAW_proteins, RAW_fats, RAW_carbs.
+3. Parse the COOKED_WEIGHT and dish name from the "Стало" line.
+4. Compute "yield = COOKED_WEIGHT / RAW_WEIGHT".
+5. Calculate final macros:
+   - calories = round(RAW_calories * yield)
+   - proteins = round(RAW_proteins * yield)
+   - fats = round(RAW_fats * yield)
+   - carbs = round(RAW_carbs * yield)
+6. Respond ONLY with a JSON object exactly in this format:
+
+{
+  "dish": "<dish name>",
+  "raw_weight_g": <RAW_WEIGHT integer>,
+  "cooked_weight_g": <COOKED_WEIGHT integer>,
+  "yield": <float rounded to 2 decimals>,
+  "calories": <integer>,
+  "proteins": <integer>,
+  "fats": <integer>,
+  "carbs": <integer>
+}
+  `.trim(),
       }),
+
       ...input.messages,
     ];
 
@@ -45,27 +70,25 @@ TODO create promprt for calculating macros
 
     const content = choice.message.content ?? '';
 
-    const regex = /calories:\s*(\d+)\s*proteins:\s*(\d+)\s*fats:\s*(\d+)\s*carbs:\s*(\d+)/i;
+    console.log('content:', content);
 
-    const match = content.match(regex);
-
-    if (!match) {
-      throw new Error('Failed to parse completion');
-    }
-
-    const calories = parseInt(match[1], 10);
-
-    const proteins = parseInt(match[2], 10);
-
-    const fats = parseInt(match[3], 10);
-
-    const carbs = parseInt(match[4], 10);
+    // if (!match) {
+    //   throw new Error('Failed to parse completion');
+    // }
+    //
+    // const calories = parseInt(match[1], 10);
+    //
+    // const proteins = parseInt(match[2], 10);
+    //
+    // const fats = parseInt(match[3], 10);
+    //
+    // const carbs = parseInt(match[4], 10);
 
     return {
-      calories,
-      proteins,
-      fats,
-      carbs,
+      calories: 0,
+      proteins: 0,
+      fats: 0,
+      carbs: 0,
     };
   }
 

@@ -15,7 +15,7 @@ import {
 import { useForm, hasLength } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { Unit, FoodItem } from '@/domain/foodItem';
-import { useUpsertFoodItem, useDeleteFoodItem } from '@/components/foodItem-service-provider';
+import { useUpsertFoodItem, useDeleteFoodItem, useCalculateMacros } from '@/components/foodItem-service-provider';
 import { useEffect } from 'react';
 import dayjs from 'dayjs';
 
@@ -27,6 +27,12 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
   const { mutate } = useUpsertFoodItem(foodItem.id);
 
   const { mutate: deleteFoodItem } = useDeleteFoodItem(foodItem.id);
+
+  const {
+    mutate: calculateMacros,
+    isPending: isCalculatingMacros,
+    isError: isCalculateMacrosError,
+  } = useCalculateMacros(foodItem.id);
 
   const form = useForm({
     mode: 'controlled',
@@ -126,6 +132,10 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
     deleteFoodItem();
   }
 
+  function handleCalculateMacros() {
+    calculateMacros();
+  }
+
   const date = dayjs(foodItem.updatedAt).format('YYYY-MM-DD HH:mm');
 
   return (
@@ -143,11 +153,29 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
           minRows={8}
         />
 
-        <Button type="button" mt="md" color="indigo" fullWidth variant="outline">
+        <Button
+          type="button"
+          mt="md"
+          color="indigo"
+          fullWidth
+          variant="outline"
+          loaderProps={{ type: 'dots' }}
+          loading={isCalculatingMacros}
+          disabled={isCalculatingMacros}
+          onClick={handleCalculateMacros}
+        >
           {t('calculateMacros')}
         </Button>
 
-        <Space h="md" />
+        {isCalculateMacrosError && (
+          <>
+            <Space h="sm" />
+
+            <Text c="red" size="sm" mt="md">
+              {t('calculateMacrosError')}
+            </Text>
+          </>
+        )}
 
         <TextInput {...form.getInputProps('name')} label={t('foodItemNameLabel')} />
 
@@ -156,22 +184,34 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
         <SimpleGrid cols={2}>
           <NativeSelect {...form.getInputProps('unit')} label={t('foodItemUnitLabel')} data={units} />
 
-          <NumberInput {...form.getInputProps('calories')} label={t('foodItemCaloriesLabel')} />
+          <NumberInput
+            {...form.getInputProps('calories')}
+            label={t('foodItemCaloriesLabel')}
+            disabled={isCalculatingMacros}
+          />
         </SimpleGrid>
 
         <Space h="md" />
 
         <SimpleGrid cols={3}>
           <div>
-            <NumberInput {...form.getInputProps('proteins')} label={t('foodItemProteinLabel')} />
+            <NumberInput
+              {...form.getInputProps('proteins')}
+              label={t('foodItemProteinLabel')}
+              disabled={isCalculatingMacros}
+            />
           </div>
 
           <div>
-            <NumberInput {...form.getInputProps('fats')} label={t('foodItemFatLabel')} />
+            <NumberInput {...form.getInputProps('fats')} label={t('foodItemFatLabel')} disabled={isCalculatingMacros} />
           </div>
 
           <div>
-            <NumberInput {...form.getInputProps('carbs')} label={t('foodItemCarbsLabel')} />
+            <NumberInput
+              {...form.getInputProps('carbs')}
+              label={t('foodItemCarbsLabel')}
+              disabled={isCalculatingMacros}
+            />
           </div>
         </SimpleGrid>
 
