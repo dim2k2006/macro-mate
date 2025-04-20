@@ -56,6 +56,26 @@ export function useUpdateFoodItem(id: string) {
   });
 }
 
+export function useUpsertFoodItem(id: string) {
+  const service = useFoodItemService();
+
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ['upsertFoodItem', id],
+    mutationFn: (foodItem: FoodItem) => service.upsertFoodItem(id, foodItem),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['listFoodItems'],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['getFoodItemById', id],
+      });
+    },
+  });
+}
+
 export function useDeleteFoodItem(id: string) {
   const service = useFoodItemService();
 

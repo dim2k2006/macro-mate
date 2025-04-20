@@ -5,5 +5,6 @@ export {
   useListFoodItems,
   useCalculateMacros,
   useUpdateFoodItem,
+  useUpsertFoodItem,
   useDeleteFoodItem,
 } from './hooks';
