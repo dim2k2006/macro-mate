@@ -1,4 +1,4 @@
-import { useListFoodItems } from '@/components/foodItem-service-provider';
+import { useListFoodItems, useCreateFoodItem } from '@/components/foodItem-service-provider';
 import { useMemo } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 import CookingFoodItem from '@/components/cooking-foodItem-form';
@@ -45,6 +45,19 @@ function Home() {
     return [];
   }, [foodItemsState.data, foodItemsState.isError, foodItemsState.isLoading, foodItemsState.isSuccess]);
 
+  const { mutate: createFoodItem } = useCreateFoodItem();
+
+  function handleCreateFoodItem() {
+    const input = {
+      state: 'cooking' as const,
+      unit: 'g' as const,
+      description: '',
+      name: '',
+    };
+
+    createFoodItem(input);
+  }
+
   return (
     <Box p="md">
       {cookingFoodItemsWithDraft.map((foodItem) => (
@@ -53,7 +66,7 @@ function Home() {
 
       <Space h="md" />
 
-      <Button type="button" mt="md" variant="outline" fullWidth>
+      <Button type="button" mt="md" variant="outline" fullWidth onClick={handleCreateFoodItem}>
         {t('createFoodItem')}
       </Button>
     </Box>
