@@ -57,7 +57,7 @@ Typical units: g / гр, kg, ml / мл, L, шт / pcs.
 Your tasks
 ----------
 1. Dish name
-   • If “Стало” contains a name after the weight, use it.
+   • If the user provided a name, use it.
    • Otherwise generate a short, two‑to‑three‑word name from the main ingredients (e.g. “Chicken‑Cream Stew”).
 
 2. Parse raw ingredients
