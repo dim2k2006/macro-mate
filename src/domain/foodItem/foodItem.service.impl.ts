@@ -70,12 +70,8 @@ class FoodItemServiceImpl implements FoodItemService {
 
     const messages = [
       this.llmProvider.buildChatMessage({
-        role: 'developer',
-        content: `
-User input:
-
-${foodItem.description}
-`,
+        role: 'user',
+        content: foodItem.description,
       }),
     ];
 
