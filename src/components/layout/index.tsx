@@ -41,7 +41,7 @@ function Layout({ children }: LayoutProps) {
       <AppShell.Footer p="sm">
         <Tabs value={activeTab} onChange={handleTabChange}>
           <Tabs.List justify="center">
-            <Tabs.Tab value="/">{t('home')}</Tabs.Tab>
+            <Tabs.Tab value="/">{t('cookingFoodItems')}</Tabs.Tab>
             <Tabs.Tab value="/food">{t('foodItems')}</Tabs.Tab>
           </Tabs.List>
         </Tabs>
