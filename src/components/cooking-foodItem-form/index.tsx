@@ -98,6 +98,24 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
         return null;
       },
     },
+    onValuesChange(values, previousValues) {
+      if (isEqual(values, previousValues)) {
+        return;
+      }
+
+      const newFoodItem: FoodItem = {
+        ...foodItem,
+        description: values.description,
+        name: values.name,
+        unit: values.unit,
+        calories: values.calories,
+        proteins: values.proteins,
+        fats: values.fats,
+        carbs: values.carbs,
+      };
+
+      debouncedUpsertFoodItem(newFoodItem);
+    },
   });
 
   function handleSubmit(values: SubmitValues) {
@@ -116,32 +134,27 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
     upsertFoodItem(newFoodItem);
   }
 
-  const formValues = form.values;
-
-  const prevFormValues = usePrevious(formValues);
+  const prevFoodItem = usePrevious(foodItem);
 
   useEffect(() => {
-    function handleFormChange() {
-      if (isEqual(formValues, prevFormValues)) {
+    function handleUpdateInitialValues() {
+      if (isEqual(foodItem, prevFoodItem)) {
         return;
       }
 
-      const newFoodItem: FoodItem = {
-        ...foodItem,
-        description: formValues.description,
-        name: formValues.name,
-        unit: formValues.unit,
-        calories: formValues.calories,
-        proteins: formValues.proteins,
-        fats: formValues.fats,
-        carbs: formValues.carbs,
-      };
-
-      debouncedUpsertFoodItem(newFoodItem);
+      form.setValues({
+        description: foodItem.description,
+        name: foodItem.name,
+        unit: foodItem.unit,
+        calories: foodItem.calories,
+        proteins: foodItem.proteins,
+        fats: foodItem.fats,
+        carbs: foodItem.carbs,
+      });
     }
 
-    handleFormChange();
-  }, [debouncedUpsertFoodItem, foodItem, formValues, prevFormValues]);
+    handleUpdateInitialValues();
+  }, [foodItem, form, prevFoodItem]);
 
   function handleDelete() {
     deleteFoodItem();
