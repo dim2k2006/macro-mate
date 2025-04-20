@@ -5,6 +5,7 @@ import CookingFoodItem from '@/components/cooking-foodItem-form';
 import { FoodItem } from '@/domain/foodItem';
 import { Box, Button, Space } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import React from 'react';
 
 function Home() {
   const { t } = useTranslation();
@@ -61,10 +62,12 @@ function Home() {
   return (
     <Box p="md">
       {cookingFoodItemsWithDraft.map((foodItem) => (
-        <CookingFoodItem key={foodItem.id} foodItem={foodItem} />
-      ))}
+        <React.Fragment key={foodItem.id}>
+          <CookingFoodItem foodItem={foodItem} />
 
-      <Space h="md" />
+          <Space h="md" />
+        </React.Fragment>
+      ))}
 
       <Button type="button" mt="md" variant="outline" fullWidth onClick={handleCreateFoodItem}>
         {t('createFoodItem')}
