@@ -28,5 +28,7 @@
   "foodItems": "Продукты",
   "welcome": "Welcome to MacroMate",
   "save": "Save",
-  "apiKey": "API Key"
+  "apiKey": "API Key",
+  "requiredField": "Обязательное поле",
+  "invalidValue": "Недопустимое значение"
 }

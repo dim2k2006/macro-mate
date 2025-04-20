@@ -38,7 +38,52 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
       carbs: foodItem.carbs,
     },
     validate: {
-      name: hasLength({ min: 3 }, 'Must be at least 3 characters'),
+      description: hasLength({ min: 3 }, t('requiredField')),
+      name: hasLength({ min: 3 }, t('requiredField')),
+      calories: (value) => {
+        if (value === undefined) {
+          return t('requiredField');
+        }
+
+        if (value < 0) {
+          return t('invalidValue');
+        }
+
+        return null;
+      },
+      proteins: (value) => {
+        if (value === undefined) {
+          return t('requiredField');
+        }
+
+        if (value < 0) {
+          return t('invalidValue');
+        }
+
+        return null;
+      },
+      fats: (value) => {
+        if (value === undefined) {
+          return t('requiredField');
+        }
+
+        if (value < 0) {
+          return t('invalidValue');
+        }
+
+        return null;
+      },
+      carbs: (value) => {
+        if (value === undefined) {
+          return t('requiredField');
+        }
+
+        if (value < 0) {
+          return t('invalidValue');
+        }
+
+        return null;
+      },
     },
   });
 
@@ -52,6 +97,7 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
       proteins: values.proteins,
       fats: values.fats,
       carbs: values.carbs,
+      state: 'cooked' as const,
     };
 
     mutate(newFoodItem);
