@@ -87,6 +87,7 @@ ${foodItem.description}
     foodItem.proteins = proteins;
     foodItem.fats = fats;
     foodItem.carbs = carbs;
+    foodItem.updatedAt = new Date().toISOString();
 
     return this.foodItemRepository.updateFoodItem(id, foodItem);
   }
