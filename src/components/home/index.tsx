@@ -7,12 +7,20 @@ import { FoodItem } from '@/domain/foodItem';
 function Home() {
   const foodItemsState = useListFoodItems();
 
-  const foodItems = useMemo(() => foodItemsState.data ?? [], [foodItemsState.data]);
-
-  const cookingFoodItems = useMemo(() => foodItems.filter((item) => item.state === 'cooking'), [foodItems]);
-
   const cookingFoodItemsWithDraft = useMemo(() => {
-    if (cookingFoodItems.length === 0) {
+    if (foodItemsState.isLoading || foodItemsState.isError) {
+      return [];
+    }
+
+    if (foodItemsState.isSuccess) {
+      const foodItems = foodItemsState.data;
+
+      const cookingFoodItems = foodItems.filter((item) => item.state === 'cooking');
+
+      if (cookingFoodItems.length > 0) {
+        return cookingFoodItems;
+      }
+
       const draftFoodItem: FoodItem = {
         id: uuidV4(),
         name: '',
@@ -30,8 +38,8 @@ function Home() {
       return [draftFoodItem];
     }
 
-    return cookingFoodItems;
-  }, [cookingFoodItems]);
+    return [];
+  }, [foodItemsState.data, foodItemsState.isError, foodItemsState.isLoading, foodItemsState.isSuccess]);
 
   return (
     <>

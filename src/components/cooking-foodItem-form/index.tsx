@@ -2,7 +2,7 @@ import { Box, TextInput, Button, Textarea, NativeSelect, NumberInput, Space, Sim
 import { useForm, hasLength } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { Unit, FoodItem } from '@/domain/foodItem';
-import { useUpdateFoodItem } from '@/components/foodItem-service-provider';
+import { useUpsertFoodItem } from '@/components/foodItem-service-provider';
 import { useEffect } from 'react';
 
 const units: Unit[] = ['g', 'ml'];
@@ -10,7 +10,7 @@ const units: Unit[] = ['g', 'ml'];
 function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
   const { t } = useTranslation();
 
-  const { mutate } = useUpdateFoodItem(foodItem.id);
+  const { mutate } = useUpsertFoodItem(foodItem.id);
 
   const form = useForm({
     mode: 'controlled',
@@ -44,8 +44,6 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
   }
 
   const formValues = form.values;
-
-  console.log('formValues:', formValues);
 
   useEffect(() => {
     const newFoodItem: FoodItem = {
