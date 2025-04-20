@@ -38,53 +38,9 @@ class LlmProviderOpenai implements LlmProvider {
       this.buildChatMessage({
         role: 'developer',
         content: `
-You are a nutrition‑calculation assistant.
+Рассчитай удельный кбжу блюда:
 
 When called to the function "calculate_macros", you must *only* return a JSON object that matches the function’s schema—no extra text.
-
-Input format
-------------
-The user message contains two blocks:
-
-Было
-<ingredient‑1> <amount> <unit>
-<ingredient‑2> <amount> <unit>
-…
-
-Стало
-<number> g [optional dish name]
-
-Typical units: g / гр, kg, ml / мл, L, шт / pcs.
-
-Your tasks
-----------
-1. Dish name
-   • If the user provided a name, use it.
-   • Otherwise generate a short, two‑to‑three‑word name from the main ingredients (e.g. “Chicken‑Cream Stew”).
-
-2. Parse raw ingredients
-   • Extract ingredient, amount, unit from each “Было” line.
-   • Convert everything to grams:
-     – 1 kg = 1000 g, 1 L = 1000 ml, and assume 1 ml = 1 g unless density is specified.
-     – For “шт” / pcs, apply typical weights (e.g. 1 egg = 60 g) or request clarification if unknown.
-
-3. Lookup macros per 100 g (kcal, protein, fat, carbs) for every ingredient.
-   Use a reliable reference or values supplied by the user.
-
-4. Compute totals for raw mixture:
-   RAW_weight_g, RAW_calories, RAW_proteins, RAW_fats, RAW_carbs.
-
-5. Parse cooked weight
-   • Extract the weight (integer grams) from the “Стало” line.
-
-6. Calculate yield
-   yield = cooked_weight_g / RAW_weight_g (round to 2 decimals).
-
-7. Scale macros to the cooked dish
-   calories = round(RAW_calories × yield)
-   proteins = round(RAW_proteins × yield)
-   fats = round(RAW_fats × yield)
-   carbs = round(RAW_carbs × yield)
 
 8. Output
    Respond **ONLY** with a valid JSON object (no extra text or markup) exactly in this shape:
@@ -133,12 +89,9 @@ Validation notes
     ];
 
     const response = await this.openai.chat.completions.create({
-      model: 'gpt-4.1',
+      model: 'o3',
       messages: messages,
-      temperature: 0,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
+      temperature: 1,
       functions: functionDefinitions,
       function_call: { name: 'calculate_macros' },
     });
