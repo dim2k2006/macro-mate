@@ -79,10 +79,11 @@ ${foodItem.description}
       }),
     ];
 
-    const { calories, proteins, fats, carbs } = await this.llmProvider.calculateMacros({
+    const { calories, proteins, fats, carbs, dish } = await this.llmProvider.calculateMacros({
       messages,
     });
 
+    foodItem.name = dish;
     foodItem.calories = calories;
     foodItem.proteins = proteins;
     foodItem.fats = fats;
