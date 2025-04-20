@@ -46,10 +46,14 @@ class FoodItemServiceImpl implements FoodItemService {
   }
 
   async updateFoodItem(id: string, foodItem: FoodItem): Promise<FoodItem> {
+    foodItem.updatedAt = new Date().toISOString();
+
     return this.foodItemRepository.updateFoodItem(id, foodItem);
   }
 
   async upsertFoodItem(id: string, foodItem: FoodItem): Promise<FoodItem> {
+    foodItem.updatedAt = new Date().toISOString();
+
     return this.foodItemRepository.upsertFoodItem(id, foodItem);
   }
 

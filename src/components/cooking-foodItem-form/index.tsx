@@ -10,12 +10,14 @@ import {
   Group,
   Popover,
   Text,
+  Badge,
 } from '@mantine/core';
 import { useForm, hasLength } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { Unit, FoodItem } from '@/domain/foodItem';
 import { useUpsertFoodItem, useDeleteFoodItem } from '@/components/foodItem-service-provider';
 import { useEffect } from 'react';
+import dayjs from 'dayjs';
 
 const units: Unit[] = ['g', 'ml'];
 
@@ -124,8 +126,12 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
     deleteFoodItem();
   }
 
+  const date = dayjs(foodItem.updatedAt).format('DD/MM/YYYY HH:mm:ss');
+
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
+      <Badge variant="outline">{date}</Badge>
+
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Textarea
           {...form.getInputProps('description')}
