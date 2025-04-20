@@ -12,11 +12,14 @@ import {
   Text,
   Badge,
 } from '@mantine/core';
+import { usePrevious } from 'react-use';
 import { useForm, hasLength } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { Unit, FoodItem } from '@/domain/foodItem';
 import { useUpsertFoodItem, useDeleteFoodItem, useCalculateMacros } from '@/components/foodItem-service-provider';
-import { useEffect } from 'react';
+import debounce from 'lodash/debounce';
+import isEqual from 'lodash/isEqual';
+import { useEffect, useMemo } from 'react';
 import dayjs from 'dayjs';
 
 const units: Unit[] = ['g', 'ml'];
@@ -24,7 +27,9 @@ const units: Unit[] = ['g', 'ml'];
 function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
   const { t } = useTranslation();
 
-  const { mutate } = useUpsertFoodItem(foodItem.id);
+  const { mutate: upsertFoodItem } = useUpsertFoodItem(foodItem.id);
+
+  const debouncedUpsertFoodItem = useMemo(() => debounce(upsertFoodItem, 300), [upsertFoodItem]);
 
   const { mutate: deleteFoodItem } = useDeleteFoodItem(foodItem.id);
 
@@ -108,25 +113,35 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
       state: 'cooked' as const,
     };
 
-    mutate(newFoodItem);
+    upsertFoodItem(newFoodItem);
   }
 
   const formValues = form.values;
 
-  useEffect(() => {
-    const newFoodItem: FoodItem = {
-      ...foodItem,
-      description: formValues.description,
-      name: formValues.name,
-      unit: formValues.unit,
-      calories: formValues.calories,
-      proteins: formValues.proteins,
-      fats: formValues.fats,
-      carbs: formValues.carbs,
-    };
+  const prevFormValues = usePrevious(formValues);
 
-    mutate(newFoodItem);
-  }, [foodItem, formValues, mutate]);
+  useEffect(() => {
+    function handleFormChange() {
+      if (isEqual(formValues, prevFormValues)) {
+        return;
+      }
+
+      const newFoodItem: FoodItem = {
+        ...foodItem,
+        description: formValues.description,
+        name: formValues.name,
+        unit: formValues.unit,
+        calories: formValues.calories,
+        proteins: formValues.proteins,
+        fats: formValues.fats,
+        carbs: formValues.carbs,
+      };
+
+      debouncedUpsertFoodItem(newFoodItem);
+    }
+
+    handleFormChange();
+  }, [debouncedUpsertFoodItem, foodItem, formValues, prevFormValues]);
 
   function handleDelete() {
     deleteFoodItem();
