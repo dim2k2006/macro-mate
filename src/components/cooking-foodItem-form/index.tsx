@@ -1,8 +1,21 @@
-import { Box, TextInput, Button, Textarea, NativeSelect, NumberInput, Space, SimpleGrid } from '@mantine/core';
+import {
+  Box,
+  TextInput,
+  Button,
+  Textarea,
+  NativeSelect,
+  NumberInput,
+  Space,
+  SimpleGrid,
+  Card,
+  Group,
+  Popover,
+  Text,
+} from '@mantine/core';
 import { useForm, hasLength } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { Unit, FoodItem } from '@/domain/foodItem';
-import { useUpsertFoodItem } from '@/components/foodItem-service-provider';
+import { useUpsertFoodItem, useDeleteFoodItem } from '@/components/foodItem-service-provider';
 import { useEffect } from 'react';
 
 const units: Unit[] = ['g', 'ml'];
@@ -11,6 +24,8 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
   const { t } = useTranslation();
 
   const { mutate } = useUpsertFoodItem(foodItem.id);
+
+  const { mutate: deleteFoodItem } = useDeleteFoodItem(foodItem.id);
 
   const form = useForm({
     mode: 'controlled',
@@ -60,73 +75,105 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
     mutate(newFoodItem);
   }, [foodItem, formValues, mutate]);
 
+  function handleDelete() {
+    deleteFoodItem();
+  }
+
   return (
     <Box p="md">
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Textarea
-          {...form.getInputProps('description')}
-          label={t('foodItemLabel')}
-          placeholder={t('foodItemPlaceholder')}
-          autosize
-          minRows={10}
-        />
+      <Card shadow="sm" padding="lg" radius="md" withBorder>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Textarea
+            {...form.getInputProps('description')}
+            label={t('foodItemLabel')}
+            placeholder={t('foodItemPlaceholder')}
+            autosize
+            minRows={10}
+          />
 
-        <Button type="button" mt="md" color="teal" fullWidth>
-          {t('calculateMacros')}
-        </Button>
+          <Button type="button" mt="md" color="teal" fullWidth>
+            {t('calculateMacros')}
+          </Button>
 
-        <Space h="md" />
+          <Space h="md" />
 
-        <TextInput
-          {...form.getInputProps('name')}
-          label={t('foodItemLabel')}
-          placeholder={t('foodItemNamePlaceholder')}
-        />
+          <TextInput
+            {...form.getInputProps('name')}
+            label={t('foodItemLabel')}
+            placeholder={t('foodItemNamePlaceholder')}
+          />
 
-        <Space h="md" />
+          <Space h="md" />
 
-        <NativeSelect {...form.getInputProps('unit')} label={t('foodItemUnitLabel')} data={units} />
+          <NativeSelect {...form.getInputProps('unit')} label={t('foodItemUnitLabel')} data={units} />
 
-        <Space h="md" />
+          <Space h="md" />
 
-        <NumberInput
-          {...form.getInputProps('calories')}
-          label={t('foodItemCaloriesLabel')}
-          placeholder={t('foodItemCaloriesPlaceholder')}
-        />
+          <NumberInput
+            {...form.getInputProps('calories')}
+            label={t('foodItemCaloriesLabel')}
+            placeholder={t('foodItemCaloriesPlaceholder')}
+          />
 
-        <Space h="md" />
+          <Space h="md" />
 
-        <SimpleGrid cols={3}>
-          <div>
-            <NumberInput
-              {...form.getInputProps('proteins')}
-              label={t('foodItemProteinLabel')}
-              placeholder={t('foodItemProteinPlaceholder')}
-            />
-          </div>
+          <SimpleGrid cols={3}>
+            <div>
+              <NumberInput
+                {...form.getInputProps('proteins')}
+                label={t('foodItemProteinLabel')}
+                placeholder={t('foodItemProteinPlaceholder')}
+              />
+            </div>
 
-          <div>
-            <NumberInput
-              {...form.getInputProps('fats')}
-              label={t('foodItemFatLabel')}
-              placeholder={t('foodItemFatPlaceholder')}
-            />
-          </div>
+            <div>
+              <NumberInput
+                {...form.getInputProps('fats')}
+                label={t('foodItemFatLabel')}
+                placeholder={t('foodItemFatPlaceholder')}
+              />
+            </div>
 
-          <div>
-            <NumberInput
-              {...form.getInputProps('carbs')}
-              label={t('foodItemCarbsLabel')}
-              placeholder={t('foodItemCarbsPlaceholder')}
-            />
-          </div>
-        </SimpleGrid>
+            <div>
+              <NumberInput
+                {...form.getInputProps('carbs')}
+                label={t('foodItemCarbsLabel')}
+                placeholder={t('foodItemCarbsPlaceholder')}
+              />
+            </div>
+          </SimpleGrid>
 
-        <Button type="submit" mt="md" fullWidth>
-          {t('saveFoodItem')}
-        </Button>
-      </form>
+          <Group justify="center">
+            <Button type="submit" mt="md" fullWidth>
+              {t('saveFoodItem')}
+            </Button>
+
+            <Space h="md" />
+
+            <Popover width={150} position="bottom" withArrow shadow="md">
+              <Popover.Target>
+                <Button variant="filled" color="red" size="xs">
+                  {t('deleteFoodItem')}
+                </Button>
+              </Popover.Target>
+
+              <Popover.Dropdown>
+                <Group justify="center">
+                  <Text fw={500} size="sm">
+                    {t('deleteFoodItemConfirmLabel')}
+                  </Text>
+
+                  <Space h="sm" />
+
+                  <Button variant="filled" color="red" size="xs" onClick={handleDelete}>
+                    {t('deleteFoodItemConfirm')}
+                  </Button>
+                </Group>
+              </Popover.Dropdown>
+            </Popover>
+          </Group>
+        </form>
+      </Card>
     </Box>
   );
 }
