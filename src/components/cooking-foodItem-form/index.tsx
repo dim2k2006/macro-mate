@@ -89,7 +89,7 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
           minRows={8}
         />
 
-        <Button type="button" mt="md" color="teal" fullWidth>
+        <Button type="button" mt="md" color="indigo" fullWidth variant="outline">
           {t('calculateMacros')}
         </Button>
 
@@ -122,7 +122,7 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
         </SimpleGrid>
 
         <Group justify="center">
-          <Button type="submit" mt="md" fullWidth>
+          <Button type="submit" mt="md" color="teal" fullWidth>
             {t('saveFoodItem')}
           </Button>
 
@@ -130,7 +130,7 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
 
           <Popover width={150} position="bottom" withArrow shadow="md">
             <Popover.Target>
-              <Button variant="filled" color="red" size="xs">
+              <Button color="red" size="xs" variant="outline">
                 {t('deleteFoodItem')}
               </Button>
             </Popover.Target>

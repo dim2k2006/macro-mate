@@ -3,9 +3,12 @@ import { useMemo } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 import CookingFoodItem from '@/components/cooking-foodItem-form';
 import { FoodItem } from '@/domain/foodItem';
-import { Box } from '@mantine/core';
+import { Box, Button, Space } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 
 function Home() {
+  const { t } = useTranslation();
+
   const foodItemsState = useListFoodItems();
 
   const cookingFoodItemsWithDraft = useMemo(() => {
@@ -47,6 +50,12 @@ function Home() {
       {cookingFoodItemsWithDraft.map((foodItem) => (
         <CookingFoodItem key={foodItem.id} foodItem={foodItem} />
       ))}
+
+      <Space h="md" />
+
+      <Button type="button" mt="md" variant="outline" fullWidth>
+        {t('createFoodItem')}
+      </Button>
     </Box>
   );
 }

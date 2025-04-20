@@ -23,6 +23,7 @@
   "deleteFoodItem": "Удалить продукт",
   "deleteFoodItemConfirmLabel": "Вы уверены?",
   "deleteFoodItemConfirm": "Подтвердить",
+  "createFoodItem": "Создать продукт",
   "home": "Главная",
   "foodItems": "Продукты",
   "welcome": "Welcome to MacroMate",
