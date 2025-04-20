@@ -40,6 +40,8 @@ class LlmProviderOpenai implements LlmProvider {
         content: `
 You are a nutrition‑calculation assistant.
 
+When called to the function "calculate_macros", you must *only* return a JSON object that matches the function’s schema—no extra text.
+
 Input format
 ------------
 The user message contains two blocks:
@@ -109,9 +111,36 @@ Validation notes
       ...input.messages,
     ];
 
+    const functionDefinitions = [
+      {
+        name: 'calculate_macros',
+        description: 'Compute nutrition macros and yield for a dish',
+        parameters: {
+          type: 'object',
+          properties: {
+            dish: { type: 'string' },
+            raw_weight_g: { type: 'integer' },
+            cooked_weight_g: { type: 'integer' },
+            yield: { type: 'number' },
+            calories: { type: 'integer' },
+            proteins: { type: 'integer' },
+            fats: { type: 'integer' },
+            carbs: { type: 'integer' },
+          },
+          required: ['dish', 'raw_weight_g', 'cooked_weight_g', 'yield', 'calories', 'proteins', 'fats', 'carbs'],
+        },
+      },
+    ];
+
     const response = await this.openai.chat.completions.create({
       model: 'gpt-4.1',
       messages: messages,
+      temperature: 0,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      functions: functionDefinitions,
+      function_call: { name: 'calculate_macros' },
     });
 
     const choice = response.choices[0];
@@ -120,9 +149,17 @@ Validation notes
       throw new Error('Failed to generate completion');
     }
 
-    const content = choice.message.content ?? '';
+    console.log('choice:', choice);
 
-    const result = CalculateMacrosResponseSchema.parse(JSON.parse(content));
+    const message = choice.message;
+
+    const fnCall = message.function_call;
+
+    if (!fnCall) {
+      throw new Error('Function call not found in the response');
+    }
+
+    const result = CalculateMacrosResponseSchema.parse(JSON.parse(fnCall.arguments));
 
     console.log('result:', result);
 
