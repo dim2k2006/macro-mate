@@ -151,6 +151,7 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
           placeholder={t('foodItemPlaceholder')}
           autosize
           minRows={8}
+          maxRows={10}
         />
 
         <Button
@@ -168,14 +169,12 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
         </Button>
 
         {isCalculateMacrosError && (
-          <>
-            <Space h="sm" />
-
-            <Text c="red" size="sm" mt="md">
-              {t('calculateMacrosError')}
-            </Text>
-          </>
+          <Text c="red" size="sm" mt="md">
+            {t('calculateMacrosError')}
+          </Text>
         )}
+
+        <Space h="md" />
 
         <TextInput {...form.getInputProps('name')} label={t('foodItemNameLabel')} />
 
