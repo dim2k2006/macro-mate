@@ -43,6 +43,7 @@ function Layout({ children }: LayoutProps) {
           <Tabs.List justify="center">
             <Tabs.Tab value="/">{t('cookingFoodItems')}</Tabs.Tab>
             <Tabs.Tab value="/food">{t('foodItems')}</Tabs.Tab>
+            <Tabs.Tab value="/meal">{t('meals')}</Tabs.Tab>
           </Tabs.List>
         </Tabs>
       </AppShell.Footer>

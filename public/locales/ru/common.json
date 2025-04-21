@@ -27,6 +27,7 @@
   "createFoodItem": "Создать продукт",
   "cookingFoodItems": "Готовим",
   "foodItems": "Продукты",
+  "meals": "Приемы пищи",
   "welcome": "Welcome to MacroMate",
   "save": "Save",
   "apiKey": "API Key",
