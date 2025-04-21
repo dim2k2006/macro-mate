@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Box, Text, Stack, Button } from '@mantine/core';
+import { Box, Text, Stack, Button, Space, Loader } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import dayjs from 'dayjs';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
+import { useGetMacrosByDate } from '@/components/meal-service-provider';
+import { useTranslation } from 'react-i18next';
 
 dayjs.extend(isLeapYear);
 dayjs.extend(dayOfYear);
@@ -11,12 +13,18 @@ dayjs.extend(dayOfYear);
 const days = getDaysOfCurrentYear();
 
 function Meal() {
+  const { t } = useTranslation();
+
   const todayDayOfYear = dayjs().dayOfYear() - 1;
 
   const [activeIndex, setActiveIndex] = useState(todayDayOfYear);
   const handleSlideChange = (index: number) => {
     setActiveIndex(index);
   };
+
+  const activeDay = days[activeIndex];
+
+  const macrosState = useGetMacrosByDate(activeDay.format('YYYY-MM-DD'));
 
   return (
     <Box p="md">
@@ -49,6 +57,40 @@ function Meal() {
           );
         })}
       </Carousel>
+
+      <Space h="md" />
+
+      {macrosState.isLoading && <Loader color="blue" />}
+
+      {macrosState.isError && (
+        <Text color="red" size="sm">
+          {t('errorLoadingMacros')}
+        </Text>
+      )}
+
+      {macrosState.isSuccess && (
+        <Stack>
+          <Text size="sm" fw={500}>
+            {t('mealMacros')}
+          </Text>
+
+          <Text size="sm">
+            {t('calories')}: {macrosState.data.calories}
+          </Text>
+
+          <Text size="sm">
+            {t('protein')}: {macrosState.data.protein}
+          </Text>
+
+          <Text size="sm">
+            {t('carbs')}: {macrosState.data.carbs}
+          </Text>
+
+          <Text size="sm">
+            {t('fat')}: {macrosState.data.fat}
+          </Text>
+        </Stack>
+      )}
     </Box>
   );
 }
