@@ -15,6 +15,9 @@ export function useCreateFoodItem() {
         queryKey: ['listFoodItems'],
       });
     },
+    onError: (error: Error) => {
+      console.error('Error creating food item:', error);
+    },
   });
 }
 
@@ -53,6 +56,9 @@ export function useUpdateFoodItem(id: string) {
         queryKey: ['getFoodItemById', id],
       });
     },
+    onError: (error: Error) => {
+      console.error('Error updating food item:', error);
+    },
   });
 }
 
@@ -72,6 +78,9 @@ export function useUpsertFoodItem(id: string) {
       queryClient.invalidateQueries({
         queryKey: ['getFoodItemById', id],
       });
+    },
+    onError: (error: Error) => {
+      console.error('Error upserting food item:', error);
     },
   });
 }
@@ -93,6 +102,9 @@ export function useDeleteFoodItem(id: string) {
         queryKey: ['getFoodItemById', id],
       });
     },
+    onError: (error: Error) => {
+      console.error('Error deleting food item:', error);
+    },
   });
 }
 
@@ -112,6 +124,9 @@ export function useCalculateMacros(id: string) {
       queryClient.invalidateQueries({
         queryKey: ['getFoodItemById', id],
       });
+    },
+    onError: (error: Error) => {
+      console.error('Error calculating macros:', error);
     },
   });
 }
