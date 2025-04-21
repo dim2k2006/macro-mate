@@ -12,7 +12,7 @@ const CalculateMacrosResponseSchema = z.object({
   dish: z.string(),
   raw_weight_g: z.number().int(),
   cooked_weight_g: z.number().int(),
-  yield: z.number().min(0).max(1),
+  yield: z.number().min(0),
   total_calories: z.number().int(),
   total_proteins: z.number().int(),
   total_fats: z.number().int(),
