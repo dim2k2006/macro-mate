@@ -8,6 +8,7 @@ import { Routes, Route } from 'react-router-dom';
 import Intro from '@/components/intro';
 import Home from '@/components/home';
 import Food from '@/components/food';
+import Meal from '@/components/meal';
 import ProtectedRoute from '@/components/protected-route';
 import Layout from '@/components/layout';
 
@@ -33,6 +34,10 @@ function Root() {
 
                 <Route path="/food" element={<ProtectedRoute />}>
                   <Route path="/food" element={<Food />} />
+                </Route>
+
+                <Route path="/meal" element={<ProtectedRoute />}>
+                  <Route path="/meal" element={<Meal />} />
                 </Route>
 
                 <Route path="/intro" element={<Intro />} />
