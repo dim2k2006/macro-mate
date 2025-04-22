@@ -68,7 +68,7 @@ export class MealServiceImpl implements MealService {
     return this.mealRepository.deleteMeal(mealId);
   }
 
-  async getMacrosByDate(date: string): Promise<{ calories: number; protein: number; fat: number; carbs: number }> {
+  async getMacrosByDate(date: string): Promise<{ calories: number; proteins: number; fats: number; carbs: number }> {
     const meals = await this.mealRepository.getMealsByDate(date);
 
     const foodItems = await Promise.all(meals.map((meal) => this.foodItemService.getFoodItemById(meal.foodItemId)));
@@ -84,13 +84,13 @@ export class MealServiceImpl implements MealService {
         const scale = meal.amount / 100;
 
         acc.calories += (foodItem.calories || 0) * scale;
-        acc.protein += (foodItem.protein || 0) * scale;
-        acc.fat += (foodItem.fat || 0) * scale;
+        acc.proteins += (foodItem.proteins || 0) * scale;
+        acc.fats += (foodItem.fats || 0) * scale;
         acc.carbs += (foodItem.carbs || 0) * scale;
 
         return acc;
       },
-      { calories: 0, protein: 0, fat: 0, carbs: 0 },
+      { calories: 0, proteins: 0, fats: 0, carbs: 0 },
     );
 
     return macros;
@@ -109,8 +109,8 @@ export class MealServiceImpl implements MealService {
       ...meal,
       foodItemName: foodItem.name,
       calories: (foodItem.calories || 0) * scale,
-      protein: (foodItem.protein || 0) * scale,
-      fat: (foodItem.fat || 0) * scale,
+      proteins: (foodItem.proteins || 0) * scale,
+      fats: (foodItem.fats || 0) * scale,
       carbs: (foodItem.carbs || 0) * scale,
     };
   }

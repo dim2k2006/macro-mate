@@ -7,7 +7,7 @@ export interface MealService {
   upsertMeal(mealId: string, meal: Meal): Promise<EnhancedMeal>;
   updateMeal(mealId: string, meal: Partial<Meal>): Promise<EnhancedMeal>;
   deleteMeal(mealId: string): Promise<void>;
-  getMacrosByDate(date: string): Promise<{ calories: number; protein: number; fat: number; carbs: number }>;
+  getMacrosByDate(date: string): Promise<{ calories: number; proteins: number; fats: number; carbs: number }>;
 }
 
 export type CreateMealInput = {
@@ -21,13 +21,13 @@ export type CreateMealInput = {
 export type FoodItemService = {
   getFoodItemById(
     id: string,
-  ): Promise<{ id: string; name: string; calories?: number; protein?: number; fat?: number; carbs?: number }>;
+  ): Promise<{ id: string; name: string; calories?: number; proteins?: number; fats?: number; carbs?: number }>;
 };
 
 export type EnhancedMeal = Meal & {
   foodItemName: string;
   calories: number;
-  protein: number;
-  fat: number;
+  proteins: number;
+  fats: number;
   carbs: number;
 };
