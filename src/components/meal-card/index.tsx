@@ -25,8 +25,8 @@ function MealCard({ title, mealType, meals }: MealCardProps) {
   const [opened, { open, close }] = useDisclosure(false);
 
   const calories = meals.reduce((acc, meal) => acc + meal.calories, 0);
-  const proteins = meals.reduce((acc, meal) => acc + meal.protein, 0);
-  const fats = meals.reduce((acc, meal) => acc + meal.fat, 0);
+  const proteins = meals.reduce((acc, meal) => acc + meal.proteins, 0);
+  const fats = meals.reduce((acc, meal) => acc + meal.fats, 0);
   const carbs = meals.reduce((acc, meal) => acc + meal.carbs, 0);
 
   const isEmpty = meals.length === 0;
@@ -82,8 +82,8 @@ function MealCard({ title, mealType, meals }: MealCardProps) {
                 <Table.Tbody>
                   <Table.Tr>
                     <Table.Td w="25%">{meal.calories}</Table.Td>
-                    <Table.Td w="25%">{meal.protein}</Table.Td>
-                    <Table.Td w="25%">{meal.fat}</Table.Td>
+                    <Table.Td w="25%">{meal.proteins}</Table.Td>
+                    <Table.Td w="25%">{meal.fats}</Table.Td>
                     <Table.Td w="25%">{meal.carbs}</Table.Td>
                   </Table.Tr>
                 </Table.Tbody>

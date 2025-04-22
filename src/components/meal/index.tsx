@@ -87,7 +87,7 @@ function Meal() {
             </Text>
 
             <Text size="sm">
-              {t('protein')}: {macrosState.data.protein}
+              {t('protein')}: {macrosState.data.proteins}
             </Text>
 
             <Text size="sm">
@@ -95,7 +95,7 @@ function Meal() {
             </Text>
 
             <Text size="sm">
-              {t('fat')}: {macrosState.data.fat}
+              {t('fat')}: {macrosState.data.fats}
             </Text>
           </Stack>
         </>
