@@ -29,6 +29,11 @@ function Meal() {
 
   const meals = mealsState.data || [];
 
+  const breakfastMeals = meals.filter((meal) => meal.type === 'breakfast');
+  const lunchMeals = meals.filter((meal) => meal.type === 'lunch');
+  const dinnerMeals = meals.filter((meal) => meal.type === 'dinner');
+  const snackMeals = meals.filter((meal) => meal.type === 'snack');
+
   const macrosState = useGetMacrosByDate(activeDay.format('YYYY-MM-DD'));
 
   return (
@@ -65,7 +70,13 @@ function Meal() {
 
       <Space h="md" />
 
-      <MealCard title={t('breakfast')} mealType="breakfast" meals={meals} />
+      <MealCard title={t('breakfast')} mealType="breakfast" meals={breakfastMeals} />
+
+      <MealCard title={t('lunch')} mealType="lunch" meals={lunchMeals} />
+
+      <MealCard title={t('dinner')} mealType="dinner" meals={dinnerMeals} />
+
+      <MealCard title={t('snack')} mealType="snack" meals={snackMeals} />
 
       {macrosState.isLoading && <Loader color="blue" />}
 
