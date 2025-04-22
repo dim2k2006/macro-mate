@@ -16,6 +16,8 @@ function MealCard({ title, mealType, meals }: MealCardProps) {
   const fats = meals.reduce((acc, meal) => acc + meal.fat, 0);
   const carbs = meals.reduce((acc, meal) => acc + meal.carbs, 0);
 
+  const isEmpty = meals.length === 0;
+
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Group justify="space-between">
@@ -26,51 +28,59 @@ function MealCard({ title, mealType, meals }: MealCardProps) {
         </Button>
       </Group>
 
-      <Divider my="md" />
-
-      <Table>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>{t('calories')}</Table.Th>
-            <Table.Th>{t('protein')}</Table.Th>
-            <Table.Th>{t('fat')}</Table.Th>
-            <Table.Th>{t('carbs')}</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {meals.map((meal) => (
-            <Table.Tr key={meal.id}>
-              <Table.Td>{calories}</Table.Td>
-              <Table.Td>{proteins}</Table.Td>
-              <Table.Td>{fats}</Table.Td>
-              <Table.Td>{carbs}</Table.Td>
-            </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table>
-
-      <Divider my="xs" />
-
-      {meals.map((meal) => (
-        <React.Fragment key={meal.id}>
-          <Text fw={500} size="md">
-            {meal.foodItemName}
-          </Text>
+      {!isEmpty && (
+        <>
+          <Divider my="md" />
 
           <Table>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th w="25%">{t('calories')}</Table.Th>
+                <Table.Th w="25%">{t('protein')}</Table.Th>
+                <Table.Th w="25%">{t('fat')}</Table.Th>
+                <Table.Th w="25%">{t('carbs')}</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
             <Table.Tbody>
               <Table.Tr>
-                <Table.Td>{meal.calories}</Table.Td>
-                <Table.Td>{meal.protein}</Table.Td>
-                <Table.Td>{meal.fat}</Table.Td>
-                <Table.Td>{meal.carbs}</Table.Td>
+                <Table.Td w="25%">{calories}</Table.Td>
+                <Table.Td w="25%">{proteins}</Table.Td>
+                <Table.Td w="25%">{fats}</Table.Td>
+                <Table.Td w="25%">{carbs}</Table.Td>
               </Table.Tr>
             </Table.Tbody>
           </Table>
 
           <Divider my="xs" />
-        </React.Fragment>
-      ))}
+
+          {meals.map((meal) => (
+            <React.Fragment key={meal.id}>
+              <Group justify="space-between">
+                <Text fw={500} size="md">
+                  {meal.foodItemName}
+                </Text>
+
+                <Button variant="default" color="green" size="xs">
+                  ...
+                </Button>
+              </Group>
+
+              <Table>
+                <Table.Tbody>
+                  <Table.Tr>
+                    <Table.Td w="25%">{meal.calories}</Table.Td>
+                    <Table.Td w="25%">{meal.protein}</Table.Td>
+                    <Table.Td w="25%">{meal.fat}</Table.Td>
+                    <Table.Td w="25%">{meal.carbs}</Table.Td>
+                  </Table.Tr>
+                </Table.Tbody>
+              </Table>
+
+              <Divider my="xs" />
+            </React.Fragment>
+          ))}
+        </>
+      )}
 
       <Modal opened={opened} onClose={close} title={t('addNewMeal')}>
         <CreateMealForm mealType={mealType} onSuccess={close} />
