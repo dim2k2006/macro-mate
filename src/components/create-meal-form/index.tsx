@@ -68,11 +68,17 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Select label={t('selectFoodItem')} data={foodItemOptions} searchable disabled={isPending} />
+        <Select
+          {...form.getInputProps('foodItemId')}
+          label={t('selectFoodItem')}
+          data={foodItemOptions}
+          searchable
+          disabled={isPending}
+        />
 
         <Space h="md" />
 
-        <NumberInput {...form.getInputProps('calories')} label={t('mealAmount')} disabled={isPending} />
+        <NumberInput {...form.getInputProps('amount')} label={t('mealAmount')} disabled={isPending} />
 
         <Space h="md" />
 
