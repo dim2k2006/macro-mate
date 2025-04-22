@@ -1,4 +1,4 @@
-import { Meal } from './meal.model';
+import { Meal, MealType } from './meal.model';
 
 export interface MealService {
   createMeal(input: CreateMealInput): Promise<Meal>;
@@ -13,6 +13,7 @@ export interface MealService {
 export type CreateMealInput = {
   foodItemId: string;
   amount: number;
+  type: MealType;
   notes?: string;
   consumedAt: string; // ISO date string
 };

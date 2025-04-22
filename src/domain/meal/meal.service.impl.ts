@@ -24,6 +24,7 @@ export class MealServiceImpl implements MealService {
       id: uuidV4(),
       foodItemId: input.foodItemId,
       amount: input.amount,
+      type: input.type,
       notes: input.notes,
       consumedAt: input.consumedAt,
       createdAt: new Date().toISOString(),
