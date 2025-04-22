@@ -4,10 +4,23 @@ import { Card, Text, Divider, Table, Button, Group, Modal } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks';
 import { MealType } from '@/domain/meal/meal.model.ts';
 import CreateMealForm from '@/components/create-meal-form';
-import React from 'react';
+import EditMealForm from '@/components/edit-meal-form';
+import React, { useState } from 'react';
 
 function MealCard({ title, mealType, meals }: MealCardProps) {
   const { t } = useTranslation();
+
+  const [editingModalOpened, { open: openEditingModal, close: closeEditingModal }] = useDisclosure(false);
+
+  const [editingMeal, setEditingMeal] = useState<EnhancedMeal | null>(null);
+  function handleEditMeal(meal: EnhancedMeal) {
+    setEditingMeal(meal);
+    openEditingModal();
+  }
+  function handleEditMealFinish() {
+    closeEditingModal();
+    setEditingMeal(null);
+  }
 
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -60,7 +73,7 @@ function MealCard({ title, mealType, meals }: MealCardProps) {
                   {meal.foodItemName}
                 </Text>
 
-                <Button variant="default" color="green" size="xs">
+                <Button variant="default" color="green" size="xs" onClick={() => handleEditMeal(meal)}>
                   ...
                 </Button>
               </Group>
@@ -84,6 +97,10 @@ function MealCard({ title, mealType, meals }: MealCardProps) {
 
       <Modal opened={opened} onClose={close} title={t('addNewMeal')}>
         <CreateMealForm mealType={mealType} onSuccess={close} />
+      </Modal>
+
+      <Modal opened={editingModalOpened} onClose={closeEditingModal} title={t('editMeal')}>
+        {editingMeal && <EditMealForm meal={editingMeal} onFinish={handleEditMealFinish} />}
       </Modal>
     </Card>
   );
