@@ -21,10 +21,11 @@ export type CreateMealInput = {
 export type FoodItemService = {
   getFoodItemById(
     id: string,
-  ): Promise<{ id: string; calories?: number; protein?: number; fat?: number; carbs?: number }>;
+  ): Promise<{ id: string; name: string; calories?: number; protein?: number; fat?: number; carbs?: number }>;
 };
 
 export type EnhancedMeal = Meal & {
+  foodItemName: string;
   calories: number;
   protein: number;
   fat: number;

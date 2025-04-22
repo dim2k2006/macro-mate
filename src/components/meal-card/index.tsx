@@ -4,6 +4,7 @@ import { Card, Text, Divider, Table, Button, Group, Modal } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks';
 import { MealType } from '@/domain/meal/meal.model.ts';
 import CreateMealForm from '@/components/create-meal-form';
+import React from 'react';
 
 function MealCard({ title, mealType, meals }: MealCardProps) {
   const { t } = useTranslation();
@@ -48,10 +49,27 @@ function MealCard({ title, mealType, meals }: MealCardProps) {
         </Table.Tbody>
       </Table>
 
+      <Divider my="xs" />
+
       {meals.map((meal) => (
-        <Text key={meal.id} size="sm">
-          {t('meal.type', { type: meal.type })}: {meal.amount}g
-        </Text>
+        <React.Fragment key={meal.id}>
+          <Text fw={500} size="md">
+            {meal.foodItemName}
+          </Text>
+
+          <Table>
+            <Table.Tbody>
+              <Table.Tr>
+                <Table.Td>{meal.calories}</Table.Td>
+                <Table.Td>{meal.protein}</Table.Td>
+                <Table.Td>{meal.fat}</Table.Td>
+                <Table.Td>{meal.carbs}</Table.Td>
+              </Table.Tr>
+            </Table.Tbody>
+          </Table>
+
+          <Divider my="xs" />
+        </React.Fragment>
       ))}
 
       <Modal opened={opened} onClose={close} title={t('addNewMeal')}>

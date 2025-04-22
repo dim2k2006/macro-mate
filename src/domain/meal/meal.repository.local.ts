@@ -25,7 +25,7 @@ class MealRepositoryLocal implements MealRepository {
 
     const day = dayjs(date).startOf('day');
 
-    return meals.filter((meal) => dayjs(meal.consumedAt).isSame(day));
+    return meals.filter((meal) => dayjs(meal.consumedAt).startOf('day').isSame(day));
   }
 
   async listMeals(): Promise<Meal[]> {

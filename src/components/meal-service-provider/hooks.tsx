@@ -14,6 +14,10 @@ export function useCreateMeal() {
       queryClient.invalidateQueries({
         queryKey: ['listMeals'],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ['getMealsByDate'],
+      });
     },
     onError: (error: Error) => {
       console.error('Error creating meal:', error);

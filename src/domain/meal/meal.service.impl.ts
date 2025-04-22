@@ -107,6 +107,7 @@ export class MealServiceImpl implements MealService {
 
     return {
       ...meal,
+      foodItemName: foodItem.name,
       calories: (foodItem.calories || 0) * scale,
       protein: (foodItem.protein || 0) * scale,
       fat: (foodItem.fat || 0) * scale,
