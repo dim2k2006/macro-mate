@@ -72,9 +72,15 @@ function Meal() {
 
       <MealCard title={t('breakfast')} mealType="breakfast" meals={breakfastMeals} />
 
+      <Space h="md" />
+
       <MealCard title={t('lunch')} mealType="lunch" meals={lunchMeals} />
 
+      <Space h="md" />
+
       <MealCard title={t('dinner')} mealType="dinner" meals={dinnerMeals} />
+
+      <Space h="md" />
 
       <MealCard title={t('snack')} mealType="snack" meals={snackMeals} />
 
