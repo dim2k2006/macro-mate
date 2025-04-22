@@ -1,24 +1,13 @@
 import { AppShell, Group, Image, Tabs } from '@mantine/core';
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import style from './style.module.css';
 
 function Layout({ children }: LayoutProps) {
   const { t } = useTranslation();
+
   const location = useLocation();
-  const navigate = useNavigate();
-
-  const [activeTab, setActiveTab] = React.useState<string | null>(location.pathname);
-
-  function handleTabChange(value: string | null) {
-    if (!value) {
-      return;
-    }
-
-    setActiveTab(value);
-
-    navigate(value, { replace: true });
-  }
 
   return (
     <AppShell
@@ -27,7 +16,7 @@ function Layout({ children }: LayoutProps) {
         height: 60,
       }}
       footer={{
-        height: 60,
+        height: 50,
       }}
     >
       <AppShell.Header p="sm">
@@ -38,12 +27,20 @@ function Layout({ children }: LayoutProps) {
 
       <AppShell.Main>{children}</AppShell.Main>
 
-      <AppShell.Footer p="sm">
-        <Tabs value={activeTab} onChange={handleTabChange}>
+      <AppShell.Footer>
+        <Tabs value={location.pathname}>
           <Tabs.List justify="center">
-            <Tabs.Tab value="/">{t('cookingFoodItems')}</Tabs.Tab>
-            <Tabs.Tab value="/food">{t('foodItems')}</Tabs.Tab>
-            <Tabs.Tab value="/meal">{t('meals')}</Tabs.Tab>
+            <Tabs.Tab value="/" className={style.link}>
+              <Link to="/">{t('cookingFoodItems')}</Link>
+            </Tabs.Tab>
+
+            <Tabs.Tab value="/food" className={style.link}>
+              <Link to="/food">{t('foodItems')}</Link>
+            </Tabs.Tab>
+
+            <Tabs.Tab value="/meal" className={style.link}>
+              <Link to="/meal">{t('meals')}</Link>
+            </Tabs.Tab>
           </Tabs.List>
         </Tabs>
       </AppShell.Footer>
