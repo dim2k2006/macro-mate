@@ -1,9 +1,12 @@
 import { EnhancedMeal } from '@/domain/meal';
 import { useTranslation } from 'react-i18next';
-import { Card, Text, Divider, Table } from '@mantine/core';
+import { Card, Text, Divider, Table, Button, Group, Modal } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
 function MealCard({ title, meals }: MealCardProps) {
   const { t } = useTranslation();
+
+  const [opened, { open, close }] = useDisclosure(false);
 
   const calories = meals.reduce((acc, meal) => acc + meal.calories, 0);
   const proteins = meals.reduce((acc, meal) => acc + meal.protein, 0);
@@ -12,7 +15,13 @@ function MealCard({ title, meals }: MealCardProps) {
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
-      <Text fw={500}>{title}</Text>
+      <Group justify="space-between">
+        <Text fw={500}>{title}</Text>
+
+        <Button variant="outline" color="green" size="xs" onClick={open}>
+          {t('add')}
+        </Button>
+      </Group>
 
       <Divider my="md" />
 
@@ -42,6 +51,10 @@ function MealCard({ title, meals }: MealCardProps) {
           {t('meal.type', { type: meal.type })}: {meal.amount}g
         </Text>
       ))}
+
+      <Modal opened={opened} onClose={close} title={t('addNewMeal')}>
+        {/* Modal content */}
+      </Modal>
     </Card>
   );
 }
