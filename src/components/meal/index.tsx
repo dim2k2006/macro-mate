@@ -4,7 +4,8 @@ import { Carousel } from '@mantine/carousel';
 import dayjs from 'dayjs';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
-import { useGetMacrosByDate } from '@/components/meal-service-provider';
+import { useGetMacrosByDate, useGetMealsByDate } from '@/components/meal-service-provider';
+import MealCard from '@/components/meal-card';
 import { useTranslation } from 'react-i18next';
 
 dayjs.extend(isLeapYear);
@@ -23,6 +24,10 @@ function Meal() {
   };
 
   const activeDay = days[activeIndex];
+
+  const mealsState = useGetMealsByDate(activeDay.format('YYYY-MM-DD'));
+
+  const meals = mealsState.data || [];
 
   const macrosState = useGetMacrosByDate(activeDay.format('YYYY-MM-DD'));
 
@@ -60,6 +65,8 @@ function Meal() {
 
       <Space h="md" />
 
+      <MealCard title={t('breakfast')} meals={meals} />
+
       {macrosState.isLoading && <Loader color="blue" />}
 
       {macrosState.isError && (
@@ -69,27 +76,29 @@ function Meal() {
       )}
 
       {macrosState.isSuccess && (
-        <Stack>
-          <Text size="sm" fw={500}>
-            {t('mealMacros')}
-          </Text>
+        <>
+          <Stack>
+            <Text size="sm" fw={500}>
+              {t('mealMacros')}
+            </Text>
 
-          <Text size="sm">
-            {t('calories')}: {macrosState.data.calories}
-          </Text>
+            <Text size="sm">
+              {t('calories')}: {macrosState.data.calories}
+            </Text>
 
-          <Text size="sm">
-            {t('protein')}: {macrosState.data.protein}
-          </Text>
+            <Text size="sm">
+              {t('protein')}: {macrosState.data.protein}
+            </Text>
 
-          <Text size="sm">
-            {t('carbs')}: {macrosState.data.carbs}
-          </Text>
+            <Text size="sm">
+              {t('carbs')}: {macrosState.data.carbs}
+            </Text>
 
-          <Text size="sm">
-            {t('fat')}: {macrosState.data.fat}
-          </Text>
-        </Stack>
+            <Text size="sm">
+              {t('fat')}: {macrosState.data.fat}
+            </Text>
+          </Stack>
+        </>
       )}
     </Box>
   );
