@@ -65,7 +65,7 @@ function Meal() {
 
       <Space h="md" />
 
-      <MealCard title={t('breakfast')} meals={meals} />
+      <MealCard title={t('breakfast')} mealType="breakfast" meals={meals} />
 
       {macrosState.isLoading && <Loader color="blue" />}
 
