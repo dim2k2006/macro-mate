@@ -2,8 +2,10 @@ import { EnhancedMeal } from '@/domain/meal';
 import { useTranslation } from 'react-i18next';
 import { Card, Text, Divider, Table, Button, Group, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { MealType } from '@/domain/meal/meal.model.ts';
+import CreateMealForm from '@/components/create-meal-form';
 
-function MealCard({ title, meals }: MealCardProps) {
+function MealCard({ title, mealType, meals }: MealCardProps) {
   const { t } = useTranslation();
 
   const [opened, { open, close }] = useDisclosure(false);
@@ -53,7 +55,7 @@ function MealCard({ title, meals }: MealCardProps) {
       ))}
 
       <Modal opened={opened} onClose={close} title={t('addNewMeal')}>
-        {/* Modal content */}
+        <CreateMealForm mealType={mealType} onSuccess={close} />
       </Modal>
     </Card>
   );
@@ -61,6 +63,7 @@ function MealCard({ title, meals }: MealCardProps) {
 
 type MealCardProps = {
   title: string;
+  mealType: MealType;
   meals: EnhancedMeal[];
 };
 
