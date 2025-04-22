@@ -1,6 +1,6 @@
 import { Meal } from './meal.model';
 import { MealRepository } from './meal.repository';
-import { MealService, CreateMealInput, FoodItemService } from './meal.service';
+import { MealService, CreateMealInput, FoodItemService, EnhancedMeal } from './meal.service';
 import { v4 as uuidV4 } from 'uuid';
 
 type ConstructorInput = {
@@ -19,7 +19,7 @@ export class MealServiceImpl implements MealService {
     this.foodItemService = foodItemService;
   }
 
-  async createMeal(input: CreateMealInput): Promise<Meal> {
+  async createMeal(input: CreateMealInput): Promise<EnhancedMeal> {
     const meal: Meal = {
       id: uuidV4(),
       foodItemId: input.foodItemId,
@@ -31,27 +31,37 @@ export class MealServiceImpl implements MealService {
       updatedAt: new Date().toISOString(),
     };
 
-    return this.mealRepository.createMeal(meal);
+    const createdMeal = await this.mealRepository.createMeal(meal);
+
+    return this.enhanceMeal(createdMeal);
   }
 
-  async getMealsByDate(date: string): Promise<Meal[]> {
-    return this.mealRepository.getMealsByDate(date);
+  async getMealsByDate(date: string): Promise<EnhancedMeal[]> {
+    const meals = await this.mealRepository.getMealsByDate(date);
+
+    return this.enhanceMeals(meals);
   }
 
-  async listMeals(): Promise<Meal[]> {
-    return this.mealRepository.listMeals();
+  async listMeals(): Promise<EnhancedMeal[]> {
+    const meals = await this.mealRepository.listMeals();
+
+    return this.enhanceMeals(meals);
   }
 
-  async upsertMeal(mealId: string, meal: Meal): Promise<Meal> {
+  async upsertMeal(mealId: string, meal: Meal): Promise<EnhancedMeal> {
     meal.updatedAt = new Date().toISOString();
 
-    return this.mealRepository.upsertMeal(mealId, meal);
+    const newMeal = await this.mealRepository.upsertMeal(mealId, meal);
+
+    return this.enhanceMeal(newMeal);
   }
 
-  async updateMeal(mealId: string, meal: Partial<Meal>): Promise<Meal> {
+  async updateMeal(mealId: string, meal: Partial<Meal>): Promise<EnhancedMeal> {
     meal.updatedAt = new Date().toISOString();
 
-    return this.mealRepository.updateMeal(mealId, meal);
+    const newMeal = await this.mealRepository.updateMeal(mealId, meal);
+
+    return this.enhanceMeal(newMeal);
   }
 
   async deleteMeal(mealId: string): Promise<void> {
@@ -84,6 +94,28 @@ export class MealServiceImpl implements MealService {
     );
 
     return macros;
+  }
+
+  private async enhanceMeal(meal: Meal): Promise<EnhancedMeal> {
+    const foodItem = await this.foodItemService.getFoodItemById(meal.foodItemId);
+
+    if (!foodItem) {
+      throw new Error(`Food item with ID ${meal.foodItemId} not found`);
+    }
+
+    const scale = meal.amount / 100;
+
+    return {
+      ...meal,
+      calories: (foodItem.calories || 0) * scale,
+      protein: (foodItem.protein || 0) * scale,
+      fat: (foodItem.fat || 0) * scale,
+      carbs: (foodItem.carbs || 0) * scale,
+    };
+  }
+
+  private async enhanceMeals(meals: Meal[]): Promise<EnhancedMeal[]> {
+    return Promise.all(meals.map((meal) => this.enhanceMeal(meal)));
   }
 }
 
