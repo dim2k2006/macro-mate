@@ -49,5 +49,9 @@
   "mealAmount": "Количество",
   "saveMeal": "Сохранить прием пищи",
   "selectFoodItem": "Выберите продукт",
-  "errorCreatingMeal": "Ошибка создания приема пищи"
+  "errorCreatingMeal": "Ошибка создания приема пищи",
+  "deleteMeal": "Удалить прием пищи",
+  "deleteMealConfirmLabel": "Вы уверены, что хотите удалить этот прием пищи?",
+  "deleteMealConfirm": "Удалить",
+  "genericError": "Произошла ошибка. Пожалуйста, попробуйте еще раз."
 }
