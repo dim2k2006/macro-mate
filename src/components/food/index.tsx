@@ -23,7 +23,7 @@ function Food() {
     <Box p="md">
       {foodItems.map((foodItem) => (
         <React.Fragment key={foodItem.id}>
-          <CookingFoodItem foodItem={foodItem} />
+          <CookingFoodItem foodItem={foodItem} isExpanded={false} />
 
           <Space h="md" />
         </React.Fragment>

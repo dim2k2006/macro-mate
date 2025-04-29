@@ -10,7 +10,7 @@ import {
   Group,
   Popover,
   Text,
-  Badge,
+  Grid,
 } from '@mantine/core';
 import { usePrevious } from 'react-use';
 import { useForm, hasLength } from '@mantine/form';
@@ -19,12 +19,12 @@ import { Unit, FoodItem } from '@/domain/foodItem';
 import { useUpsertFoodItem, useDeleteFoodItem, useCalculateMacros } from '@/components/foodItem-service-provider';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 
 const units: Unit[] = ['g', 'ml'];
 
-function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
+function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: CookingFoodItemProps) {
   const { t } = useTranslation();
 
   const { mutate: upsertFoodItem } = useUpsertFoodItem(foodItem.id);
@@ -164,113 +164,148 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
     calculateMacros();
   }
 
+  const [isExpanded, setIsExpanded] = useState(initialIsExpanded);
+  const handleExpand = () => {
+    setIsExpanded((prev) => !prev);
+  };
+
   const date = dayjs(foodItem.updatedAt).format('YYYY-MM-DD HH:mm');
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
-      <Badge variant="outline" color="gray" style={{ position: 'absolute', top: '10px', right: '10px' }}>
-        {date}
-      </Badge>
-
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Textarea
-          {...form.getInputProps('description')}
-          label={t('foodItemLabel')}
-          placeholder={t('foodItemPlaceholder')}
-          autosize
-          minRows={8}
-          maxRows={10}
-        />
+        {!isExpanded && (
+          <Grid align="end">
+            <Grid.Col span={10}>
+              <Text size="sm" fw={500}>
+                {`${form.values.name} (${date})`}
+              </Text>
+            </Grid.Col>
 
-        <Button
-          type="button"
-          mt="md"
-          color="indigo"
-          fullWidth
-          variant="outline"
-          loaderProps={{ type: 'dots' }}
-          loading={isCalculatingMacros}
-          disabled={isCalculatingMacros}
-          onClick={handleCalculateMacros}
-        >
-          {t('calculateMacros')}
-        </Button>
-
-        {isCalculateMacrosError && (
-          <Text c="red" size="sm" mt="md">
-            {t('calculateMacrosError')}
-          </Text>
+            <Grid.Col span={2}>
+              <Button variant="default" color="yellow" fullWidth={false} size="xs" onClick={handleExpand}>
+                {isExpanded ? '-' : '+'}
+              </Button>
+            </Grid.Col>
+          </Grid>
         )}
 
-        <Space h="md" />
+        {isExpanded && (
+          <>
+            <Grid align="end">
+              <Grid.Col span={10}>
+                <TextInput {...form.getInputProps('name')} label={`${t('foodItemNameLabel')} (${date})`} />
+              </Grid.Col>
 
-        <TextInput {...form.getInputProps('name')} label={t('foodItemNameLabel')} />
-
-        <Space h="md" />
-
-        <SimpleGrid cols={2}>
-          <NativeSelect {...form.getInputProps('unit')} label={t('foodItemUnitLabel')} data={units} />
-
-          <NumberInput
-            {...form.getInputProps('calories')}
-            label={t('foodItemCaloriesLabel')}
-            disabled={isCalculatingMacros}
-          />
-        </SimpleGrid>
-
-        <Space h="md" />
-
-        <SimpleGrid cols={3}>
-          <div>
-            <NumberInput
-              {...form.getInputProps('proteins')}
-              label={t('foodItemProteinLabel')}
-              disabled={isCalculatingMacros}
-            />
-          </div>
-
-          <div>
-            <NumberInput {...form.getInputProps('fats')} label={t('foodItemFatLabel')} disabled={isCalculatingMacros} />
-          </div>
-
-          <div>
-            <NumberInput
-              {...form.getInputProps('carbs')}
-              label={t('foodItemCarbsLabel')}
-              disabled={isCalculatingMacros}
-            />
-          </div>
-        </SimpleGrid>
-
-        <Group justify="center">
-          <Button type="submit" mt="md" color="teal" fullWidth>
-            {t('saveFoodItem')}
-          </Button>
-
-          <Space h="md" />
-
-          <Popover width={150} position="bottom" withArrow shadow="md">
-            <Popover.Target>
-              <Button color="red" size="xs" variant="outline">
-                {t('deleteFoodItem')}
-              </Button>
-            </Popover.Target>
-
-            <Popover.Dropdown>
-              <Group justify="center">
-                <Text fw={500} size="sm">
-                  {t('deleteFoodItemConfirmLabel')}
-                </Text>
-
-                <Space h="sm" />
-
-                <Button variant="filled" color="red" size="xs" onClick={handleDelete}>
-                  {t('deleteFoodItemConfirm')}
+              <Grid.Col span={2}>
+                <Button variant="default" color="yellow" fullWidth={false} size="xs" onClick={handleExpand}>
+                  {isExpanded ? '-' : '+'}
                 </Button>
-              </Group>
-            </Popover.Dropdown>
-          </Popover>
-        </Group>
+              </Grid.Col>
+            </Grid>
+
+            <Space h="md" />
+
+            <Textarea
+              {...form.getInputProps('description')}
+              label={t('foodItemLabel')}
+              placeholder={t('foodItemPlaceholder')}
+              autosize
+              minRows={8}
+              maxRows={10}
+            />
+
+            <Button
+              type="button"
+              mt="md"
+              color="indigo"
+              fullWidth
+              variant="outline"
+              loaderProps={{ type: 'dots' }}
+              loading={isCalculatingMacros}
+              disabled={isCalculatingMacros}
+              onClick={handleCalculateMacros}
+            >
+              {t('calculateMacros')}
+            </Button>
+
+            {isCalculateMacrosError && (
+              <Text c="red" size="sm" mt="md">
+                {t('calculateMacrosError')}
+              </Text>
+            )}
+
+            <Space h="md" />
+
+            <SimpleGrid cols={2}>
+              <NativeSelect {...form.getInputProps('unit')} label={t('foodItemUnitLabel')} data={units} />
+
+              <NumberInput
+                {...form.getInputProps('calories')}
+                label={t('foodItemCaloriesLabel')}
+                disabled={isCalculatingMacros}
+              />
+            </SimpleGrid>
+
+            <Space h="md" />
+
+            <SimpleGrid cols={3}>
+              <div>
+                <NumberInput
+                  {...form.getInputProps('proteins')}
+                  label={t('foodItemProteinLabel')}
+                  disabled={isCalculatingMacros}
+                />
+              </div>
+
+              <div>
+                <NumberInput
+                  {...form.getInputProps('fats')}
+                  label={t('foodItemFatLabel')}
+                  disabled={isCalculatingMacros}
+                />
+              </div>
+
+              <div>
+                <NumberInput
+                  {...form.getInputProps('carbs')}
+                  label={t('foodItemCarbsLabel')}
+                  disabled={isCalculatingMacros}
+                />
+              </div>
+            </SimpleGrid>
+
+            <Group justify="center">
+              <Button type="submit" mt="md" color="teal" fullWidth>
+                {t('saveFoodItem')}
+              </Button>
+
+              <Space h="md" />
+
+              <Popover width={150} position="bottom" withArrow shadow="md">
+                <Popover.Target>
+                  <Button color="red" size="xs" variant="outline">
+                    {t('deleteFoodItem')}
+                  </Button>
+                </Popover.Target>
+
+                <Popover.Dropdown>
+                  <Group justify="center">
+                    <Text fw={500} size="sm">
+                      {t('deleteFoodItemConfirmLabel')}
+                    </Text>
+
+                    <Space h="sm" />
+
+                    <Button variant="filled" color="red" size="xs" onClick={handleDelete}>
+                      {t('deleteFoodItemConfirm')}
+                    </Button>
+                  </Group>
+                </Popover.Dropdown>
+              </Popover>
+            </Group>
+          </>
+        )}
       </form>
     </Card>
   );
@@ -278,6 +313,7 @@ function CookingFoodItem({ foodItem }: CookingFoodItemProps) {
 
 type CookingFoodItemProps = {
   foodItem: FoodItem;
+  isExpanded?: boolean;
 };
 
 type SubmitValues = {
