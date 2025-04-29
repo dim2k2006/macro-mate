@@ -195,6 +195,34 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
               </Text>
 
               <Text size="xs">{date}</Text>
+
+              <Space h="sm" />
+
+              <Grid>
+                <Grid.Col span={3}>
+                  <Text size="xs" color="dimmed">
+                    {t('calories')} {form.values.calories}
+                  </Text>
+                </Grid.Col>
+
+                <Grid.Col span={3}>
+                  <Text size="xs" color="dimmed">
+                    {t('protein')} {form.values.proteins}
+                  </Text>
+                </Grid.Col>
+
+                <Grid.Col span={3}>
+                  <Text size="xs" color="dimmed">
+                    {t('fat')} {form.values.fats}
+                  </Text>
+                </Grid.Col>
+
+                <Grid.Col span={3}>
+                  <Text size="xs" color="dimmed">
+                    {t('carbs')} {form.values.carbs}
+                  </Text>
+                </Grid.Col>
+              </Grid>
             </Grid.Col>
 
             <Grid.Col span={2}>
