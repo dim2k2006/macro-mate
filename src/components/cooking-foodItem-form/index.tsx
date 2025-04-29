@@ -194,7 +194,15 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
           <>
             <Grid align="end">
               <Grid.Col span={10}>
-                <TextInput {...form.getInputProps('name')} label={`${t('foodItemNameLabel')} (${date})`} />
+                <TextInput
+                  {...form.getInputProps('name')}
+                  label={
+                    <>
+                      {t('foodItemNameLabel')}
+                      <Text size="xs">{`(${date})`}</Text>
+                    </>
+                  }
+                />
               </Grid.Col>
 
               <Grid.Col span={2}>
