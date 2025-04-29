@@ -191,8 +191,10 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
           <Grid align="end">
             <Grid.Col span={10}>
               <Text size="sm" fw={500}>
-                {`${form.values.name} (${date})`}
+                {form.values.name}
               </Text>
+
+              <Text size="xs">{date}</Text>
             </Grid.Col>
 
             <Grid.Col span={2}>
