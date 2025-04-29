@@ -11,6 +11,7 @@ import {
   Popover,
   Text,
   Grid,
+  Stack,
 } from '@mantine/core';
 import { usePrevious } from 'react-use';
 import { useForm, hasLength } from '@mantine/form';
@@ -214,28 +215,30 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
 
             <Space h="md" />
 
-            <Textarea
-              {...form.getInputProps('description')}
-              label={t('foodItemLabel')}
-              placeholder={t('foodItemPlaceholder')}
-              autosize
-              minRows={8}
-              maxRows={10}
-            />
+            <Stack pos="relative">
+              <Button
+                type="button"
+                color="indigo"
+                variant="outline"
+                size="compact-xs"
+                loaderProps={{ type: 'dots' }}
+                loading={isCalculatingMacros}
+                disabled={isCalculatingMacros}
+                style={{ position: 'absolute', right: 0, top: 0 }}
+                onClick={handleCalculateMacros}
+              >
+                {t('calculateMacros')}
+              </Button>
 
-            <Button
-              type="button"
-              mt="md"
-              color="indigo"
-              fullWidth
-              variant="outline"
-              loaderProps={{ type: 'dots' }}
-              loading={isCalculatingMacros}
-              disabled={isCalculatingMacros}
-              onClick={handleCalculateMacros}
-            >
-              {t('calculateMacros')}
-            </Button>
+              <Textarea
+                {...form.getInputProps('description')}
+                label={t('foodItemLabel')}
+                placeholder={t('foodItemPlaceholder')}
+                autosize
+                minRows={8}
+                maxRows={10}
+              />
+            </Stack>
 
             {isCalculateMacrosError && (
               <Text c="red" size="sm" mt="md">
