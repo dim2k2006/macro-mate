@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Box, Text, Stack, Button, Space, Loader } from '@mantine/core';
+import { Box, Text, Stack, Button, Space, Loader, Grid, Divider } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
+import { DonutChart } from '@mantine/charts';
 import dayjs from 'dayjs';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
@@ -35,6 +36,20 @@ function Meal() {
   const snackMeals = meals.filter((meal) => meal.type === 'snack');
 
   const macrosState = useGetMacrosByDate(activeDay.format('YYYY-MM-DD'));
+
+  const proteins = macrosState.data?.proteins ?? 0;
+  const fats = macrosState.data?.fats ?? 0;
+  const carbs = macrosState.data?.carbs ?? 0;
+
+  const proteinsColor = '#E68D85';
+  const fatsColor = '#F1C761';
+  const carbsColor = '#87C1D8';
+
+  const data = [
+    { name: t('protein'), value: proteins, color: proteinsColor },
+    { name: t('fat'), value: fats, color: fatsColor },
+    { name: t('carbs'), value: carbs, color: carbsColor },
+  ];
 
   return (
     <Box p="md">
@@ -94,27 +109,37 @@ function Meal() {
 
       {macrosState.isSuccess && (
         <>
-          <Stack>
-            <Text size="sm" fw={500}>
-              {t('mealMacros')}
-            </Text>
+          <Divider my="xl" />
 
-            <Text size="sm">
-              {t('calories')}: {macrosState.data.calories}
-            </Text>
+          <Grid>
+            <Grid.Col span={5}>
+              <Stack>
+                <Text size="md" fw={500}>
+                  {t('totalPerDay')}
+                </Text>
 
-            <Text size="sm">
-              {t('protein')}: {macrosState.data.proteins}
-            </Text>
+                <Text size="sm" fw={500}>
+                  {t('calories')}: {macrosState.data.calories}
+                </Text>
 
-            <Text size="sm">
-              {t('carbs')}: {macrosState.data.carbs}
-            </Text>
+                <Text size="sm" c={proteinsColor} fw={500}>
+                  {t('protein')}: {macrosState.data.proteins} {t('grams')}
+                </Text>
 
-            <Text size="sm">
-              {t('fat')}: {macrosState.data.fats}
-            </Text>
-          </Stack>
+                <Text size="sm" c={fatsColor} fw={500}>
+                  {t('fat')}: {macrosState.data.fats} {t('grams')}
+                </Text>
+
+                <Text size="sm" c={carbsColor} fw={500}>
+                  {t('carbs')}: {macrosState.data.carbs} {t('grams')}
+                </Text>
+              </Stack>
+            </Grid.Col>
+
+            <Grid.Col span={7}>
+              <DonutChart size={100} withLabelsLine withLabels data={data} labelsType="percent" />
+            </Grid.Col>
+          </Grid>
         </>
       )}
     </Box>
