@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import '@mantine/core/styles.css';
 import '@mantine/carousel/styles.css';
+import '@mantine/charts/styles.css';
 import './i18n';
 import Root from './components/root';
 import { MantineProvider } from '@mantine/core';
