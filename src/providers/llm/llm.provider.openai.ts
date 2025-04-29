@@ -23,6 +23,14 @@ const CalculateMacrosResponseSchema = z.object({
   per100_carbs: z.number().min(0),
 });
 
+const ParseMacrosResponseSchema = z.object({
+  dish: z.string(),
+  per100_calories: z.number().min(0),
+  per100_proteins: z.number().min(0),
+  per100_fats: z.number().min(0),
+  per100_carbs: z.number().min(0),
+});
+
 type ConstructorInput = {
   apiKey: string;
 };
@@ -257,7 +265,7 @@ Respond **ONLY** with a valid JSON object in the exact shape below (no extra tex
       throw new Error('Function call not found in the response');
     }
 
-    const result = CalculateMacrosResponseSchema.parse(JSON.parse(fnCall.arguments));
+    const result = ParseMacrosResponseSchema.parse(JSON.parse(fnCall.arguments));
 
     console.log('result:', result);
 
