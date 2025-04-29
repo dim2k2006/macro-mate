@@ -274,7 +274,7 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
                   fullWidth
                   loaderProps={{ type: 'dots' }}
                   loading={isParsingMacros}
-                  disabled={isParseMacrosError}
+                  disabled={isParsingMacros}
                   onClick={handleParseMacros}
                 >
                   {t('parseMacros')}
