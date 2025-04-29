@@ -8,6 +8,7 @@ export interface FoodItemService {
   upsertFoodItem: (id: string, foodItem: FoodItem) => Promise<FoodItem>;
   deleteFoodItem: (id: string) => Promise<void>;
   calculateMacros: (id: string) => Promise<FoodItem>;
+  parseMacros: (input: string) => Promise<FoodItem>;
 }
 
 export type CreateFoodItemInput = {

@@ -4,6 +4,7 @@ export {
   useGetFoodItemById,
   useListFoodItems,
   useCalculateMacros,
+  useParseMacros,
   useUpdateFoodItem,
   useUpsertFoodItem,
   useDeleteFoodItem,

@@ -11,13 +11,17 @@ import {
   Popover,
   Text,
   Grid,
-  Stack,
 } from '@mantine/core';
 import { usePrevious } from 'react-use';
 import { useForm, hasLength } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { Unit, FoodItem } from '@/domain/foodItem';
-import { useUpsertFoodItem, useDeleteFoodItem, useCalculateMacros } from '@/components/foodItem-service-provider';
+import {
+  useUpsertFoodItem,
+  useDeleteFoodItem,
+  useCalculateMacros,
+  useParseMacros,
+} from '@/components/foodItem-service-provider';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import { useEffect, useMemo, useState } from 'react';
@@ -39,6 +43,10 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
     isPending: isCalculatingMacros,
     isError: isCalculateMacrosError,
   } = useCalculateMacros(foodItem.id);
+
+  const { mutate: parseMacros, isPending: isParsingMacros, isError: isParseMacrosError } = useParseMacros(foodItem.id);
+
+  const isLoading = isCalculatingMacros || isParsingMacros;
 
   const form = useForm({
     mode: 'controlled',
@@ -165,6 +173,10 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
     calculateMacros();
   }
 
+  function handleParseMacros() {
+    parseMacros();
+  }
+
   const [isExpanded, setIsExpanded] = useState(initialIsExpanded);
   const handleExpand = () => {
     setIsExpanded((prev) => !prev);
@@ -215,36 +227,60 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
 
             <Space h="md" />
 
-            <Stack pos="relative">
-              <Button
-                type="button"
-                color="indigo"
-                variant="outline"
-                size="compact-xs"
-                loaderProps={{ type: 'dots' }}
-                loading={isCalculatingMacros}
-                disabled={isCalculatingMacros}
-                style={{ position: 'absolute', right: 0, top: 0 }}
-                onClick={handleCalculateMacros}
-              >
-                {t('calculateMacros')}
-              </Button>
-
-              <Textarea
-                {...form.getInputProps('description')}
-                label={t('foodItemLabel')}
-                placeholder={t('foodItemPlaceholder')}
-                autosize
-                minRows={8}
-                maxRows={10}
-              />
-            </Stack>
+            <Textarea
+              {...form.getInputProps('description')}
+              label={t('foodItemLabel')}
+              placeholder={t('foodItemPlaceholder')}
+              autosize
+              minRows={8}
+              maxRows={10}
+            />
 
             {isCalculateMacrosError && (
               <Text c="red" size="sm" mt="md">
                 {t('calculateMacrosError')}
               </Text>
             )}
+
+            {isParseMacrosError && (
+              <Text c="red" size="sm" mt="md">
+                {t('parseMacrosError')}
+              </Text>
+            )}
+
+            <Space h="md" />
+
+            <Grid>
+              <Grid.Col span={6}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="xs"
+                  fullWidth
+                  loaderProps={{ type: 'dots' }}
+                  loading={isCalculatingMacros}
+                  disabled={isCalculatingMacros}
+                  onClick={handleCalculateMacros}
+                >
+                  {t('calculateMacros')}
+                </Button>
+              </Grid.Col>
+
+              <Grid.Col span={6}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="xs"
+                  fullWidth
+                  loaderProps={{ type: 'dots' }}
+                  loading={isParsingMacros}
+                  disabled={isParseMacrosError}
+                  onClick={handleParseMacros}
+                >
+                  {t('parseMacros')}
+                </Button>
+              </Grid.Col>
+            </Grid>
 
             <Space h="md" />
 
@@ -254,7 +290,7 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
               <NumberInput
                 {...form.getInputProps('calories')}
                 label={t('foodItemCaloriesLabel')}
-                disabled={isCalculatingMacros}
+                disabled={isLoading}
               />
             </SimpleGrid>
 
@@ -265,29 +301,21 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
                 <NumberInput
                   {...form.getInputProps('proteins')}
                   label={t('foodItemProteinLabel')}
-                  disabled={isCalculatingMacros}
+                  disabled={isLoading}
                 />
               </div>
 
               <div>
-                <NumberInput
-                  {...form.getInputProps('fats')}
-                  label={t('foodItemFatLabel')}
-                  disabled={isCalculatingMacros}
-                />
+                <NumberInput {...form.getInputProps('fats')} label={t('foodItemFatLabel')} disabled={isLoading} />
               </div>
 
               <div>
-                <NumberInput
-                  {...form.getInputProps('carbs')}
-                  label={t('foodItemCarbsLabel')}
-                  disabled={isCalculatingMacros}
-                />
+                <NumberInput {...form.getInputProps('carbs')} label={t('foodItemCarbsLabel')} disabled={isLoading} />
               </div>
             </SimpleGrid>
 
             <Group justify="center">
-              <Button type="submit" mt="md" color="teal" fullWidth>
+              <Button type="submit" mt="md" color="teal" fullWidth disabled={isLoading}>
                 {t('saveFoodItem')}
               </Button>
 
@@ -295,7 +323,7 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
 
               <Popover width={150} position="bottom" withArrow shadow="md">
                 <Popover.Target>
-                  <Button color="red" size="xs" variant="outline">
+                  <Button color="red" size="xs" variant="outline" disabled={isLoading}>
                     {t('deleteFoodItem')}
                   </Button>
                 </Popover.Target>

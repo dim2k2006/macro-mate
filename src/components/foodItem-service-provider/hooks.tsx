@@ -130,3 +130,26 @@ export function useCalculateMacros(id: string) {
     },
   });
 }
+
+export function useParseMacros(id: string) {
+  const service = useFoodItemService();
+
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ['parseMacros', id],
+    mutationFn: () => service.parseMacros(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['listFoodItems'],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['getFoodItemById', id],
+      });
+    },
+    onError: (error: Error) => {
+      console.error('Error parsing macros:', error);
+    },
+  });
+}

@@ -88,6 +88,34 @@ class FoodItemServiceImpl implements FoodItemService {
 
     return this.foodItemRepository.updateFoodItem(id, foodItem);
   }
+
+  async parseMacros(id: string): Promise<FoodItem> {
+    const foodItem = await this.foodItemRepository.getFoodItemById(id);
+
+    if (!foodItem) {
+      throw new Error('Food item not found');
+    }
+
+    const messages = [
+      this.llmProvider.buildChatMessage({
+        role: 'user',
+        content: foodItem.description,
+      }),
+    ];
+
+    const { calories, proteins, fats, carbs, dish } = await this.llmProvider.parseMacros({
+      messages,
+    });
+
+    foodItem.name = dish;
+    foodItem.calories = calories;
+    foodItem.proteins = proteins;
+    foodItem.fats = fats;
+    foodItem.carbs = carbs;
+    foodItem.updatedAt = new Date().toISOString();
+
+    return this.foodItemRepository.updateFoodItem(id, foodItem);
+  }
 }
 
 export default FoodItemServiceImpl;

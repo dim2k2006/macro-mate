@@ -186,6 +186,90 @@ Respond **ONLY** with a valid JSON object in the exact shape below (no extra tex
     };
   }
 
+  async parseMacros(input: CalculateMacrosInput): Promise<CalculateMacrosOutput> {
+    const messages = [
+      this.buildChatMessage({
+        role: 'developer',
+        content: `
+You are a nutrition‑calculation assistant.
+The user provides information about product and it's macros per 100 grams.
+
+Your job: parse the provided macros and return them in a structured format.
+
+**Output**
+Respond **ONLY** with a valid JSON object in the exact shape below (no extra text):
+
+{
+  "dish": "<dish name>",
+  "per100_calories": <float 1‑dec>,
+  "per100_proteins": <float 1‑dec>,
+  "per100_fats": <float 1‑dec>,
+  "per100_carbs": <float 1‑dec>
+}
+
+9. **Validation**
+• If any amount or unit is missing/ambiguous, throw an error.
+• Ensure all JSON numbers are numeric, not strings.
+  `.trim(),
+      }),
+
+      ...input.messages,
+    ];
+
+    const functionDefinitions = [
+      {
+        name: 'calculate_macros',
+        description: 'Parse nutrition macros and yield for a product',
+        parameters: {
+          type: 'object',
+          properties: {
+            dish: { type: 'string' },
+            per100_calories: { type: 'integer' },
+            per100_proteins: { type: 'integer' },
+            per100_fats: { type: 'integer' },
+            per100_carbs: { type: 'integer' },
+          },
+          required: ['dish', 'per100_calories', 'per100_proteins', 'per100_fats', 'per100_carbs'],
+        },
+      },
+    ];
+
+    const response = await this.openai.chat.completions.create({
+      model: 'gpt-4o',
+      messages: messages,
+      functions: functionDefinitions,
+      function_call: { name: 'calculate_macros' },
+    });
+
+    const choice = response.choices[0];
+
+    if (!choice) {
+      throw new Error('Failed to generate completion');
+    }
+
+    console.log('choice:', choice);
+
+    const message = choice.message;
+
+    const fnCall = message.function_call;
+
+    if (!fnCall) {
+      throw new Error('Function call not found in the response');
+    }
+
+    const result = CalculateMacrosResponseSchema.parse(JSON.parse(fnCall.arguments));
+
+    console.log('result:', result);
+
+    return {
+      dish: result.dish,
+      calories: result.per100_calories,
+      proteins: result.per100_proteins,
+      fats: result.per100_fats,
+      carbs: result.per100_carbs,
+    };
+  }
+
   buildChatMessage(input: BuildChatMessageInput): ChatMessage {
     return {
       role: input.role,
