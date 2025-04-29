@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Text, Stack, Button, Space, Loader, Grid, Divider } from '@mantine/core';
+import { Box, Text, Stack, Button, Space, Loader, Grid, Divider, Table } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import { DonutChart } from '@mantine/charts';
 import dayjs from 'dayjs';
@@ -112,31 +112,45 @@ function Meal() {
           <Divider my="xl" />
 
           <Grid>
-            <Grid.Col span={5}>
+            <Grid.Col span={6}>
               <Stack>
                 <Text size="md" fw={500}>
                   {t('totalPerDay')}
                 </Text>
 
-                <Text size="sm" fw={500}>
-                  {t('calories')}: {macrosState.data.calories}
-                </Text>
+                <Table variant="vertical" layout="fixed" withTableBorder>
+                  <Table.Tbody>
+                    <Table.Tr>
+                      <Table.Th>{t('calories')}</Table.Th>
+                      <Table.Td>{macrosState.data.calories}</Table.Td>
+                    </Table.Tr>
 
-                <Text size="sm" c={proteinsColor} fw={500}>
-                  {t('protein')}: {macrosState.data.proteins} {t('grams')}
-                </Text>
+                    <Table.Tr>
+                      <Table.Th c={proteinsColor}>{t('protein')}</Table.Th>
+                      <Table.Td>
+                        {macrosState.data.proteins} {t('grams')}
+                      </Table.Td>
+                    </Table.Tr>
 
-                <Text size="sm" c={fatsColor} fw={500}>
-                  {t('fat')}: {macrosState.data.fats} {t('grams')}
-                </Text>
+                    <Table.Tr>
+                      <Table.Th c={fatsColor}>{t('fat')}</Table.Th>
+                      <Table.Td>
+                        {macrosState.data.fats} {t('grams')}
+                      </Table.Td>
+                    </Table.Tr>
 
-                <Text size="sm" c={carbsColor} fw={500}>
-                  {t('carbs')}: {macrosState.data.carbs} {t('grams')}
-                </Text>
+                    <Table.Tr>
+                      <Table.Th c={carbsColor}>{t('carbs')}</Table.Th>
+                      <Table.Td>
+                        {macrosState.data.carbs} {t('grams')}
+                      </Table.Td>
+                    </Table.Tr>
+                  </Table.Tbody>
+                </Table>
               </Stack>
             </Grid.Col>
 
-            <Grid.Col span={7}>
+            <Grid.Col span={6}>
               <DonutChart size={100} withLabelsLine withLabels data={data} labelsType="percent" />
             </Grid.Col>
           </Grid>
