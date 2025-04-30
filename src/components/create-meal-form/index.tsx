@@ -2,11 +2,12 @@ import { useMemo } from 'react';
 import { hasLength, useForm } from '@mantine/form';
 import { MealType } from '@/domain/meal';
 import { useTranslation } from 'react-i18next';
-import { Button, Card, NumberInput, Space, Text, TextInput, Center, Stack, Paper, Group } from '@mantine/core';
+import { Button, Card, NumberInput, Space, Text, TextInput, Stack, ScrollArea, Divider, Grid } from '@mantine/core';
 import { useListFoodItems } from '@/components/foodItem-service-provider';
 import { useCreateMeal } from '@/components/meal-service-provider';
 import { useFuzzySearch } from '@/components/fuzzy-search';
 import dayjs from 'dayjs';
+import FoodItemCard from './food-item-card';
 
 function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
   const { t } = useTranslation();
@@ -16,8 +17,9 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
   const foodItems = foodItemsState.data || [];
 
   const foodItemOptions = foodItems.map((item) => ({
-    label: `${item.name} (${dayjs(item.createdAt).format('YYYY-MM-DD')})`,
-    value: item.id,
+    id: item.id,
+    name: item.name,
+    date: dayjs(item.createdAt).format('YYYY-MM-DD'),
   }));
 
   const { mutate: createMeal, isPending, isError } = useCreateMeal();
@@ -68,11 +70,15 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
     });
   }
 
+  function handleSelectFoodItem(id: string) {
+    form.setFieldValue('foodItemId', id);
+  }
+
   const { search, highlightText } = useFuzzySearch(foodItemOptions, {
     includeScore: true,
     includeMatches: true,
     threshold: 0.4,
-    keys: ['label'],
+    keys: ['name', 'date'],
     findAllMatches: true,
     minMatchCharLength: 1,
   });
@@ -86,13 +92,32 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
     }));
   }, [form.values.query, search]);
 
-  console.log('form.values.query', form.values.query);
-  console.log('searchResults', searchResults);
-  console.log('foodItemOptions', foodItemOptions);
+  const results =
+    searchResults.length > 0 ? searchResults : foodItemOptions.map((option) => ({ item: option, matches: [] }));
+
+  const selectedFoodItem = foodItems.find((item) => item.id === form.values.foodItemId);
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <form onSubmit={form.onSubmit(handleSubmit)}>
+        {!!selectedFoodItem && (
+          <Grid>
+            <Grid.Col span={8}>
+              <Text fw={500}>{selectedFoodItem.name}</Text>
+
+              <Text size="xs">{dayjs(selectedFoodItem.createdAt).format('YYYY-MM-DD')}</Text>
+            </Grid.Col>
+
+            <Grid.Col span={4}>
+              <Button variant="outline" size="compact-xs" onClick={() => handleSelectFoodItem('')} color="red">
+                {t('clear')}
+              </Button>
+            </Grid.Col>
+          </Grid>
+        )}
+
+        <Space h="md" />
+
         <NumberInput {...form.getInputProps('amount')} label={t('mealAmount')} disabled={isPending} />
 
         <Space h="md" />
@@ -101,34 +126,25 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
 
         <Space h="md" />
 
-        {searchResults.length === 0 && (
-          <Center p="xl" style={{ flexDirection: 'column' }}>
-            <Text size="lg" fw={500} mt="sm">
-              No results found
-            </Text>
-            <Text color="dimmed" size="sm">
-              Try adjusting your search criteria.
-            </Text>
-          </Center>
-        )}
-
-        {searchResults.length > 0 && (
-          <Stack p="sm">
-            {searchResults.map(({ item, matches }) => {
+        <ScrollArea h={280}>
+          <Stack>
+            {results.map(({ item, matches }) => {
               return (
-                <Paper key={item.value} shadow="xs" p="md">
-                  <Group justify="space-between">
-                    <Text>{item.label}</Text>
+                <>
+                  <FoodItemCard
+                    key={item.id}
+                    id={item.id}
+                    name={item.name}
+                    date={item.date}
+                    onSelect={handleSelectFoodItem}
+                  />
 
-                    <Button size="xs" variant="outline">
-                      Select
-                    </Button>
-                  </Group>
-                </Paper>
+                  <Divider />
+                </>
               );
             })}
           </Stack>
-        )}
+        </ScrollArea>
 
         <Button
           type="submit"
