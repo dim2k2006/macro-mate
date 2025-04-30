@@ -1,9 +1,11 @@
+import { useMemo } from 'react';
 import { hasLength, useForm } from '@mantine/form';
 import { MealType } from '@/domain/meal';
 import { useTranslation } from 'react-i18next';
-import { Button, Card, NumberInput, Space, Select, Text } from '@mantine/core';
+import { Button, Card, NumberInput, Space, Text, TextInput, Center, Stack, Paper, Group } from '@mantine/core';
 import { useListFoodItems } from '@/components/foodItem-service-provider';
 import { useCreateMeal } from '@/components/meal-service-provider';
+import { useFuzzySearch } from '@/components/fuzzy-search';
 import dayjs from 'dayjs';
 
 function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
@@ -25,6 +27,7 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
     initialValues: {
       foodItemId: '',
       amount: 0,
+      query: '',
     },
     validate: {
       foodItemId: hasLength({ min: 3 }, t('requiredField')),
@@ -65,22 +68,63 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
     });
   }
 
+  const { search, highlightText } = useFuzzySearch(foodItemOptions, {
+    includeScore: true,
+    includeMatches: true,
+    threshold: 0.4,
+    keys: ['0.label'],
+    findAllMatches: true,
+    minMatchCharLength: 1,
+  });
+
+  const searchResults = useMemo(() => {
+    if (!form.values.query) return [];
+
+    return search(form.values.query).map((result) => ({
+      item: result.item,
+      matches: result.matches,
+    }));
+  }, [form.values.query, search]);
+
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Select
-          {...form.getInputProps('foodItemId')}
-          label={t('selectFoodItem')}
-          data={foodItemOptions}
-          searchable
-          disabled={isPending}
-        />
-
-        <Space h="md" />
-
         <NumberInput {...form.getInputProps('amount')} label={t('mealAmount')} disabled={isPending} />
 
         <Space h="md" />
+
+        <TextInput {...form.getInputProps('query')} label={t('selectFoodItem')} disabled={isPending} />
+
+        <Space h="md" />
+
+        {searchResults.length === 0 && (
+          <Center p="xl" style={{ flexDirection: 'column' }}>
+            <Text size="lg" fw={500} mt="sm">
+              No results found
+            </Text>
+            <Text color="dimmed" size="sm">
+              Try adjusting your search criteria.
+            </Text>
+          </Center>
+        )}
+
+        {searchResults.length > 0 && (
+          <Stack p="sm">
+            {searchResults.map(({ item, matches }) => {
+              return (
+                <Paper key={item.value} shadow="xs" p="md">
+                  <Group justify="space-between">
+                    <Text>{item.label}</Text>
+
+                    <Button size="xs" variant="outline">
+                      Select
+                    </Button>
+                  </Group>
+                </Paper>
+              );
+            })}
+          </Stack>
+        )}
 
         <Button
           type="submit"
@@ -115,6 +159,7 @@ type CreateMealFormProps = {
 type SubmitValues = {
   foodItemId: string;
   amount: number;
+  query: string;
 };
 
 export default CreateMealForm;
