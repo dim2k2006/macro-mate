@@ -23,16 +23,22 @@ import {
   useDeleteFoodItem,
   useCalculateMacros,
   useParseMacros,
+  useListFoodItems,
 } from '@/components/foodItem-service-provider';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import { useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
+import SearchableFoodItems from '@/components/searchable-food-items';
 
 const units: Unit[] = ['g', 'ml'];
 
 function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: CookingFoodItemProps) {
   const { t } = useTranslation();
+
+  const foodItemsState = useListFoodItems();
+
+  const foodItems = foodItemsState.data || [];
 
   const { mutate: upsertFoodItem } = useUpsertFoodItem(foodItem.id);
 
@@ -189,6 +195,21 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
   const ingredientsCount = foodItem.ingredients?.length ?? 0;
 
   const [opened, { open, close }] = useDisclosure(false);
+
+  function handleSelectFoodItem(selectedFoodItem: FoodItem) {
+    const currentDescription = form.values.description;
+
+    const newDescription = `
+${currentDescription}
+
+${t('macros')} ${selectedFoodItem.name}
+${selectedFoodItem.description}
+    `;
+
+    form.setFieldValue('description', newDescription);
+
+    close();
+  }
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -399,7 +420,7 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
       </form>
 
       <Modal opened={opened} onClose={close} title={t('products')}>
-        Nothing here yet
+        <SearchableFoodItems foodItems={foodItems} onSelectFoodItem={handleSelectFoodItem} />
       </Modal>
     </Card>
   );
