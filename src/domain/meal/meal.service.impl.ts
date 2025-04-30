@@ -2,6 +2,7 @@ import { Meal } from './meal.model';
 import { MealRepository } from './meal.repository';
 import { MealService, CreateMealInput, FoodItemService, EnhancedMeal } from './meal.service';
 import { v4 as uuidV4 } from 'uuid';
+import round from 'lodash/round';
 
 type ConstructorInput = {
   mealRepository: MealRepository;
@@ -83,10 +84,10 @@ export class MealServiceImpl implements MealService {
 
         const scale = meal.amount / 100;
 
-        acc.calories += (foodItem.calories || 0) * scale;
-        acc.proteins += (foodItem.proteins || 0) * scale;
-        acc.fats += (foodItem.fats || 0) * scale;
-        acc.carbs += (foodItem.carbs || 0) * scale;
+        acc.calories += round((foodItem.calories || 0) * scale, 2);
+        acc.proteins += round((foodItem.proteins || 0) * scale, 2);
+        acc.fats += round((foodItem.fats || 0) * scale, 2);
+        acc.carbs += round((foodItem.carbs || 0) * scale);
 
         return acc;
       },
@@ -108,10 +109,10 @@ export class MealServiceImpl implements MealService {
     return {
       ...meal,
       foodItemName: foodItem.name,
-      calories: (foodItem.calories || 0) * scale,
-      proteins: (foodItem.proteins || 0) * scale,
-      fats: (foodItem.fats || 0) * scale,
-      carbs: (foodItem.carbs || 0) * scale,
+      calories: round((foodItem.calories || 0) * scale, 2),
+      proteins: round((foodItem.proteins || 0) * scale, 2),
+      fats: round((foodItem.fats || 0) * scale, 2),
+      carbs: round((foodItem.carbs || 0) * scale, 2),
     };
   }
 
