@@ -10,6 +10,7 @@
   "parseMacros": "Парсить КБЖУ",
   "parseMacrosError": "Произошла ошибка при парсинге КБЖУ, попробуйте еще раз",
   "ingredientListLabel": "Список ингредиентов: {{count}}",
+  "addIngredientsMacros": "Добавить КБЖУ ингредиентов",
   "foodItemNameLabel": "Название продукта",
   "foodItemNamePlaceholder": "Введите название продукта",
   "foodItemUnitLabel": "Единица измерения",

@@ -8,7 +8,6 @@ export type FoodItem = {
   proteins?: number;
   fats?: number;
   carbs?: number;
-  ingredients?: FoodItem[];
   createdAt: string; // ISO
   updatedAt: string; // ISO
 };

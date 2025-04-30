@@ -192,8 +192,6 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
 
   const date = dayjs(foodItem.updatedAt).format('YYYY-MM-DD HH:mm');
 
-  const ingredientsCount = foodItem.ingredients?.length ?? 0;
-
   const [opened, { open, close }] = useDisclosure(false);
 
   function handleSelectFoodItem(selectedFoodItem: FoodItem) {
@@ -349,7 +347,7 @@ ${selectedFoodItem.description}
                   disabled={isLoading}
                   onClick={open}
                 >
-                  {t('ingredientListLabel', { count: ingredientsCount })}
+                  {t('addIngredientsMacros')}
                 </Button>
               </Grid.Col>
             </Grid>
