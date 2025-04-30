@@ -100,32 +100,6 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
 
         <SearchableFoodItems foodItems={foodItems} onSelectFoodItem={handleSelectFoodItem} />
 
-        {/*<TextInput {...form.getInputProps('query')} label={t('selectFoodItem')} disabled={isPending} />*/}
-
-        {/*<Space h="md" />*/}
-
-        {/*<ScrollArea h={280}>*/}
-        {/*  <Stack>*/}
-        {/*    {results.map(({ item, matches }) => {*/}
-        {/*      const valueMatches = matches?.filter((match) => match.indices[0][0] >= 0 && match.value === item.name);*/}
-
-        {/*      return (*/}
-        {/*        <>*/}
-        {/*          <FoodItemCard*/}
-        {/*            key={item.id}*/}
-        {/*            id={item.id}*/}
-        {/*            name={highlightText(item.name, valueMatches)}*/}
-        {/*            date={item.date}*/}
-        {/*            onSelect={handleSelectFoodItem}*/}
-        {/*          />*/}
-
-        {/*          <Divider />*/}
-        {/*        </>*/}
-        {/*      );*/}
-        {/*    })}*/}
-        {/*  </Stack>*/}
-        {/*</ScrollArea>*/}
-
         <Button
           type="submit"
           mt="md"
