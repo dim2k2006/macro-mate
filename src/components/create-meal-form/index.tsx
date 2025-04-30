@@ -72,7 +72,7 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
     includeScore: true,
     includeMatches: true,
     threshold: 0.4,
-    keys: ['0.label'],
+    keys: ['label'],
     findAllMatches: true,
     minMatchCharLength: 1,
   });
@@ -85,6 +85,10 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
       matches: result.matches,
     }));
   }, [form.values.query, search]);
+
+  console.log('form.values.query', form.values.query);
+  console.log('searchResults', searchResults);
+  console.log('foodItemOptions', foodItemOptions);
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
