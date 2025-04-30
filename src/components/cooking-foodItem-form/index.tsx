@@ -418,7 +418,7 @@ ${selectedFoodItem.description}
       </form>
 
       <Modal opened={opened} onClose={close} title={t('products')}>
-        <SearchableFoodItems foodItems={foodItems} onSelectFoodItem={handleSelectFoodItem} />
+        <SearchableFoodItems foodItems={foodItems} onSelectFoodItem={handleSelectFoodItem} height={420} />
       </Modal>
     </Card>
   );

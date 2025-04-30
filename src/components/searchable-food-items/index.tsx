@@ -7,7 +7,12 @@ import FoodItemCard from '@/components/food-item-card';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 
-function SearchableFoodItems({ foodItems, onSelectFoodItem, isEmbedded = true }: SearchableFoodItemsProps) {
+function SearchableFoodItems({
+  foodItems,
+  onSelectFoodItem,
+  isEmbedded = true,
+  height = 280,
+}: SearchableFoodItemsProps) {
   const { t } = useTranslation();
 
   function handleSelectFoodItem(foodItemId: string) {
@@ -48,7 +53,7 @@ function SearchableFoodItems({ foodItems, onSelectFoodItem, isEmbedded = true }:
 
         <Space h="md" />
 
-        <ScrollArea h={280}>
+        <ScrollArea h={height}>
           <Stack>
             {results.map(({ item, matches }) => {
               const valueMatches = matches?.filter((match) => match.indices[0][0] >= 0 && match.value === item.name);
@@ -89,6 +94,7 @@ type SearchableFoodItemsProps = {
   foodItems: FoodItem[];
   onSelectFoodItem: (foodItem: FoodItem) => void;
   isEmbedded?: boolean;
+  height?: number;
 };
 
 export default SearchableFoodItems;
