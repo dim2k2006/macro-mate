@@ -1,13 +1,12 @@
-import { useMemo } from 'react';
 import { hasLength, useForm } from '@mantine/form';
 import { MealType } from '@/domain/meal';
 import { useTranslation } from 'react-i18next';
-import { Button, Card, NumberInput, Space, Text, TextInput, Stack, ScrollArea, Divider, Grid } from '@mantine/core';
+import { Button, Card, NumberInput, Space, Text, Grid } from '@mantine/core';
 import { useListFoodItems } from '@/components/foodItem-service-provider';
 import { useCreateMeal } from '@/components/meal-service-provider';
-import { useFuzzySearch } from '@/components/fuzzy-search';
 import dayjs from 'dayjs';
-import FoodItemCard from '../food-item-card';
+import { FoodItem } from '@/domain/foodItem';
+import SearchableFoodItems from '@/components/searchable-food-items';
 
 function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
   const { t } = useTranslation();
@@ -15,12 +14,6 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
   const foodItemsState = useListFoodItems();
 
   const foodItems = foodItemsState.data || [];
-
-  const foodItemOptions = foodItems.map((item) => ({
-    id: item.id,
-    name: item.name,
-    date: dayjs(item.createdAt).format('YYYY-MM-DD'),
-  }));
 
   const { mutate: createMeal, isPending, isError } = useCreateMeal();
 
@@ -70,30 +63,13 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
     });
   }
 
-  function handleSelectFoodItem(id: string) {
-    form.setFieldValue('foodItemId', id);
+  function handleSelectFoodItem(foodItem: FoodItem) {
+    form.setFieldValue('foodItemId', foodItem.id);
   }
 
-  const { search, highlightText } = useFuzzySearch(foodItemOptions, {
-    includeScore: true,
-    includeMatches: true,
-    threshold: 0.4,
-    keys: ['name', 'date'],
-    findAllMatches: true,
-    minMatchCharLength: 1,
-  });
-
-  const searchResults = useMemo(() => {
-    if (!form.values.query) return [];
-
-    return search(form.values.query).map((result) => ({
-      item: result.item,
-      matches: result.matches,
-    }));
-  }, [form.values.query, search]);
-
-  const results =
-    searchResults.length > 0 ? searchResults : foodItemOptions.map((option) => ({ item: option, matches: [] }));
+  function handleClearFoodItem() {
+    form.setFieldValue('foodItemId', '');
+  }
 
   const selectedFoodItem = foodItems.find((item) => item.id === form.values.foodItemId);
 
@@ -109,7 +85,7 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
             </Grid.Col>
 
             <Grid.Col span={4}>
-              <Button variant="outline" size="compact-xs" onClick={() => handleSelectFoodItem('')} color="red">
+              <Button variant="outline" size="compact-xs" onClick={() => handleClearFoodItem()} color="red">
                 {t('clear')}
               </Button>
             </Grid.Col>
@@ -122,31 +98,33 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
 
         <Space h="md" />
 
-        <TextInput {...form.getInputProps('query')} label={t('selectFoodItem')} disabled={isPending} />
+        <SearchableFoodItems foodItems={foodItems} onSelectFoodItem={handleSelectFoodItem} />
 
-        <Space h="md" />
+        {/*<TextInput {...form.getInputProps('query')} label={t('selectFoodItem')} disabled={isPending} />*/}
 
-        <ScrollArea h={280}>
-          <Stack>
-            {results.map(({ item, matches }) => {
-              const valueMatches = matches?.filter((match) => match.indices[0][0] >= 0 && match.value === item.name);
+        {/*<Space h="md" />*/}
 
-              return (
-                <>
-                  <FoodItemCard
-                    key={item.id}
-                    id={item.id}
-                    name={highlightText(item.name, valueMatches)}
-                    date={item.date}
-                    onSelect={handleSelectFoodItem}
-                  />
+        {/*<ScrollArea h={280}>*/}
+        {/*  <Stack>*/}
+        {/*    {results.map(({ item, matches }) => {*/}
+        {/*      const valueMatches = matches?.filter((match) => match.indices[0][0] >= 0 && match.value === item.name);*/}
 
-                  <Divider />
-                </>
-              );
-            })}
-          </Stack>
-        </ScrollArea>
+        {/*      return (*/}
+        {/*        <>*/}
+        {/*          <FoodItemCard*/}
+        {/*            key={item.id}*/}
+        {/*            id={item.id}*/}
+        {/*            name={highlightText(item.name, valueMatches)}*/}
+        {/*            date={item.date}*/}
+        {/*            onSelect={handleSelectFoodItem}*/}
+        {/*          />*/}
+
+        {/*          <Divider />*/}
+        {/*        </>*/}
+        {/*      );*/}
+        {/*    })}*/}
+        {/*  </Stack>*/}
+        {/*</ScrollArea>*/}
 
         <Button
           type="submit"
