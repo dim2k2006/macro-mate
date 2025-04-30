@@ -1,6 +1,6 @@
 import { Meal } from './meal.model';
 import { MealRepository } from './meal.repository';
-import { MealService, CreateMealInput, FoodItemService, EnhancedMeal } from './meal.service';
+import { CreateMealInput, EnhancedMeal, FoodItemService, MealService } from './meal.service';
 import { v4 as uuidV4 } from 'uuid';
 import round from 'lodash/round';
 
@@ -84,17 +84,22 @@ export class MealServiceImpl implements MealService {
 
         const scale = meal.amount / 100;
 
-        acc.calories += round((foodItem.calories || 0) * scale, 2);
-        acc.proteins += round((foodItem.proteins || 0) * scale, 2);
-        acc.fats += round((foodItem.fats || 0) * scale, 2);
-        acc.carbs += round((foodItem.carbs || 0) * scale);
+        acc.calories += (foodItem.calories || 0) * scale;
+        acc.proteins += (foodItem.proteins || 0) * scale;
+        acc.fats += (foodItem.fats || 0) * scale;
+        acc.carbs += (foodItem.carbs || 0) * scale;
 
         return acc;
       },
       { calories: 0, proteins: 0, fats: 0, carbs: 0 },
     );
 
-    return macros;
+    return {
+      calories: round(macros.calories, 2),
+      proteins: round(macros.proteins, 2),
+      fats: round(macros.fats, 2),
+      carbs: round(macros.carbs, 2),
+    };
   }
 
   countTotalMacrosByMeals(meals: EnhancedMeal[]): { calories: number; proteins: number; fats: number; carbs: number } {
