@@ -14,6 +14,7 @@ import {
   ScrollArea,
   Stack,
   Divider,
+  TextInput,
 } from '@mantine/core';
 import { useListFoodItems } from '@/components/foodItem-service-provider';
 import dayjs from 'dayjs';
@@ -143,6 +144,10 @@ function EditMealForm({ meal, onFinish }: EditMealFormProps) {
         <Space h="md" />
 
         <NumberInput {...form.getInputProps('amount')} label={t('mealAmount')} disabled={isPending} />
+
+        <Space h="md" />
+
+        <TextInput {...form.getInputProps('query')} label={t('selectFoodItem')} disabled={isPending} />
 
         <Space h="md" />
 
