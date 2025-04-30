@@ -97,6 +97,27 @@ export class MealServiceImpl implements MealService {
     return macros;
   }
 
+  countTotalMacrosByMeals(meals: EnhancedMeal[]): { calories: number; proteins: number; fats: number; carbs: number } {
+    const calories = round(
+      meals.reduce((acc, meal) => acc + meal.calories, 0),
+      2,
+    );
+    const proteins = round(
+      meals.reduce((acc, meal) => acc + meal.proteins, 0),
+      2,
+    );
+    const fats = round(
+      meals.reduce((acc, meal) => acc + meal.fats, 0),
+      2,
+    );
+    const carbs = round(
+      meals.reduce((acc, meal) => acc + meal.carbs, 0),
+      2,
+    );
+
+    return { calories, proteins, fats, carbs };
+  }
+
   private async enhanceMeal(meal: Meal): Promise<EnhancedMeal> {
     const foodItem = await this.foodItemService.getFoodItemById(meal.foodItemId);
 

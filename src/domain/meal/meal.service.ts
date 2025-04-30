@@ -8,6 +8,7 @@ export interface MealService {
   updateMeal(mealId: string, meal: Partial<Meal>): Promise<EnhancedMeal>;
   deleteMeal(mealId: string): Promise<void>;
   getMacrosByDate(date: string): Promise<{ calories: number; proteins: number; fats: number; carbs: number }>;
+  countTotalMacrosByMeals(meals: EnhancedMeal[]): { calories: number; proteins: number; fats: number; carbs: number };
 }
 
 export type CreateMealInput = {
