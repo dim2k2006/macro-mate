@@ -6,7 +6,7 @@ function FoodItemCard({ id, name, date, onSelect }: FoodItemCardProps) {
   const { t } = useTranslation();
 
   return (
-    <Grid>
+    <Grid overflow="hidden">
       <Grid.Col span={8}>
         <Text size="sm" fw={500}>
           {name}
