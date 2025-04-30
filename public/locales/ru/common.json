@@ -9,6 +9,7 @@
   "calculateMacrosError": "Произошла ошибка при расчете КБЖУ, попробуйте еще раз",
   "parseMacros": "Парсить КБЖУ",
   "parseMacrosError": "Произошла ошибка при парсинге КБЖУ, попробуйте еще раз",
+  "ingredientListLabel": "Список ингредиентов: {{count}}",
   "foodItemNameLabel": "Название продукта",
   "foodItemNamePlaceholder": "Введите название продукта",
   "foodItemUnitLabel": "Единица измерения",
@@ -58,5 +59,6 @@
   "genericError": "Произошла ошибка. Пожалуйста, попробуйте еще раз.",
   "editMeal": "Редактировать прием пищи",
   "grams": "г",
-  "totalPerDay": "Итого за день"
+  "totalPerDay": "Итого за день",
+  "products": "Продукты"
 }

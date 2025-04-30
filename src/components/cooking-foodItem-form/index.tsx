@@ -11,7 +11,9 @@ import {
   Popover,
   Text,
   Grid,
+  Modal,
 } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { usePrevious } from 'react-use';
 import { useForm, hasLength } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
@@ -184,6 +186,10 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
 
   const date = dayjs(foodItem.updatedAt).format('YYYY-MM-DD HH:mm');
 
+  const ingredientsCount = foodItem.ingredients?.length ?? 0;
+
+  const [opened, { open, close }] = useDisclosure(false);
+
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -310,6 +316,21 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
                   {t('parseMacros')}
                 </Button>
               </Grid.Col>
+
+              <Grid.Col span={12}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="xs"
+                  fullWidth
+                  loaderProps={{ type: 'dots' }}
+                  loading={isLoading}
+                  disabled={isLoading}
+                  onClick={open}
+                >
+                  {t('ingredientListLabel', { count: ingredientsCount })}
+                </Button>
+              </Grid.Col>
             </Grid>
 
             <Space h="md" />
@@ -376,6 +397,10 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
           </>
         )}
       </form>
+
+      <Modal opened={opened} onClose={close} title={t('products')}>
+        Nothing here yet
+      </Modal>
     </Card>
   );
 }
