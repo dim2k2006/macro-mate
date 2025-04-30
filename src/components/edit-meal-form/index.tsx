@@ -20,7 +20,7 @@ import { useListFoodItems } from '@/components/foodItem-service-provider';
 import dayjs from 'dayjs';
 import { useFuzzySearch } from '@/components/fuzzy-search';
 import { useMemo } from 'react';
-import FoodItemCard from '@/components/create-meal-form/food-item-card.tsx';
+import FoodItemCard from '@/components/food-item-card';
 
 function EditMealForm({ meal, onFinish }: EditMealFormProps) {
   const { t } = useTranslation();

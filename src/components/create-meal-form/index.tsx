@@ -7,7 +7,7 @@ import { useListFoodItems } from '@/components/foodItem-service-provider';
 import { useCreateMeal } from '@/components/meal-service-provider';
 import { useFuzzySearch } from '@/components/fuzzy-search';
 import dayjs from 'dayjs';
-import FoodItemCard from './food-item-card';
+import FoodItemCard from '../food-item-card';
 
 function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
   const { t } = useTranslation();
