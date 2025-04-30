@@ -1,5 +1,5 @@
 import { v4 as uuidV4 } from 'uuid';
-import { FoodItemService, CreateFoodItemInput } from './foodItem.service';
+import { CreateFoodItemInput, FoodItemService } from './foodItem.service';
 import { FoodItemRepository } from './foodItem.repository';
 import { FoodItem } from './foodItem.model';
 import { LlmProvider } from '@/shared/llm.types.ts';
@@ -42,7 +42,13 @@ class FoodItemServiceImpl implements FoodItemService {
   }
 
   async listFoodItems(): Promise<FoodItem[]> {
-    return this.foodItemRepository.listFoodItems();
+    const foodItems = await this.foodItemRepository.listFoodItems();
+
+    return foodItems.sort((a, b) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+      return dateB.getTime() - dateA.getTime();
+    });
   }
 
   async updateFoodItem(id: string, foodItem: FoodItem): Promise<FoodItem> {
