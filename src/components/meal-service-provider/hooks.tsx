@@ -18,6 +18,10 @@ export function useCreateMeal() {
       queryClient.invalidateQueries({
         queryKey: ['getMealsByDate'],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ['getMacrosByDate'],
+      });
     },
     onError: (error: Error) => {
       console.error('Error creating meal:', error);
@@ -59,6 +63,10 @@ export function useUpsertMeal(mealId: string) {
       queryClient.invalidateQueries({
         queryKey: ['getMealsByDate'],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ['getMacrosByDate'],
+      });
     },
     onError: (error: Error) => {
       console.error('Error upserting meal:', error);
@@ -82,6 +90,10 @@ export function useUpdateMeal(mealId: string) {
       queryClient.invalidateQueries({
         queryKey: ['getMealsByDate'],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ['getMacrosByDate'],
+      });
     },
     onError: (error: Error) => {
       console.error('Error updating meal:', error);
@@ -104,6 +116,10 @@ export function useDeleteMeal(mealId: string) {
 
       queryClient.invalidateQueries({
         queryKey: ['getMealsByDate'],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['getMacrosByDate'],
       });
     },
     onError: (error: Error) => {
