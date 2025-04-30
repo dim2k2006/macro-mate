@@ -6,6 +6,7 @@ import { MealType } from '@/domain/meal/meal.model.ts';
 import CreateMealForm from '@/components/create-meal-form';
 import EditMealForm from '@/components/edit-meal-form';
 import React, { useState } from 'react';
+import { useCountTotalMacrosByMeals } from '@/components/meal-service-provider';
 
 function MealCard({ title, mealType, meals }: MealCardProps) {
   const { t } = useTranslation();
@@ -24,10 +25,7 @@ function MealCard({ title, mealType, meals }: MealCardProps) {
 
   const [opened, { open, close }] = useDisclosure(false);
 
-  const calories = meals.reduce((acc, meal) => acc + meal.calories, 0);
-  const proteins = meals.reduce((acc, meal) => acc + meal.proteins, 0);
-  const fats = meals.reduce((acc, meal) => acc + meal.fats, 0);
-  const carbs = meals.reduce((acc, meal) => acc + meal.carbs, 0);
+  const { calories, proteins, fats, carbs } = useCountTotalMacrosByMeals(meals);
 
   const isEmpty = meals.length === 0;
 

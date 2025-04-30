@@ -7,4 +7,5 @@ export {
   useUpdateMeal,
   useDeleteMeal,
   useGetMacrosByDate,
+  useCountTotalMacrosByMeals,
 } from './hooks';

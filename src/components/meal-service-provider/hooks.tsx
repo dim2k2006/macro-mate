@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMealService } from './meal-service-provider.tsx';
-import { Meal, CreateMealInput } from '@/domain/meal';
+import { Meal, CreateMealInput, EnhancedMeal } from '@/domain/meal';
 
 export function useCreateMeal() {
   const service = useMealService();
@@ -135,4 +135,10 @@ export function useGetMacrosByDate(date: string) {
     queryKey: ['getMacrosByDate', date],
     queryFn: () => service.getMacrosByDate(date),
   });
+}
+
+export function useCountTotalMacrosByMeals(meals: EnhancedMeal[]) {
+  const service = useMealService();
+
+  return service.countTotalMacrosByMeals(meals);
 }
