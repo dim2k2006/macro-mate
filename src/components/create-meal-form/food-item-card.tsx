@@ -1,5 +1,6 @@
 import { Button, Text, Grid } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import React from 'react';
 
 function FoodItemCard({ id, name, date, onSelect }: FoodItemCardProps) {
   const { t } = useTranslation();
@@ -25,7 +26,7 @@ function FoodItemCard({ id, name, date, onSelect }: FoodItemCardProps) {
 
 type FoodItemCardProps = {
   id: string;
-  name: string;
+  name: string | React.ReactNode[];
   date: string;
   onSelect: (id: string) => void;
 };
