@@ -2,25 +2,11 @@ import { EnhancedMeal, Meal } from '@/domain/meal';
 import { hasLength, useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { useUpsertMeal, useDeleteMeal } from '@/components/meal-service-provider';
-import {
-  Button,
-  Card,
-  NumberInput,
-  Space,
-  Text,
-  Popover,
-  Group,
-  Grid,
-  ScrollArea,
-  Stack,
-  Divider,
-  TextInput,
-} from '@mantine/core';
+import { Button, Card, NumberInput, Space, Text, Popover, Group, Grid } from '@mantine/core';
 import { useListFoodItems } from '@/components/foodItem-service-provider';
 import dayjs from 'dayjs';
-import { useFuzzySearch } from '@/components/fuzzy-search';
-import { useMemo } from 'react';
-import FoodItemCard from '@/components/food-item-card';
+import { FoodItem } from '@/domain/foodItem';
+import SearchableFoodItems from '@/components/searchable-food-items';
 
 function EditMealForm({ meal, onFinish }: EditMealFormProps) {
   const { t } = useTranslation();
@@ -28,12 +14,6 @@ function EditMealForm({ meal, onFinish }: EditMealFormProps) {
   const foodItemsState = useListFoodItems();
 
   const foodItems = foodItemsState.data || [];
-
-  const foodItemOptions = foodItems.map((item) => ({
-    id: item.id,
-    name: item.name,
-    date: dayjs(item.createdAt).format('YYYY-MM-DD'),
-  }));
 
   const { mutate: upsertMeal, isPending: isUpserting, isError: isUpsertError } = useUpsertMeal(meal.id);
 
@@ -44,7 +24,6 @@ function EditMealForm({ meal, onFinish }: EditMealFormProps) {
     initialValues: {
       foodItemId: meal.foodItemId,
       amount: meal.amount,
-      query: '',
     },
     validate: {
       foodItemId: hasLength({ min: 3 }, t('requiredField')),
@@ -80,8 +59,12 @@ function EditMealForm({ meal, onFinish }: EditMealFormProps) {
     });
   }
 
-  function handleSelectFoodItem(id: string) {
-    form.setFieldValue('foodItemId', id);
+  function handleSelectFoodItem(foodItem: FoodItem) {
+    form.setFieldValue('foodItemId', foodItem.id);
+  }
+
+  function handleClearFoodItem() {
+    form.setFieldValue('foodItemId', '');
   }
 
   function handleDelete() {
@@ -95,27 +78,6 @@ function EditMealForm({ meal, onFinish }: EditMealFormProps) {
       },
     });
   }
-
-  const { search, highlightText } = useFuzzySearch(foodItemOptions, {
-    includeScore: true,
-    includeMatches: true,
-    threshold: 0.4,
-    keys: ['name', 'date'],
-    findAllMatches: true,
-    minMatchCharLength: 1,
-  });
-
-  const searchResults = useMemo(() => {
-    if (!form.values.query) return [];
-
-    return search(form.values.query).map((result) => ({
-      item: result.item,
-      matches: result.matches,
-    }));
-  }, [form.values.query, search]);
-
-  const results =
-    searchResults.length > 0 ? searchResults : foodItemOptions.map((option) => ({ item: option, matches: [] }));
 
   const selectedFoodItem = foodItems.find((item) => item.id === form.values.foodItemId);
 
@@ -134,7 +96,7 @@ function EditMealForm({ meal, onFinish }: EditMealFormProps) {
             </Grid.Col>
 
             <Grid.Col span={4}>
-              <Button variant="outline" size="compact-xs" onClick={() => handleSelectFoodItem('')} color="red">
+              <Button variant="outline" size="compact-xs" onClick={() => handleClearFoodItem()} color="red">
                 {t('clear')}
               </Button>
             </Grid.Col>
@@ -147,31 +109,7 @@ function EditMealForm({ meal, onFinish }: EditMealFormProps) {
 
         <Space h="md" />
 
-        <TextInput {...form.getInputProps('query')} label={t('selectFoodItem')} disabled={isPending} />
-
-        <Space h="md" />
-
-        <ScrollArea h={280}>
-          <Stack>
-            {results.map(({ item, matches }) => {
-              const valueMatches = matches?.filter((match) => match.indices[0][0] >= 0 && match.value === item.name);
-
-              return (
-                <>
-                  <FoodItemCard
-                    key={item.id}
-                    id={item.id}
-                    name={highlightText(item.name, valueMatches)}
-                    date={item.date}
-                    onSelect={handleSelectFoodItem}
-                  />
-
-                  <Divider />
-                </>
-              );
-            })}
-          </Stack>
-        </ScrollArea>
+        <SearchableFoodItems foodItems={foodItems} onSelectFoodItem={handleSelectFoodItem} />
 
         <Group justify="center">
           <Button type="submit" mt="md" color="teal" fullWidth>
