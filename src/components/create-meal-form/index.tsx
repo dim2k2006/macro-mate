@@ -21,7 +21,7 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
     mode: 'controlled',
     initialValues: {
       foodItemId: '',
-      amount: 0,
+      amount: undefined,
       query: '',
     },
     validate: {
@@ -43,7 +43,7 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
   function handleSubmit(values: SubmitValues) {
     const input = {
       foodItemId: values.foodItemId,
-      amount: values.amount,
+      amount: values.amount ?? 0,
       type: mealType,
       consumedAt: new Date().toISOString(),
     };
@@ -94,7 +94,13 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
 
         <Space h="md" />
 
-        <NumberInput {...form.getInputProps('amount')} label={t('mealAmount')} disabled={isPending} hideControls />
+        <NumberInput
+          type="tel"
+          {...form.getInputProps('amount')}
+          label={t('mealAmount')}
+          disabled={isPending}
+          hideControls
+        />
 
         <Space h="md" />
 
@@ -132,7 +138,7 @@ type CreateMealFormProps = {
 
 type SubmitValues = {
   foodItemId: string;
-  amount: number;
+  amount: number | undefined;
   query: string;
 };
 

@@ -338,6 +338,7 @@ ${selectedFoodItem.description}
               <NativeSelect {...form.getInputProps('unit')} label={t('foodItemUnitLabel')} data={units} />
 
               <NumberInput
+                type="tel"
                 {...form.getInputProps('calories')}
                 label={t('foodItemCaloriesLabel')}
                 disabled={isLoading}
@@ -350,6 +351,7 @@ ${selectedFoodItem.description}
             <SimpleGrid cols={3}>
               <div>
                 <NumberInput
+                  type="tel"
                   {...form.getInputProps('proteins')}
                   label={t('foodItemProteinLabel')}
                   disabled={isLoading}
@@ -359,6 +361,7 @@ ${selectedFoodItem.description}
 
               <div>
                 <NumberInput
+                  type="tel"
                   {...form.getInputProps('fats')}
                   label={t('foodItemFatLabel')}
                   disabled={isLoading}
@@ -368,6 +371,7 @@ ${selectedFoodItem.description}
 
               <div>
                 <NumberInput
+                  type="tel"
                   {...form.getInputProps('carbs')}
                   label={t('foodItemCarbsLabel')}
                   disabled={isLoading}
