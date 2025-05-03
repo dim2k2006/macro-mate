@@ -14,7 +14,6 @@ import {
   Modal,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { usePrevious } from 'react-use';
 import { useForm, hasLength } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { Unit, FoodItem } from '@/domain/foodItem';
@@ -27,9 +26,10 @@ import {
 } from '@/components/foodItem-service-provider';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import SearchableFoodItems from '@/components/searchable-food-items';
+import { useLocation } from 'react-router-dom';
 
 const units: Unit[] = ['g', 'ml'];
 
@@ -56,16 +56,22 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
 
   const isLoading = isCalculatingMacros || isParsingMacros;
 
-  // This is used to prevent the form from reinitializing when the food item is updated
-  const [initialValues] = useState<SubmitValues>({
-    description: foodItem.description,
-    name: foodItem.name,
+  const { search } = useLocation();
+
+  const query = new URLSearchParams(search);
+
+  const queryInitialValues: SubmitValues = {
+    description: query.get('description') || foodItem.description,
+    name: query.get('name') || foodItem.name,
     unit: foodItem.unit,
-    calories: foodItem.calories,
-    proteins: foodItem.proteins,
-    fats: foodItem.fats,
-    carbs: foodItem.carbs,
-  });
+    calories: query.get('calories') ? Number(query.get('calories')) : foodItem.calories,
+    proteins: query.get('proteins') ? Number(query.get('proteins')) : foodItem.proteins,
+    fats: query.get('fats') ? Number(query.get('fats')) : foodItem.fats,
+    carbs: query.get('carbs') ? Number(query.get('carbs')) : foodItem.carbs,
+  };
+
+  // This is used to prevent the form from reinitializing when the food item is updated
+  const [initialValues] = useState<SubmitValues>(queryInitialValues);
 
   const form = useForm({
     mode: 'controlled',
@@ -153,28 +159,6 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
 
     upsertFoodItem(newFoodItem);
   }
-
-  const prevFoodItem = usePrevious(foodItem);
-
-  useEffect(() => {
-    function handleUpdateInitialValues() {
-      if (isEqual(foodItem, prevFoodItem)) {
-        return;
-      }
-
-      form.setValues({
-        description: foodItem.description,
-        name: foodItem.name,
-        unit: foodItem.unit,
-        calories: foodItem.calories,
-        proteins: foodItem.proteins,
-        fats: foodItem.fats,
-        carbs: foodItem.carbs,
-      });
-    }
-
-    handleUpdateInitialValues();
-  }, [foodItem, form, prevFoodItem]);
 
   function handleDelete() {
     deleteFoodItem();
