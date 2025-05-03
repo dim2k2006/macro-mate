@@ -341,6 +341,7 @@ ${selectedFoodItem.description}
                 {...form.getInputProps('calories')}
                 label={t('foodItemCaloriesLabel')}
                 disabled={isLoading}
+                hideControls
               />
             </SimpleGrid>
 
@@ -352,15 +353,26 @@ ${selectedFoodItem.description}
                   {...form.getInputProps('proteins')}
                   label={t('foodItemProteinLabel')}
                   disabled={isLoading}
+                  hideControls
                 />
               </div>
 
               <div>
-                <NumberInput {...form.getInputProps('fats')} label={t('foodItemFatLabel')} disabled={isLoading} />
+                <NumberInput
+                  {...form.getInputProps('fats')}
+                  label={t('foodItemFatLabel')}
+                  disabled={isLoading}
+                  hideControls
+                />
               </div>
 
               <div>
-                <NumberInput {...form.getInputProps('carbs')} label={t('foodItemCarbsLabel')} disabled={isLoading} />
+                <NumberInput
+                  {...form.getInputProps('carbs')}
+                  label={t('foodItemCarbsLabel')}
+                  disabled={isLoading}
+                  hideControls
+                />
               </div>
             </SimpleGrid>
 

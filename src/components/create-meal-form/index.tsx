@@ -94,7 +94,7 @@ function CreateMealForm({ mealType, onSuccess, onError }: CreateMealFormProps) {
 
         <Space h="md" />
 
-        <NumberInput {...form.getInputProps('amount')} label={t('mealAmount')} disabled={isPending} />
+        <NumberInput {...form.getInputProps('amount')} label={t('mealAmount')} disabled={isPending} hideControls />
 
         <Space h="md" />
 
