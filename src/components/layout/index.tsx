@@ -1,13 +1,10 @@
-import { AppShell, Group, Image, Tabs } from '@mantine/core';
+import { AppShell, Group, Image, Text, Table } from '@mantine/core';
 import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import style from './style.module.css';
 
 function Layout({ children }: LayoutProps) {
   const { t } = useTranslation();
-
-  const location = useLocation();
 
   return (
     <AppShell
@@ -16,7 +13,7 @@ function Layout({ children }: LayoutProps) {
         height: 60,
       }}
       footer={{
-        height: 50,
+        height: 60,
       }}
     >
       <AppShell.Header p="sm">
@@ -28,21 +25,29 @@ function Layout({ children }: LayoutProps) {
       <AppShell.Main>{children}</AppShell.Main>
 
       <AppShell.Footer>
-        <Tabs value={location.pathname}>
-          <Tabs.List justify="center">
-            <Tabs.Tab value="/" className={style.link}>
-              <Link to="/">{t('cookingFoodItems')}</Link>
-            </Tabs.Tab>
+        <Table withColumnBorders>
+          <Table.Tbody>
+            <Table.Tr>
+              <Table.Td w="33%" align="center">
+                <Link to="/">
+                  <Text size="md">{t('cookingFoodItems')}</Text>
+                </Link>
+              </Table.Td>
 
-            <Tabs.Tab value="/food" className={style.link}>
-              <Link to="/food">{t('foodItems')}</Link>
-            </Tabs.Tab>
+              <Table.Td w="33%" align="center">
+                <Link to="/food">
+                  <Text size="md">{t('foodItems')}</Text>
+                </Link>
+              </Table.Td>
 
-            <Tabs.Tab value="/meal" className={style.link}>
-              <Link to="/meal">{t('meals')}</Link>
-            </Tabs.Tab>
-          </Tabs.List>
-        </Tabs>
+              <Table.Td w="33%" align="center">
+                <Link to="/meal">
+                  <Text size="md">{t('meals')}</Text>
+                </Link>
+              </Table.Td>
+            </Table.Tr>
+          </Table.Tbody>
+        </Table>
       </AppShell.Footer>
     </AppShell>
   );
