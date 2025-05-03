@@ -247,20 +247,6 @@ ${selectedFoodItem.description}
 
         {isExpanded && (
           <>
-            <Grid align="end">
-              <Grid.Col span={10}>
-                <TextInput {...form.getInputProps('name')} label={t('foodItemNameLabel')} />
-              </Grid.Col>
-
-              <Grid.Col span={2}>
-                <Button variant="default" color="yellow" fullWidth={false} size="xs" onClick={handleExpand}>
-                  {isExpanded ? '-' : '+'}
-                </Button>
-              </Grid.Col>
-            </Grid>
-
-            <Space h="md" />
-
             <Textarea
               {...form.getInputProps('description')}
               label={t('foodItemLabel')}
@@ -268,6 +254,7 @@ ${selectedFoodItem.description}
               autosize
               minRows={8}
               maxRows={10}
+              size="lg"
             />
 
             {isCalculateMacrosError && (
@@ -327,6 +314,20 @@ ${selectedFoodItem.description}
                   onClick={open}
                 >
                   {t('addIngredientsMacros')}
+                </Button>
+              </Grid.Col>
+            </Grid>
+
+            <Space h="md" />
+
+            <Grid align="end">
+              <Grid.Col span={10}>
+                <TextInput {...form.getInputProps('name')} label={t('foodItemNameLabel')} />
+              </Grid.Col>
+
+              <Grid.Col span={2}>
+                <Button variant="default" color="yellow" fullWidth={false} size="xs" onClick={handleExpand}>
+                  {isExpanded ? '-' : '+'}
                 </Button>
               </Grid.Col>
             </Grid>
