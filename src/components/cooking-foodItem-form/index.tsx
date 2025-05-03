@@ -56,17 +56,20 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
 
   const isLoading = isCalculatingMacros || isParsingMacros;
 
+  // This is used to prevent the form from reinitializing when the food item is updated
+  const [initialValues] = useState<SubmitValues>({
+    description: foodItem.description,
+    name: foodItem.name,
+    unit: foodItem.unit,
+    calories: foodItem.calories,
+    proteins: foodItem.proteins,
+    fats: foodItem.fats,
+    carbs: foodItem.carbs,
+  });
+
   const form = useForm({
     mode: 'controlled',
-    initialValues: {
-      description: foodItem.description,
-      name: foodItem.name,
-      unit: foodItem.unit,
-      calories: foodItem.calories,
-      proteins: foodItem.proteins,
-      fats: foodItem.fats,
-      carbs: foodItem.carbs,
-    },
+    initialValues: initialValues,
     validate: {
       description: hasLength({ min: 3 }, t('requiredField')),
       name: hasLength({ min: 3 }, t('requiredField')),
