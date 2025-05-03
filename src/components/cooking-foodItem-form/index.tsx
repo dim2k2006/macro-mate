@@ -249,15 +249,7 @@ ${selectedFoodItem.description}
           <>
             <Grid align="end">
               <Grid.Col span={10}>
-                <TextInput
-                  {...form.getInputProps('name')}
-                  label={
-                    <>
-                      {t('foodItemNameLabel')}
-                      <Text size="xs">{`(${date})`}</Text>
-                    </>
-                  }
-                />
+                <TextInput {...form.getInputProps('name')} label={t('foodItemNameLabel')} />
               </Grid.Col>
 
               <Grid.Col span={2}>
