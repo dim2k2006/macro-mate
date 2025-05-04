@@ -21,7 +21,6 @@ import {
   useUpsertFoodItem,
   useDeleteFoodItem,
   useCalculateMacros,
-  useParseMacros,
   useListFoodItems,
 } from '@/components/foodItem-service-provider';
 import debounce from 'lodash/debounce';
@@ -45,8 +44,6 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
   const debouncedUpsertFoodItem = useMemo(() => debounce(upsertFoodItem, 300), [upsertFoodItem]);
 
   const { mutate: deleteFoodItem } = useDeleteFoodItem(foodItem.id);
-
-  const { mutate: parseMacros, isPending: isParsingMacros, isError: isParseMacrosError } = useParseMacros(foodItem.id);
 
   const { search } = useLocation();
 
@@ -178,10 +175,6 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
     calculateMacros();
   }
 
-  function handleParseMacros() {
-    parseMacros();
-  }
-
   const [isExpanded, setIsExpanded] = useState(initialIsExpanded);
   const handleExpand = () => {
     setIsExpanded((prev) => !prev);
@@ -206,7 +199,7 @@ ${selectedFoodItem.description}
     close();
   }
 
-  const isLoading = isCalculatingMacros || isParsingMacros;
+  const isLoading = isCalculatingMacros;
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -275,16 +268,10 @@ ${selectedFoodItem.description}
               </Text>
             )}
 
-            {isParseMacrosError && (
-              <Text c="red" size="sm" mt="md">
-                {t('parseMacrosError')}
-              </Text>
-            )}
-
             <Space h="md" />
 
             <Grid>
-              <Grid.Col span={6}>
+              <Grid.Col span={12}>
                 <Button
                   type="button"
                   variant="outline"
@@ -296,21 +283,6 @@ ${selectedFoodItem.description}
                   onClick={handleCalculateMacros}
                 >
                   {t('calculateMacros')}
-                </Button>
-              </Grid.Col>
-
-              <Grid.Col span={6}>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="xs"
-                  fullWidth
-                  loaderProps={{ type: 'dots' }}
-                  loading={isParsingMacros}
-                  disabled={isParsingMacros}
-                  onClick={handleParseMacros}
-                >
-                  {t('parseMacros')}
                 </Button>
               </Grid.Col>
 
