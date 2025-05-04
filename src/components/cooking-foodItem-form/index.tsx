@@ -192,6 +192,10 @@ ${currentDescription}
 
 ${t('macros')} ${selectedFoodItem.name}
 ${selectedFoodItem.description}
+${t('calories')} ${selectedFoodItem.calories}
+${t('protein')} ${selectedFoodItem.proteins}
+${t('fat')} ${selectedFoodItem.fats}
+${t('carbs')} ${selectedFoodItem.carbs}
     `;
 
     form.setFieldValue('description', newDescription);
