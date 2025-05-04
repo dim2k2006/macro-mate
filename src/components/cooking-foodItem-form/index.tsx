@@ -191,10 +191,10 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
 
 ${t('macros')} ${selectedFoodItem.name}
 ${selectedFoodItem.description}
-${t('calories')} ${selectedFoodItem.calories}
-${t('protein')} ${selectedFoodItem.proteins}
-${t('fat')} ${selectedFoodItem.fats}
-${t('carbs')} ${selectedFoodItem.carbs}
+${t('calories')}: ${selectedFoodItem.calories}
+${t('protein')}: ${selectedFoodItem.proteins}
+${t('fat')}: ${selectedFoodItem.fats}
+${t('carbs')}: ${selectedFoodItem.carbs}
     `;
 
     form.setFieldValue('description', newDescription);
