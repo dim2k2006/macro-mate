@@ -187,8 +187,7 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
   function handleSelectFoodItem(selectedFoodItem: FoodItem) {
     const currentDescription = form.values.description;
 
-    const newDescription = `
-${currentDescription}
+    const newDescription = `${currentDescription}
 
 ${t('macros')} ${selectedFoodItem.name}
 ${selectedFoodItem.description}
