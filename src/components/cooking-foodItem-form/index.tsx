@@ -46,15 +46,7 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
 
   const { mutate: deleteFoodItem } = useDeleteFoodItem(foodItem.id);
 
-  const {
-    mutate: calculateMacros,
-    isPending: isCalculatingMacros,
-    isError: isCalculateMacrosError,
-  } = useCalculateMacros(foodItem.id);
-
   const { mutate: parseMacros, isPending: isParsingMacros, isError: isParseMacrosError } = useParseMacros(foodItem.id);
-
-  const isLoading = isCalculatingMacros || isParsingMacros;
 
   const { search } = useLocation();
 
@@ -144,6 +136,24 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
     },
   });
 
+  const {
+    mutate: calculateMacros,
+    isPending: isCalculatingMacros,
+    isError: isCalculateMacrosError,
+  } = useCalculateMacros(foodItem.id, {
+    onSuccess: (data) => {
+      form.setValues({
+        description: data.description,
+        name: foodItem.name,
+        unit: data.unit,
+        calories: data.calories,
+        proteins: data.proteins,
+        fats: data.fats,
+        carbs: data.carbs,
+      });
+    },
+  });
+
   function handleSubmit(values: SubmitValues) {
     const newFoodItem: FoodItem = {
       ...foodItem,
@@ -195,6 +205,8 @@ ${selectedFoodItem.description}
 
     close();
   }
+
+  const isLoading = isCalculatingMacros || isParsingMacros;
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>

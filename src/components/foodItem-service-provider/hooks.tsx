@@ -108,7 +108,7 @@ export function useDeleteFoodItem(id: string) {
   });
 }
 
-export function useCalculateMacros(id: string) {
+export function useCalculateMacros(id: string, options?: UseCalculateMacrosOptions) {
   const service = useFoodItemService();
 
   const queryClient = useQueryClient();
@@ -116,7 +116,7 @@ export function useCalculateMacros(id: string) {
   return useMutation({
     mutationKey: ['calculateMacros', id],
     mutationFn: () => service.calculateMacros(id),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: ['listFoodItems'],
       });
@@ -124,12 +124,25 @@ export function useCalculateMacros(id: string) {
       queryClient.invalidateQueries({
         queryKey: ['getFoodItemById', id],
       });
+
+      if (options?.onSuccess) {
+        options.onSuccess(data);
+      }
     },
     onError: (error: Error) => {
       console.error('Error calculating macros:', error);
+
+      if (options?.onError) {
+        options.onError(error);
+      }
     },
   });
 }
+
+type UseCalculateMacrosOptions = {
+  onSuccess?: (data: FoodItem) => void;
+  onError?: (error: Error) => void;
+};
 
 export function useParseMacros(id: string) {
   const service = useFoodItemService();
