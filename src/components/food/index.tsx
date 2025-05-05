@@ -1,6 +1,6 @@
 import { useListFoodItems } from '@/components/foodItem-service-provider';
 import { useMemo } from 'react';
-import CookingFoodItem from '@/components/cooking-foodItem-form';
+import CookingFoodItem from 'src/components/cooking-foodItem';
 import { Box, Space } from '@mantine/core';
 import React from 'react';
 
