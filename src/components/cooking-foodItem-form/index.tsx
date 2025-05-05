@@ -141,7 +141,7 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
     onSuccess: (data) => {
       form.setValues({
         description: data.description,
-        name: foodItem.name,
+        name: foodItem.name || data.name,
         unit: data.unit,
         calories: data.calories,
         proteins: data.proteins,
