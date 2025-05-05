@@ -1,9 +1,13 @@
 import { useLocation } from 'react-router-dom';
+import { Box, Space, Title } from '@mantine/core';
 import CreateProducedFoodItemForm from '@/components/create-produced-foodItem-form';
 import type { FormValues } from '@/components/create-produced-foodItem-form';
 import { useCreateFoodItem } from '@/components/foodItem-service-provider';
+import { useTranslation } from 'react-i18next';
 
 function ProducedFood() {
+  const { t } = useTranslation();
+
   const { search } = useLocation();
 
   const query = new URLSearchParams(search);
@@ -36,7 +40,13 @@ function ProducedFood() {
   }
 
   return (
-    <CreateProducedFoodItemForm initialValues={queryInitialValues} onSubmit={handleSubmit} isLoading={isPending} />
+    <Box p="md">
+      <Title order={2}>{t('producedFoodItemForm')}</Title>
+
+      <Space h="md" />
+
+      <CreateProducedFoodItemForm initialValues={queryInitialValues} onSubmit={handleSubmit} isLoading={isPending} />
+    </Box>
   );
 }
 

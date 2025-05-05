@@ -1,19 +1,7 @@
 import { Unit } from '@/domain/foodItem';
 import { hasLength, useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
-import {
-  Button,
-  Card,
-  Group,
-  NativeSelect,
-  NumberInput,
-  Popover,
-  SimpleGrid,
-  Space,
-  Text,
-  Textarea,
-  TextInput,
-} from '@mantine/core';
+import { Button, Card, Group, NativeSelect, NumberInput, SimpleGrid, Space, Textarea, TextInput } from '@mantine/core';
 
 const units: Unit[] = ['g', 'ml'];
 
@@ -85,8 +73,8 @@ function CreateProducedFoodItemForm({ initialValues, isLoading, onSubmit }: Crea
           label={t('foodItemLabel')}
           placeholder={t('foodItemPlaceholder')}
           autosize
-          minRows={8}
-          maxRows={10}
+          minRows={2}
+          maxRows={4}
           size="lg"
         />
 
@@ -146,24 +134,6 @@ function CreateProducedFoodItemForm({ initialValues, isLoading, onSubmit }: Crea
           <Button type="submit" mt="md" color="teal" fullWidth disabled={isLoading}>
             {t('saveFoodItem')}
           </Button>
-
-          <Space h="md" />
-
-          <Popover width={150} position="bottom" withArrow shadow="md">
-            <Popover.Target>
-              <Button color="red" size="xs" variant="outline" disabled={isLoading}>
-                {t('deleteFoodItem')}
-              </Button>
-            </Popover.Target>
-
-            <Popover.Dropdown>
-              <Group justify="center">
-                <Text fw={500} size="sm">
-                  {t('deleteFoodItemConfirmLabel')}
-                </Text>
-              </Group>
-            </Popover.Dropdown>
-          </Popover>
         </Group>
       </form>
     </Card>

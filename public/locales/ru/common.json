@@ -64,5 +64,6 @@
   "products": "Продукты",
   "select": "Выбрать",
   "clear": "Очистить",
-  "macros": "КБЖУ"
+  "macros": "КБЖУ",
+  "producedFoodItemForm": "Добавить продукт"
 }
