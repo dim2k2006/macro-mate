@@ -1,7 +1,7 @@
 import { useListFoodItems, useCreateFoodItem } from '@/components/foodItem-service-provider';
 import { useMemo } from 'react';
 import { v4 as uuidV4 } from 'uuid';
-import CookingFoodItem from 'src/components/cooking-foodItem';
+import CookingFoodItem from '@/components/cooking-foodItem';
 import { FoodItem } from '@/domain/foodItem';
 import { Box, Button, Space } from '@mantine/core';
 import { useTranslation } from 'react-i18next';

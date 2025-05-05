@@ -9,6 +9,7 @@ import Intro from '@/components/intro';
 import Home from '@/components/home';
 import Food from '@/components/food';
 import Meal from '@/components/meal';
+import ProducedFood from '@/components/produced-food';
 import ProtectedRoute from '@/components/protected-route';
 import Layout from '@/components/layout';
 
@@ -38,6 +39,10 @@ function Root() {
 
                 <Route path="/meal" element={<ProtectedRoute />}>
                   <Route path="/meal" element={<Meal />} />
+                </Route>
+
+                <Route path="/produced-food" element={<ProtectedRoute />}>
+                  <Route path="/produced-food" element={<ProducedFood />} />
                 </Route>
 
                 <Route path="/intro" element={<Intro />} />
