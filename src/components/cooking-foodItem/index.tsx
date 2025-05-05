@@ -39,7 +39,7 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
 
   const foodItems = foodItemsState.data || [];
 
-  const { mutate: upsertFoodItem } = useUpsertFoodItem(foodItem.id);
+  const { mutate: upsertFoodItem } = useUpsertFoodItem();
 
   const debouncedUpsertFoodItem = useMemo(() => debounce(upsertFoodItem, 300), [upsertFoodItem]);
 
@@ -129,7 +129,7 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
         carbs: values.carbs,
       };
 
-      debouncedUpsertFoodItem(newFoodItem);
+      debouncedUpsertFoodItem({ id: foodItem.id, foodItem: newFoodItem });
     },
   });
 
@@ -164,7 +164,7 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
       state: 'cooked' as const,
     };
 
-    upsertFoodItem(newFoodItem);
+    upsertFoodItem({ id: foodItem.id, foodItem: newFoodItem });
   }
 
   function handleDelete() {

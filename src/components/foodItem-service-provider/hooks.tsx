@@ -39,21 +39,20 @@ export function useListFoodItems() {
   });
 }
 
-export function useUpdateFoodItem(id: string) {
+export function useUpdateFoodItem() {
   const service = useFoodItemService();
 
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['updateFoodItem', id],
-    mutationFn: (foodItem: FoodItem) => service.updateFoodItem(id, foodItem),
-    onSuccess: () => {
+    mutationFn: ({ id, foodItem }: { id: string; foodItem: FoodItem }) => service.updateFoodItem(id, foodItem),
+    onSuccess: (foodItem) => {
       queryClient.invalidateQueries({
         queryKey: ['listFoodItems'],
       });
 
       queryClient.invalidateQueries({
-        queryKey: ['getFoodItemById', id],
+        queryKey: ['getFoodItemById', foodItem.id],
       });
     },
     onError: (error: Error) => {
@@ -62,21 +61,20 @@ export function useUpdateFoodItem(id: string) {
   });
 }
 
-export function useUpsertFoodItem(id: string) {
+export function useUpsertFoodItem() {
   const service = useFoodItemService();
 
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['upsertFoodItem', id],
-    mutationFn: (foodItem: FoodItem) => service.upsertFoodItem(id, foodItem),
-    onSuccess: () => {
+    mutationFn: ({ id, foodItem }: { id: string; foodItem: FoodItem }) => service.upsertFoodItem(id, foodItem),
+    onSuccess: (foodItem) => {
       queryClient.invalidateQueries({
         queryKey: ['listFoodItems'],
       });
 
       queryClient.invalidateQueries({
-        queryKey: ['getFoodItemById', id],
+        queryKey: ['getFoodItemById', foodItem.id],
       });
     },
     onError: (error: Error) => {
