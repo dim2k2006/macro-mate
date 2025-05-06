@@ -152,11 +152,13 @@ function Settings() {
           disabled={isPending}
           hideControls
         />
-      </form>
 
-      <Button type="submit" mt="sm" fullWidth disabled={isPending} loading={isPending}>
-        {t('saveSettings')}
-      </Button>
+        <Space h="md" />
+
+        <Button type="submit" mt="sm" fullWidth disabled={isPending} loading={isPending}>
+          {t('saveSettings')}
+        </Button>
+      </form>
 
       {isError && (
         <Box mt="sm" color="red">
