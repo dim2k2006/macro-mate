@@ -72,9 +72,9 @@
   "eating": "Кушаю",
   "failLoadingSettingsTitle": "Не удалось загрузить настройки",
   "failLoadingSettingsMessage": "Пожалуйста попробуйте еще раз.",
-  "caloriesWithRef": "\uD83C\uDF7D К {{current}} из {{goal}}",
-  "proteinsWithRef": "\uD83E\uDD69 Б {{current}} из {{goal}}",
-  "fatsWithRef": "\uD83E\uDD51 Ж {{current}} из {{goal}}",
-  "carbsWithRef": "\uD83C\uDF5E У {{current}} из {{goal}}",
+  "caloriesWithRef": "\uD83C\uDF7D К {{current}} / {{goal}}",
+  "proteinsWithRef": "\uD83E\uDD69 Б {{current}} / {{goal}}",
+  "fatsWithRef": "\uD83E\uDD51 Ж {{current}} / {{goal}}",
+  "carbsWithRef": "\uD83C\uDF5E У {{current}} / {{goal}}",
   "percent": "{{percent}}%"
 }

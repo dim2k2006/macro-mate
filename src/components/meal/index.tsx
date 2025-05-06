@@ -92,16 +92,16 @@ function Meal() {
                   <Table.Tr>
                     <Table.Td>
                       <Group justify="space-between">
-                        <Text>{`${t('caloriesWithRef', { current: Math.round(macrosState.data.calories), goal: macroGoals?.calories })}`}</Text>
+                        <Text size="sm">{`${t('caloriesWithRef', { current: Math.round(macrosState.data.calories), goal: macroGoals?.calories })}`}</Text>
 
                         <Text size="xs" color="dimmed">
                           {t('percent', { percent: countProgress(macrosState.data.calories, macroGoals?.calories) })}
                         </Text>
                       </Group>
 
-                      <Space h={5} />
+                      <Space h={3} />
 
-                      <Progress.Root size={15} radius="md">
+                      <Progress.Root size={10} radius="md">
                         <Progress.Section
                           value={countProgress(macrosState.data.calories, macroGoals?.calories)}
                           color={getColor(macrosState.data.calories, macroGoals?.calories)}
@@ -113,16 +113,16 @@ function Meal() {
                   <Table.Tr>
                     <Table.Td>
                       <Group justify="space-between">
-                        <Text>{`${t('proteinsWithRef', { current: Math.round(macrosState.data.proteins), goal: macroGoals?.proteins })}`}</Text>
+                        <Text size="sm">{`${t('proteinsWithRef', { current: Math.round(macrosState.data.proteins), goal: macroGoals?.proteins })}`}</Text>
 
                         <Text size="xs" color="dimmed">
                           {t('percent', { percent: countProgress(macrosState.data.proteins, macroGoals?.proteins) })}
                         </Text>
                       </Group>
 
-                      <Space h={5} />
+                      <Space h={3} />
 
-                      <Progress.Root size={15} radius="md">
+                      <Progress.Root size={10} radius="md">
                         <Progress.Section
                           value={countProgress(macrosState.data.proteins, macroGoals?.proteins)}
                           color={getColor(macrosState.data.proteins, macroGoals?.proteins, true)}
@@ -134,16 +134,16 @@ function Meal() {
                   <Table.Tr>
                     <Table.Td>
                       <Group justify="space-between">
-                        <Text>{`${t('fatsWithRef', { current: Math.round(macrosState.data.fats), goal: macroGoals?.fats })}`}</Text>
+                        <Text size="sm">{`${t('fatsWithRef', { current: Math.round(macrosState.data.fats), goal: macroGoals?.fats })}`}</Text>
 
                         <Text size="xs" color="dimmed">
                           {t('percent', { percent: countProgress(macrosState.data.fats, macroGoals?.fats) })}
                         </Text>
                       </Group>
 
-                      <Space h={5} />
+                      <Space h={3} />
 
-                      <Progress.Root size={15} radius="md">
+                      <Progress.Root size={10} radius="md">
                         <Progress.Section
                           value={countProgress(macrosState.data.fats, macroGoals?.fats)}
                           color={getColor(macrosState.data.fats, macroGoals?.fats)}
@@ -155,16 +155,16 @@ function Meal() {
                   <Table.Tr>
                     <Table.Td>
                       <Group justify="space-between">
-                        <Text>{`${t('carbsWithRef', { current: Math.round(macrosState.data.carbs), goal: macroGoals?.carbs })}`}</Text>
+                        <Text size="sm">{`${t('carbsWithRef', { current: Math.round(macrosState.data.carbs), goal: macroGoals?.carbs })}`}</Text>
 
                         <Text size="xs" color="dimmed">
                           {t('percent', { percent: countProgress(macrosState.data.carbs, macroGoals?.carbs) })}
                         </Text>
                       </Group>
 
-                      <Space h={5} />
+                      <Space h={3} />
 
-                      <Progress.Root size={15} radius="md">
+                      <Progress.Root size={10} radius="md">
                         <Progress.Section
                           value={countProgress(macrosState.data.carbs, macroGoals?.carbs)}
                           color={getColor(macrosState.data.carbs, macroGoals?.carbs)}
