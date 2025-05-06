@@ -149,7 +149,7 @@ function Meal() {
                       <Progress.Root size={20} radius="md">
                         <Progress.Section
                           value={countProgress(macrosState.data.proteins, macroGoals?.proteins)}
-                          color={getColor(macrosState.data.proteins, macroGoals?.proteins)}
+                          color={getColor(macrosState.data.proteins, macroGoals?.proteins, true)}
                         />
                       </Progress.Root>
                     </Table.Td>
@@ -223,8 +223,8 @@ function countProgress(current: number, goal = 0): number {
   return Math.min(progress, 100);
 }
 
-function getColor(value: number, goal = 0): string {
-  // If no meaningful goal, always gray
+function getColor(value: number, goal = 0, exceedIsGood = false): string {
+  // no meaningful goal ⇒ always gray
   if (goal <= 0) {
     return 'gray';
   }
@@ -233,13 +233,17 @@ function getColor(value: number, goal = 0): string {
 
   if (progress < 20) {
     return 'gray';
-  } else if (progress < 80) {
-    return 'yellow';
-  } else if (progress < 110) {
-    return 'green';
-  } else {
-    return 'red';
   }
+  if (progress < 90) {
+    return 'yellow';
+  }
+  // from 90% up to 110%, always green;
+  // if exceedIsGood, any progress ≥90% is considered green
+  if (progress < 110 || exceedIsGood) {
+    return 'green';
+  }
+  // otherwise (progress ≥110% and exceedIsGood === false)
+  return 'red';
 }
 
 export default Meal;
