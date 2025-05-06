@@ -14,14 +14,6 @@ function Settings() {
 
   const { mutate: updateSettings, isPending, isError } = useUpdateSettings();
 
-  function handleSave() {
-    mutate(apiKey, {
-      onSuccess: () => {
-        navigate('/');
-      },
-    });
-  }
-
   const form = useForm({
     mode: 'controlled',
     initialValues: {
@@ -91,7 +83,17 @@ function Settings() {
   }
 
   function handleSubmit(values: FormValues) {
-    updateSettings(values, {
+    const newSettings = {
+      llmKey: values.llmKey,
+      macroGoals: {
+        calories: values.calories,
+        proteins: values.proteins,
+        fats: values.fats,
+        carbs: values.carbs,
+      },
+    };
+
+    updateSettings(newSettings, {
       onSuccess: () => {
         navigate('/');
       },
@@ -152,7 +154,7 @@ function Settings() {
         />
       </form>
 
-      <Button mt="sm" fullWidth onClick={handleSave} disabled={isPending} loading={isPending}>
+      <Button mt="sm" fullWidth onClick={handleSubmit} disabled={isPending} loading={isPending}>
         {t('saveSettings')}
       </Button>
 
