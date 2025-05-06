@@ -88,22 +88,6 @@ function Meal() {
         })}
       </Carousel>
 
-      <Space h="md" />
-
-      <MealCard title={t('breakfast')} mealType="breakfast" meals={breakfastMeals} />
-
-      <Space h="md" />
-
-      <MealCard title={t('lunch')} mealType="lunch" meals={lunchMeals} />
-
-      <Space h="md" />
-
-      <MealCard title={t('dinner')} mealType="dinner" meals={dinnerMeals} />
-
-      <Space h="md" />
-
-      <MealCard title={t('snack')} mealType="snack" meals={snackMeals} />
-
       {macrosState.isLoading && <Loader color="blue" />}
 
       {macrosState.isError && (
@@ -114,7 +98,7 @@ function Meal() {
 
       {macrosState.isSuccess && (
         <>
-          <Divider my="xl" />
+          <Space h="sm" />
 
           <Grid>
             <Grid.Col span={12}>
@@ -194,7 +178,27 @@ function Meal() {
               </Table>
             </Grid.Col>
           </Grid>
+        </>
+      )}
 
+      <Space h="md" />
+
+      <MealCard title={t('breakfast')} mealType="breakfast" meals={breakfastMeals} />
+
+      <Space h="md" />
+
+      <MealCard title={t('lunch')} mealType="lunch" meals={lunchMeals} />
+
+      <Space h="md" />
+
+      <MealCard title={t('dinner')} mealType="dinner" meals={dinnerMeals} />
+
+      <Space h="md" />
+
+      <MealCard title={t('snack')} mealType="snack" meals={snackMeals} />
+
+      {macrosState.isSuccess && (
+        <>
           <Divider my="xl" />
 
           <Group justify="center">
