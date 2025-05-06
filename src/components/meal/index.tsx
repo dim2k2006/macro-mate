@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Box, Text, Stack, Button, Space, Loader, Grid, Divider, Table } from '@mantine/core';
+import { Box, Text, Stack, Button, Space, Loader, Grid, Divider, Table, Progress, Group } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import { DonutChart } from '@mantine/charts';
 import dayjs from 'dayjs';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
 import { useGetMacrosByDate, useGetMealsByDate } from '@/components/meal-service-provider';
+import { useGetSettings } from '@/components/settings-service-provider';
 import MealCard from '@/components/meal-card';
 import { useTranslation } from 'react-i18next';
 
@@ -16,6 +17,10 @@ const days = getDaysOfCurrentYear();
 
 function Meal() {
   const { t } = useTranslation();
+
+  const settingsState = useGetSettings();
+
+  const macroGoals = settingsState.data?.macroGoals;
 
   const todayDayOfYear = dayjs().dayOfYear() - 1;
 
@@ -112,48 +117,89 @@ function Meal() {
           <Divider my="xl" />
 
           <Grid>
-            <Grid.Col span={6}>
-              <Stack>
-                <Text size="md" fw={500}>
-                  {t('totalPerDay')}
-                </Text>
+            <Grid.Col span={12}>
+              <Table withRowBorders={false}>
+                <Table.Tbody>
+                  <Table.Tr>
+                    <Table.Td>
+                      <Text
+                        fw={500}
+                      >{`${t('caloriesWithRef', { current: macrosState.data.calories, goal: macroGoals?.calories })}`}</Text>
 
-                <Table variant="vertical" layout="fixed" withTableBorder>
-                  <Table.Tbody>
-                    <Table.Tr>
-                      <Table.Th>{t('calories')}</Table.Th>
-                      <Table.Td>{macrosState.data.calories}</Table.Td>
-                    </Table.Tr>
+                      <Space h="xs" />
 
-                    <Table.Tr>
-                      <Table.Th c={proteinsColor}>{t('protein')}</Table.Th>
-                      <Table.Td>
-                        {macrosState.data.proteins} {t('grams')}
-                      </Table.Td>
-                    </Table.Tr>
+                      <Progress.Root size={20} radius="md">
+                        <Progress.Section
+                          value={countProgress(macrosState.data.calories, macroGoals?.calories)}
+                          color={getColor(macrosState.data.calories, macroGoals?.calories)}
+                        />
+                      </Progress.Root>
+                    </Table.Td>
+                  </Table.Tr>
 
-                    <Table.Tr>
-                      <Table.Th c={fatsColor}>{t('fat')}</Table.Th>
-                      <Table.Td>
-                        {macrosState.data.fats} {t('grams')}
-                      </Table.Td>
-                    </Table.Tr>
+                  <Table.Tr>
+                    <Table.Td>
+                      <Text
+                        fw={500}
+                        color={proteinsColor}
+                      >{`${t('proteinsWithRef', { current: macrosState.data.proteins, goal: macroGoals?.proteins })}`}</Text>
 
-                    <Table.Tr>
-                      <Table.Th c={carbsColor}>{t('carbs')}</Table.Th>
-                      <Table.Td>
-                        {macrosState.data.carbs} {t('grams')}
-                      </Table.Td>
-                    </Table.Tr>
-                  </Table.Tbody>
-                </Table>
-              </Stack>
-            </Grid.Col>
+                      <Space h="xs" />
 
-            <Grid.Col span={6}>
-              <DonutChart size={100} withLabelsLine withLabels data={data} labelsType="percent" />
+                      <Progress.Root size={20} radius="md">
+                        <Progress.Section
+                          value={countProgress(macrosState.data.proteins, macroGoals?.proteins)}
+                          color={getColor(macrosState.data.proteins, macroGoals?.proteins)}
+                        />
+                      </Progress.Root>
+                    </Table.Td>
+                  </Table.Tr>
+
+                  <Table.Tr>
+                    <Table.Td>
+                      <Text
+                        fw={500}
+                        color={fatsColor}
+                      >{`${t('fatsWithRef', { current: macrosState.data.fats, goal: macroGoals?.fats })}`}</Text>
+
+                      <Space h="xs" />
+
+                      <Progress.Root size={20} radius="md">
+                        <Progress.Section
+                          value={countProgress(macrosState.data.fats, macroGoals?.fats)}
+                          color={getColor(macrosState.data.fats, macroGoals?.fats)}
+                        />
+                      </Progress.Root>
+                    </Table.Td>
+                  </Table.Tr>
+
+                  <Table.Tr>
+                    <Table.Td>
+                      <Text
+                        fw={500}
+                        color={carbsColor}
+                      >{`${t('carbsWithRef', { current: macrosState.data.carbs, goal: macroGoals?.carbs })}`}</Text>
+
+                      <Space h="xs" />
+
+                      <Progress.Root size={20} radius="md">
+                        <Progress.Section
+                          value={countProgress(macrosState.data.carbs, macroGoals?.carbs)}
+                          color={getColor(macrosState.data.carbs, macroGoals?.carbs)}
+                        />
+                      </Progress.Root>
+                    </Table.Td>
+                  </Table.Tr>
+                </Table.Tbody>
+              </Table>
             </Grid.Col>
           </Grid>
+
+          <Divider my="xl" />
+
+          <Group justify="center">
+            <DonutChart size={100} withLabelsLine withLabels data={data} labelsType="percent" />
+          </Group>
         </>
       )}
     </Box>
@@ -165,6 +211,38 @@ function getDaysOfCurrentYear(): dayjs.Dayjs[] {
   const daysInYear = start.isLeapYear() ? 366 : 365;
 
   return Array.from({ length: daysInYear }, (_, i) => start.add(i, 'day'));
+}
+
+function countProgress(current: number, goal = 0): number {
+  if (goal === 0) {
+    return 0;
+  }
+
+  const progress = (current / goal) * 100;
+
+  return Math.min(progress, 100);
+}
+
+function getColor(value: number, goal = 0): string {
+  const progress = goal === 0 ? 0 : (value / goal) * 100;
+
+  if (progress < 20) {
+    return 'gray';
+  }
+
+  if (progress > 20 && progress < 80) {
+    return 'yellow';
+  }
+
+  if (progress > 80 && progress < 100) {
+    return 'green';
+  }
+
+  if (progress > 110) {
+    return 'red';
+  }
+
+  return 'gray';
 }
 
 export default Meal;

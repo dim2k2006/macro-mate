@@ -71,5 +71,9 @@
   "cooking": "Готовлю",
   "eating": "Кушаю",
   "failLoadingSettingsTitle": "Не удалось загрузить настройки",
-  "failLoadingSettingsMessage": "Пожалуйста попробуйте еще раз."
+  "failLoadingSettingsMessage": "Пожалуйста попробуйте еще раз.",
+  "caloriesWithRef": "Калории: {{current}} из {{goal}}",
+  "proteinsWithRef": "Белки: {{current}} из {{goal}}",
+  "fatsWithRef": "Жиры: {{current}} из {{goal}}",
+  "carbsWithRef": "Углеводы: {{current}} из {{goal}}"
 }
