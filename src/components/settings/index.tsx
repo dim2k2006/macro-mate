@@ -154,7 +154,7 @@ function Settings() {
         />
       </form>
 
-      <Button mt="sm" fullWidth onClick={handleSubmit} disabled={isPending} loading={isPending}>
+      <Button type="submit" mt="sm" fullWidth disabled={isPending} loading={isPending}>
         {t('saveSettings')}
       </Button>
 
