@@ -1,7 +1,8 @@
-import { AppShell, Group, Image, Text, Table } from '@mantine/core';
+import { AppShell, Group, Image, Text, Table, ActionIcon } from '@mantine/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { IconCameraAi } from '@tabler/icons-react';
 
 function Layout({ children }: LayoutProps) {
   const { t } = useTranslation();
@@ -20,6 +21,17 @@ function Layout({ children }: LayoutProps) {
         <Group justify="center" align="center">
           <Image src="/logo.png" alt="MacroMate logo" h={40} w="auto" fit="contain" />
         </Group>
+
+        <ActionIcon
+          component="a"
+          href="https://chatgpt.com/g/g-6818cee3ed188191876291c0e7eb1f3d"
+          target="_blank"
+          variant="default"
+          size="lg"
+          style={{ position: 'absolute', top: '50%', right: '15px', transform: 'translateY(-50%)' }}
+        >
+          <IconCameraAi size={20} />
+        </ActionIcon>
       </AppShell.Header>
 
       <AppShell.Main>{children}</AppShell.Main>
