@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Box, Button, Divider, Grid, Group, Loader, Progress, Space, Stack, Table, Text } from '@mantine/core';
+import { Box, Button, Grid, Loader, Progress, Space, Stack, Table, Text, Group } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
-import { DonutChart } from '@mantine/charts';
 import dayjs from 'dayjs';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
@@ -41,20 +40,6 @@ function Meal() {
   const snackMeals = meals.filter((meal) => meal.type === 'snack');
 
   const macrosState = useGetMacrosByDate(activeDay.format('YYYY-MM-DD'));
-
-  const proteins = macrosState.data?.proteins ?? 0;
-  const fats = macrosState.data?.fats ?? 0;
-  const carbs = macrosState.data?.carbs ?? 0;
-
-  const proteinsColor = '#E68D85';
-  const fatsColor = '#F1C761';
-  const carbsColor = '#87C1D8';
-
-  const data = [
-    { name: t('protein'), value: proteins, color: proteinsColor },
-    { name: t('fat'), value: fats, color: fatsColor },
-    { name: t('carbs'), value: carbs, color: carbsColor },
-  ];
 
   return (
     <Box p="md">
@@ -106,87 +91,84 @@ function Meal() {
                 <Table.Tbody>
                   <Table.Tr>
                     <Table.Td>
-                      <Text
-                        fw={500}
-                      >{`${t('caloriesWithRef', { current: macrosState.data.calories, goal: macroGoals?.calories })}`}</Text>
+                      <Group justify="space-between">
+                        <Text>{`${t('caloriesWithRef', { current: Math.round(macrosState.data.calories), goal: macroGoals?.calories })}`}</Text>
+
+                        <Text size="xs" color="dimmed">
+                          {t('percent', { percent: countProgress(macrosState.data.calories, macroGoals?.calories) })}
+                        </Text>
+                      </Group>
 
                       <Space h={5} />
 
-                      <Progress.Root size={20} radius="md">
+                      <Progress.Root size={15} radius="md">
                         <Progress.Section
                           value={countProgress(macrosState.data.calories, macroGoals?.calories)}
                           color={getColor(macrosState.data.calories, macroGoals?.calories)}
-                        >
-                          <Progress.Label>
-                            {t('percent', { percent: countProgress(macrosState.data.calories, macroGoals?.calories) })}
-                          </Progress.Label>
-                        </Progress.Section>
+                        />
                       </Progress.Root>
                     </Table.Td>
                   </Table.Tr>
 
                   <Table.Tr>
                     <Table.Td>
-                      <Text
-                        fw={500}
-                        color={proteinsColor}
-                      >{`${t('proteinsWithRef', { current: macrosState.data.proteins, goal: macroGoals?.proteins })}`}</Text>
+                      <Group justify="space-between">
+                        <Text>{`${t('proteinsWithRef', { current: Math.round(macrosState.data.proteins), goal: macroGoals?.proteins })}`}</Text>
+
+                        <Text size="xs" color="dimmed">
+                          {t('percent', { percent: countProgress(macrosState.data.proteins, macroGoals?.proteins) })}
+                        </Text>
+                      </Group>
 
                       <Space h={5} />
 
-                      <Progress.Root size={20} radius="md">
+                      <Progress.Root size={15} radius="md">
                         <Progress.Section
                           value={countProgress(macrosState.data.proteins, macroGoals?.proteins)}
                           color={getColor(macrosState.data.proteins, macroGoals?.proteins, true)}
-                        >
-                          <Progress.Label>
-                            {t('percent', { percent: countProgress(macrosState.data.proteins, macroGoals?.proteins) })}
-                          </Progress.Label>
-                        </Progress.Section>
+                        />
                       </Progress.Root>
                     </Table.Td>
                   </Table.Tr>
 
                   <Table.Tr>
                     <Table.Td>
-                      <Text
-                        fw={500}
-                        color={fatsColor}
-                      >{`${t('fatsWithRef', { current: macrosState.data.fats, goal: macroGoals?.fats })}`}</Text>
+                      <Group justify="space-between">
+                        <Text>{`${t('fatsWithRef', { current: Math.round(macrosState.data.fats), goal: macroGoals?.fats })}`}</Text>
+
+                        <Text size="xs" color="dimmed">
+                          {t('percent', { percent: countProgress(macrosState.data.fats, macroGoals?.fats) })}
+                        </Text>
+                      </Group>
 
                       <Space h={5} />
 
-                      <Progress.Root size={20} radius="md">
+                      <Progress.Root size={15} radius="md">
                         <Progress.Section
                           value={countProgress(macrosState.data.fats, macroGoals?.fats)}
                           color={getColor(macrosState.data.fats, macroGoals?.fats)}
-                        >
-                          <Progress.Label>
-                            {t('percent', { percent: countProgress(macrosState.data.fats, macroGoals?.fats) })}
-                          </Progress.Label>
-                        </Progress.Section>
+                        />
                       </Progress.Root>
                     </Table.Td>
                   </Table.Tr>
 
                   <Table.Tr>
                     <Table.Td>
-                      <Text
-                        fw={500}
-                        color={carbsColor}
-                      >{`${t('carbsWithRef', { current: macrosState.data.carbs, goal: macroGoals?.carbs })}`}</Text>
+                      <Group justify="space-between">
+                        <Text>{`${t('carbsWithRef', { current: Math.round(macrosState.data.carbs), goal: macroGoals?.carbs })}`}</Text>
+
+                        <Text size="xs" color="dimmed">
+                          {t('percent', { percent: countProgress(macrosState.data.carbs, macroGoals?.carbs) })}
+                        </Text>
+                      </Group>
 
                       <Space h={5} />
 
-                      <Progress.Root size={20} radius="md">
+                      <Progress.Root size={15} radius="md">
                         <Progress.Section
                           value={countProgress(macrosState.data.carbs, macroGoals?.carbs)}
                           color={getColor(macrosState.data.carbs, macroGoals?.carbs)}
-                        >
-                          <Progress.Label>
-                            {t('percent', { percent: countProgress(macrosState.data.carbs, macroGoals?.carbs) })}
-                          </Progress.Label>
-                        </Progress.Section>
+                        />
                       </Progress.Root>
                     </Table.Td>
                   </Table.Tr>
@@ -212,16 +194,6 @@ function Meal() {
       <Space h="md" />
 
       <MealCard title={t('snack')} mealType="snack" meals={snackMeals} />
-
-      {macrosState.isSuccess && (
-        <>
-          <Divider my="xl" />
-
-          <Group justify="center">
-            <DonutChart size={100} withLabelsLine withLabels data={data} labelsType="percent" />
-          </Group>
-        </>
-      )}
     </Box>
   );
 }
