@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Button, Grid, Loader, Progress, Space, Stack, Table, Text, Group } from '@mantine/core';
+import { Box, Button, Grid, Progress, Space, Stack, Table, Text, Group, Skeleton } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import dayjs from 'dayjs';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
@@ -73,7 +73,29 @@ function Meal() {
         })}
       </Carousel>
 
-      {macrosState.isLoading && <Loader color="blue" />}
+      {macrosState.isLoading && (
+        <div>
+          <Space h="sm" />
+
+          <Skeleton height={10} mb={5} width="40%" radius="xl" />
+          <Skeleton height={10} radius="xl" />
+
+          <Space h="md" />
+
+          <Skeleton height={10} mb={5} width="40%" radius="xl" />
+          <Skeleton height={10} radius="xl" />
+
+          <Space h="md" />
+
+          <Skeleton height={10} mb={5} width="40%" radius="xl" />
+          <Skeleton height={10} radius="xl" />
+
+          <Space h="md" />
+
+          <Skeleton height={10} mb={5} width="40%" radius="xl" />
+          <Skeleton height={10} radius="xl" />
+        </div>
+      )}
 
       {macrosState.isError && (
         <Text color="red" size="sm">
