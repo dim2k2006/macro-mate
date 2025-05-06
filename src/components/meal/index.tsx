@@ -126,7 +126,7 @@ function Meal() {
                         fw={500}
                       >{`${t('caloriesWithRef', { current: macrosState.data.calories, goal: macroGoals?.calories })}`}</Text>
 
-                      <Space h="xs" />
+                      <Space h={5} />
 
                       <Progress.Root size={20} radius="md">
                         <Progress.Section
@@ -144,7 +144,7 @@ function Meal() {
                         color={proteinsColor}
                       >{`${t('proteinsWithRef', { current: macrosState.data.proteins, goal: macroGoals?.proteins })}`}</Text>
 
-                      <Space h="xs" />
+                      <Space h={5} />
 
                       <Progress.Root size={20} radius="md">
                         <Progress.Section
@@ -162,7 +162,7 @@ function Meal() {
                         color={fatsColor}
                       >{`${t('fatsWithRef', { current: macrosState.data.fats, goal: macroGoals?.fats })}`}</Text>
 
-                      <Space h="xs" />
+                      <Space h={5} />
 
                       <Progress.Root size={20} radius="md">
                         <Progress.Section
@@ -180,7 +180,7 @@ function Meal() {
                         color={carbsColor}
                       >{`${t('carbsWithRef', { current: macrosState.data.carbs, goal: macroGoals?.carbs })}`}</Text>
 
-                      <Space h="xs" />
+                      <Space h={5} />
 
                       <Progress.Root size={20} radius="md">
                         <Progress.Section
