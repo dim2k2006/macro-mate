@@ -5,7 +5,7 @@ export type Settings = {
 
 type MacroGoals = {
   calories: number;
-  protein: number;
-  fat: number;
+  proteins: number;
+  fats: number;
   carbs: number;
 };

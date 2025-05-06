@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import { useGetLlmKey } from '@/components/llmKey-service-provider';
+import { useGetSettings } from '@/components/settings-service-provider';
 import { buildConfig, buildContainer } from '@/container';
 import ConfigProvider from '@/components/config-provider';
 import { FoodItemServiceProvider } from '@/components/foodItem-service-provider';
 import { MealServiceProvider } from '@/components/meal-service-provider';
 import { Routes, Route } from 'react-router-dom';
-import Intro from '@/components/intro';
+import Settings from '@/components/settings';
 import Home from '@/components/home';
 import Food from '@/components/food';
 import Meal from '@/components/meal';
@@ -14,9 +14,9 @@ import ProtectedRoute from '@/components/protected-route';
 import Layout from '@/components/layout';
 
 function Root() {
-  const llmKeyFetchingState = useGetLlmKey();
+  const settingsFetchingState = useGetSettings();
 
-  const key = llmKeyFetchingState.data?.key ?? '';
+  const key = settingsFetchingState.data?.llmKey ?? '';
 
   const config = useMemo(() => buildConfig(key), [key]);
 
@@ -45,7 +45,7 @@ function Root() {
                   <Route path="/produced-food" element={<ProducedFood />} />
                 </Route>
 
-                <Route path="/intro" element={<Intro />} />
+                <Route path="/intro" element={<Settings />} />
               </React.Fragment>
             </Routes>
           </Layout>

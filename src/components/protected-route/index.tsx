@@ -1,14 +1,14 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useGetLlmKey } from '@/components/llmKey-service-provider';
+import { useGetSettings } from '@/components/settings-service-provider';
 
 function ProtectedRoute() {
-  const llmKeyState = useGetLlmKey();
+  const settingsState = useGetSettings();
 
-  if (llmKeyState.isLoading) {
+  if (settingsState.isLoading) {
     return null;
   }
 
-  const hasLlmKey = (llmKeyState.isSuccess || llmKeyState.isError) && !!llmKeyState.data?.key;
+  const hasLlmKey = (settingsState.isSuccess || settingsState.isError) && !!settingsState.data?.llmKey;
 
   return hasLlmKey ? <Outlet /> : <Navigate to="/intro" replace />;
 }

@@ -9,25 +9,22 @@ import Root from './components/root';
 import { MantineProvider } from '@mantine/core';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
-import { LlmKeyServiceProvider } from './components/llmKey-service-provider';
-// import { ParameterServiceProvider } from './components/parameter-service-provider';
-// import TelegramProviderProvider from './components/telegram-provider-provider';
-// import { UserIdProvider } from './components/user-id-provider';
-import { LlmKeyRepositoryLocal, LlmKeyServiceImpl } from '@/domain/llmKey';
+import { SettingsRepositoryLocal, SettingsServiceImpl } from '@/domain/settings';
+import { SettingsServiceProvider } from '@/components/settings-service-provider';
 
 const queryClient = new QueryClient();
 
-const llmKeyRepository = new LlmKeyRepositoryLocal();
-const llmKeyService = new LlmKeyServiceImpl({ llmKeyRepository });
+const settingsRepository = new SettingsRepositoryLocal();
+const settingsService = new SettingsServiceImpl({ settingsRepository });
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <MantineProvider>
         <BrowserRouter>
-          <LlmKeyServiceProvider service={llmKeyService}>
+          <SettingsServiceProvider service={settingsService}>
             <Root />
-          </LlmKeyServiceProvider>
+          </SettingsServiceProvider>
         </BrowserRouter>
       </MantineProvider>
     </QueryClientProvider>

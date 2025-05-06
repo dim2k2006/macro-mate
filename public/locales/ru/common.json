@@ -3,6 +3,8 @@
   "llmKeyPlaceholder": "Введите ключ LLM",
   "llmKeySave": "Сохранить ключ",
   "llmKeyError": "Не удалось сохранить ключ LLM",
+  "saveSettings": "Сохранить настройки",
+  "saveSettingsError": "Не удалось сохранить настройки",
   "foodItemLabel": "Описание продукта",
   "foodItemPlaceholder": "Введите описание продукта",
   "calculateMacros": "Рассчитать КБЖУ",
@@ -67,5 +69,7 @@
   "macros": "КБЖУ",
   "producedFoodItemForm": "Добавить продукт",
   "cooking": "Готовлю",
-  "eating": "Кушаю"
+  "eating": "Кушаю",
+  "failLoadingSettingsTitle": "Не удалось загрузить настройки",
+  "failLoadingSettingsMessage": "Пожалуйста попробуйте еще раз."
 }
