@@ -224,25 +224,22 @@ function countProgress(current: number, goal = 0): number {
 }
 
 function getColor(value: number, goal = 0): string {
-  const progress = goal === 0 ? 0 : (value / goal) * 100;
-
-  if (progress < 20) {
+  // If no meaningful goal, always gray
+  if (goal <= 0) {
     return 'gray';
   }
 
-  if (progress > 20 && progress < 80) {
+  const progress = (value / goal) * 100;
+
+  if (progress < 20) {
+    return 'gray';
+  } else if (progress < 80) {
     return 'yellow';
-  }
-
-  if (progress > 80 && progress < 100) {
+  } else if (progress < 110) {
     return 'green';
-  }
-
-  if (progress > 110) {
+  } else {
     return 'red';
   }
-
-  return 'gray';
 }
 
 export default Meal;
