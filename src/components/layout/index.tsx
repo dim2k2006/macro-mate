@@ -1,11 +1,45 @@
-import { AppShell, Group, Image, Text, Table, ActionIcon } from '@mantine/core';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { AppShell, Group, Image, ActionIcon, FloatingIndicator, UnstyledButton } from '@mantine/core';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { IconCameraAi } from '@tabler/icons-react';
+import classes from './style.module.css';
 
 function Layout({ children }: LayoutProps) {
   const { t } = useTranslation();
+
+  const navigate = useNavigate();
+
+  const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
+  const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
+  const [active, setActive] = useState(0);
+
+  const setControlRef = (index: number) => (node: HTMLButtonElement) => {
+    controlsRefs[index] = node;
+    setControlsRefs(controlsRefs);
+  };
+
+  const data = [
+    { title: t('cooking'), path: '/' },
+    { title: t('eating'), path: '/meal' },
+    { title: t('products'), path: '/food' },
+  ];
+
+  const controls = data.map((item, index) => (
+    <UnstyledButton
+      key={index}
+      className={classes.control}
+      ref={setControlRef(index)}
+      onClick={() => {
+        setActive(index);
+
+        navigate(item.path);
+      }}
+      mod={{ active: active === index }}
+    >
+      <span className={classes.controlLabel}>{item.title}</span>
+    </UnstyledButton>
+  ));
 
   return (
     <AppShell
@@ -37,29 +71,11 @@ function Layout({ children }: LayoutProps) {
       <AppShell.Main>{children}</AppShell.Main>
 
       <AppShell.Footer>
-        <Table withColumnBorders>
-          <Table.Tbody>
-            <Table.Tr>
-              <Table.Td w="33%" align="center">
-                <Link to="/">
-                  <Text size="md">{t('cookingFoodItems')}</Text>
-                </Link>
-              </Table.Td>
+        <div className={classes.root} ref={setRootRef}>
+          {controls}
 
-              <Table.Td w="33%" align="center">
-                <Link to="/food">
-                  <Text size="md">{t('foodItems')}</Text>
-                </Link>
-              </Table.Td>
-
-              <Table.Td w="33%" align="center">
-                <Link to="/meal">
-                  <Text size="md">{t('meals')}</Text>
-                </Link>
-              </Table.Td>
-            </Table.Tr>
-          </Table.Tbody>
-        </Table>
+          <FloatingIndicator target={controlsRefs[active]} parent={rootRef} className={classes.indicator} />
+        </div>
       </AppShell.Footer>
     </AppShell>
   );

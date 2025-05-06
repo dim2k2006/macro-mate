@@ -65,5 +65,7 @@
   "select": "Выбрать",
   "clear": "Очистить",
   "macros": "КБЖУ",
-  "producedFoodItemForm": "Добавить продукт"
+  "producedFoodItemForm": "Добавить продукт",
+  "cooking": "Готовлю",
+  "eating": "Кушаю"
 }
