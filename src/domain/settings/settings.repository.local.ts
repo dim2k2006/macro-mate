@@ -16,8 +16,8 @@ class SettingsRepositoryLocal implements SettingsRepository {
         llmKey: '',
         macroGoals: {
           calories: 0,
-          protein: 0,
-          fat: 0,
+          proteins: 0,
+          fats: 0,
           carbs: 0,
         },
       };
