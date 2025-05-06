@@ -1,13 +1,6 @@
 export type Settings = {
-  llmKey: LlmKey;
+  llmKey: string;
   macroGoals: MacroGoals;
-};
-
-type LlmKey = {
-  id: string;
-  key: string;
-  createdAt: string;
-  updatedAt: string;
 };
 
 type MacroGoals = {
