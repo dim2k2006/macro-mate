@@ -75,5 +75,6 @@
   "caloriesWithRef": "Калории: {{current}} из {{goal}}",
   "proteinsWithRef": "Белки: {{current}} из {{goal}}",
   "fatsWithRef": "Жиры: {{current}} из {{goal}}",
-  "carbsWithRef": "Углеводы: {{current}} из {{goal}}"
+  "carbsWithRef": "Углеводы: {{current}} из {{goal}}",
+  "percent": "{{percent}}%"
 }

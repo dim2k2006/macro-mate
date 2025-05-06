@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Text, Stack, Button, Space, Loader, Grid, Divider, Table, Progress, Group } from '@mantine/core';
+import { Box, Button, Divider, Grid, Group, Loader, Progress, Space, Stack, Table, Text } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import { DonutChart } from '@mantine/charts';
 import dayjs from 'dayjs';
@@ -116,7 +116,11 @@ function Meal() {
                         <Progress.Section
                           value={countProgress(macrosState.data.calories, macroGoals?.calories)}
                           color={getColor(macrosState.data.calories, macroGoals?.calories)}
-                        />
+                        >
+                          <Progress.Label>
+                            {t('percent', { percent: countProgress(macrosState.data.calories, macroGoals?.calories) })}
+                          </Progress.Label>
+                        </Progress.Section>
                       </Progress.Root>
                     </Table.Td>
                   </Table.Tr>
@@ -134,7 +138,11 @@ function Meal() {
                         <Progress.Section
                           value={countProgress(macrosState.data.proteins, macroGoals?.proteins)}
                           color={getColor(macrosState.data.proteins, macroGoals?.proteins, true)}
-                        />
+                        >
+                          <Progress.Label>
+                            {t('percent', { percent: countProgress(macrosState.data.proteins, macroGoals?.proteins) })}
+                          </Progress.Label>
+                        </Progress.Section>
                       </Progress.Root>
                     </Table.Td>
                   </Table.Tr>
@@ -152,7 +160,11 @@ function Meal() {
                         <Progress.Section
                           value={countProgress(macrosState.data.fats, macroGoals?.fats)}
                           color={getColor(macrosState.data.fats, macroGoals?.fats)}
-                        />
+                        >
+                          <Progress.Label>
+                            {t('percent', { percent: countProgress(macrosState.data.fats, macroGoals?.fats) })}
+                          </Progress.Label>
+                        </Progress.Section>
                       </Progress.Root>
                     </Table.Td>
                   </Table.Tr>
@@ -170,7 +182,11 @@ function Meal() {
                         <Progress.Section
                           value={countProgress(macrosState.data.carbs, macroGoals?.carbs)}
                           color={getColor(macrosState.data.carbs, macroGoals?.carbs)}
-                        />
+                        >
+                          <Progress.Label>
+                            {t('percent', { percent: countProgress(macrosState.data.carbs, macroGoals?.carbs) })}
+                          </Progress.Label>
+                        </Progress.Section>
                       </Progress.Root>
                     </Table.Td>
                   </Table.Tr>
@@ -222,9 +238,7 @@ function countProgress(current: number, goal = 0): number {
     return 0;
   }
 
-  const progress = (current / goal) * 100;
-
-  return Math.min(progress, 100);
+  return Math.round((current / goal) * 100);
 }
 
 function getColor(value: number, goal = 0, exceedIsGood = false): string {
