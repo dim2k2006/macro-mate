@@ -2,7 +2,7 @@ import { AppShell, Group, Image, ActionIcon, FloatingIndicator, UnstyledButton }
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { IconCameraAi } from '@tabler/icons-react';
+import { IconCameraAi, IconClipboardList } from '@tabler/icons-react';
 import classes from './style.module.css';
 
 function Layout({ children }: LayoutProps) {
@@ -22,7 +22,6 @@ function Layout({ children }: LayoutProps) {
   const data = [
     { title: t('cooking'), path: '/' },
     { title: t('eating'), path: '/meal' },
-    { title: t('products'), path: '/food' },
   ];
 
   const controls = data.map((item, index) => (
@@ -52,6 +51,15 @@ function Layout({ children }: LayoutProps) {
       }}
     >
       <AppShell.Header p="sm">
+        <ActionIcon
+          onClick={() => navigate('/food')}
+          variant="default"
+          size="lg"
+          style={{ position: 'absolute', top: '50%', left: '15px', transform: 'translateY(-50%)' }}
+        >
+          <IconClipboardList size={20} />
+        </ActionIcon>
+
         <Group justify="center" align="center">
           <Image src="/logo.png" alt="MacroMate logo" h={40} w="auto" fit="contain" />
         </Group>
