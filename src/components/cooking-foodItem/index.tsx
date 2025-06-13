@@ -2,7 +2,6 @@ import {
   TextInput,
   Button,
   Textarea,
-  NativeSelect,
   NumberInput,
   Space,
   SimpleGrid,
@@ -29,8 +28,6 @@ import { useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import SearchableFoodItems from '@/components/searchable-food-items';
 import { useLocation } from 'react-router-dom';
-
-const units: Unit[] = ['g', 'ml'];
 
 function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: CookingFoodItemProps) {
   const { t } = useTranslation();
@@ -321,26 +318,22 @@ ${t('carbs')}: ${selectedFoodItem.carbs}
 
             <Space h="md" />
 
-            <SimpleGrid cols={2}>
-              <NativeSelect {...form.getInputProps('unit')} label={t('foodItemUnitLabel')} data={units} />
+            <SimpleGrid cols={4}>
+              <div>
+                <NumberInput
+                  type="tel"
+                  {...form.getInputProps('calories')}
+                  label={t('calories')}
+                  disabled={isLoading}
+                  hideControls
+                />
+              </div>
 
-              <NumberInput
-                type="tel"
-                {...form.getInputProps('calories')}
-                label={t('foodItemCaloriesLabel')}
-                disabled={isLoading}
-                hideControls
-              />
-            </SimpleGrid>
-
-            <Space h="md" />
-
-            <SimpleGrid cols={3}>
               <div>
                 <NumberInput
                   type="tel"
                   {...form.getInputProps('proteins')}
-                  label={t('foodItemProteinLabel')}
+                  label={t('protein')}
                   disabled={isLoading}
                   hideControls
                 />
@@ -350,7 +343,7 @@ ${t('carbs')}: ${selectedFoodItem.carbs}
                 <NumberInput
                   type="tel"
                   {...form.getInputProps('fats')}
-                  label={t('foodItemFatLabel')}
+                  label={t('fat')}
                   disabled={isLoading}
                   hideControls
                 />
@@ -360,12 +353,14 @@ ${t('carbs')}: ${selectedFoodItem.carbs}
                 <NumberInput
                   type="tel"
                   {...form.getInputProps('carbs')}
-                  label={t('foodItemCarbsLabel')}
+                  label={t('carbs')}
                   disabled={isLoading}
                   hideControls
                 />
               </div>
             </SimpleGrid>
+
+            <Space h="md" />
 
             <Group justify="center">
               <Button type="submit" mt="md" color="teal" fullWidth disabled={isLoading}>
