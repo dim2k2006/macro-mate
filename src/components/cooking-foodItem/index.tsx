@@ -189,8 +189,8 @@ function CookingFoodItem({ foodItem, isExpanded: initialIsExpanded = true }: Coo
 ${t('macros')} ${selectedFoodItem.name}
 ${selectedFoodItem.description}
 ${t('calories')}: ${selectedFoodItem.calories}
-${t('protein')}: ${selectedFoodItem.proteins}
-${t('fat')}: ${selectedFoodItem.fats}
+${t('proteins')}: ${selectedFoodItem.proteins}
+${t('fats')}: ${selectedFoodItem.fats}
 ${t('carbs')}: ${selectedFoodItem.carbs}
     `;
 
@@ -224,13 +224,13 @@ ${t('carbs')}: ${selectedFoodItem.carbs}
 
                 <Grid.Col span={3}>
                   <Text size="xs" color="dimmed">
-                    {t('protein')} {form.values.proteins}
+                    {t('proteins')} {form.values.proteins}
                   </Text>
                 </Grid.Col>
 
                 <Grid.Col span={3}>
                   <Text size="xs" color="dimmed">
-                    {t('fat')} {form.values.fats}
+                    {t('fats')} {form.values.fats}
                   </Text>
                 </Grid.Col>
 
@@ -333,7 +333,7 @@ ${t('carbs')}: ${selectedFoodItem.carbs}
                 <NumberInput
                   type="tel"
                   {...form.getInputProps('proteins')}
-                  label={t('protein')}
+                  label={t('proteins')}
                   disabled={isLoading}
                   hideControls
                 />
@@ -343,7 +343,7 @@ ${t('carbs')}: ${selectedFoodItem.carbs}
                 <NumberInput
                   type="tel"
                   {...form.getInputProps('fats')}
-                  label={t('fat')}
+                  label={t('fats')}
                   disabled={isLoading}
                   hideControls
                 />

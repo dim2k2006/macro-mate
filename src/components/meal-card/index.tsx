@@ -47,8 +47,8 @@ function MealCard({ title, mealType, meals }: MealCardProps) {
             <Table.Thead>
               <Table.Tr>
                 <Table.Th w="25%">{t('calories')}</Table.Th>
-                <Table.Th w="25%">{t('protein')}</Table.Th>
-                <Table.Th w="25%">{t('fat')}</Table.Th>
+                <Table.Th w="25%">{t('proteins')}</Table.Th>
+                <Table.Th w="25%">{t('fats')}</Table.Th>
                 <Table.Th w="25%">{t('carbs')}</Table.Th>
               </Table.Tr>
             </Table.Thead>
