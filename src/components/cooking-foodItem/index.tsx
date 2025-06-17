@@ -323,7 +323,7 @@ ${t('carbs')}: ${selectedFoodItem.carbs}
                 <NumberInput
                   type="tel"
                   {...form.getInputProps('calories')}
-                  label={t('calories')}
+                  label={t('caloriesWithEmoji')}
                   disabled={isLoading}
                   hideControls
                 />
@@ -333,7 +333,7 @@ ${t('carbs')}: ${selectedFoodItem.carbs}
                 <NumberInput
                   type="tel"
                   {...form.getInputProps('proteins')}
-                  label={t('proteins')}
+                  label={t('proteinsWithEmoji')}
                   disabled={isLoading}
                   hideControls
                 />
@@ -343,7 +343,7 @@ ${t('carbs')}: ${selectedFoodItem.carbs}
                 <NumberInput
                   type="tel"
                   {...form.getInputProps('fats')}
-                  label={t('fats')}
+                  label={t('fatsWithEmoji')}
                   disabled={isLoading}
                   hideControls
                 />
@@ -353,7 +353,7 @@ ${t('carbs')}: ${selectedFoodItem.carbs}
                 <NumberInput
                   type="tel"
                   {...form.getInputProps('carbs')}
-                  label={t('carbs')}
+                  label={t('carbsWithEmoji')}
                   disabled={isLoading}
                   hideControls
                 />
