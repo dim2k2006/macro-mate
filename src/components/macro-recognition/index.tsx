@@ -50,7 +50,7 @@ function MacroRecognition() {
   });
 
   const handleFileChange = async () => {
-    mutate(files[0], {
+    mutate(files, {
       onSuccess: (foodItem) => {
         console.log('Macros recognized:', foodItem);
       },
