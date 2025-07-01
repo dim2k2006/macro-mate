@@ -278,6 +278,74 @@ Respond **ONLY** with a valid JSON object in the exact shape below (no extra tex
     };
   }
 
+  async recognizeMacrosFromImage(input: File): Promise<CalculateMacrosOutput> {
+    const base64 = await this.fileToBase64(input);
+
+    const response = await this.openai.responses.create({
+      model: 'gpt-4.1-mini',
+      input: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'input_text',
+              text: `
+You are a nutrition‑calculation assistant.
+The user provides image of a product.
+
+Your job: parse the provided macros and product name and return them in a structured format.
+
+**Output**
+Respond **ONLY** with a valid JSON object in the exact shape below (no extra text):
+
+{
+  "dish": "<product name>",
+  "per100_calories": <float 1‑dec>,
+  "per100_proteins": <float 1‑dec>,
+  "per100_fats": <float 1‑dec>,
+  "per100_carbs": <float 1‑dec>
+}
+
+9. **Validation**
+• If any amount or unit is missing/ambiguous, throw an error.
+• Ensure all JSON numbers are numeric, not strings.
+            `.trim(),
+            },
+            {
+              type: 'input_image',
+              image_url: `data:image/jpeg;base64,${base64}`,
+              detail: 'auto',
+            },
+          ],
+        },
+      ],
+    });
+
+    console.log(response.output_text);
+
+    const result = ParseMacrosResponseSchema.parse(JSON.parse(response.output_text));
+
+    return {
+      dish: result.dish,
+      calories: result.per100_calories,
+      proteins: result.per100_proteins,
+      fats: result.per100_fats,
+      carbs: result.per100_carbs,
+    };
+  }
+
+  private async fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = (reader.result as string).split(',')[1]; // убираем data:image/jpeg;base64,
+        resolve(base64);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
   buildChatMessage(input: BuildChatMessageInput): ChatMessage {
     return {
       role: input.role,

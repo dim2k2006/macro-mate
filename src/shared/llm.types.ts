@@ -2,6 +2,7 @@ export interface LlmProvider {
   buildChatMessage(input: BuildChatMessageInput): ChatMessage;
   calculateMacros(input: CalculateMacrosInput): Promise<CalculateMacrosOutput>;
   parseMacros(input: CalculateMacrosInput): Promise<CalculateMacrosOutput>;
+  recognizeMacrosFromImage(input: File): Promise<CalculateMacrosOutput>;
 }
 
 export type CalculateMacrosInput = {
