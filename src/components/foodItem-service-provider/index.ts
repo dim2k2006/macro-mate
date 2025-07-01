@@ -5,6 +5,7 @@ export {
   useListFoodItems,
   useCalculateMacros,
   useParseMacros,
+  useRecognizeMacrosFromImage,
   useUpdateFoodItem,
   useUpsertFoodItem,
   useDeleteFoodItem,
