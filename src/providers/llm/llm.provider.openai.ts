@@ -278,8 +278,8 @@ Respond **ONLY** with a valid JSON object in the exact shape below (no extra tex
     };
   }
 
-  async recognizeMacrosFromImage(input: File): Promise<CalculateMacrosOutput> {
-    const base64 = await this.fileToBase64(input);
+  async recognizeMacrosFromImage(input: File[]): Promise<CalculateMacrosOutput> {
+    const base64Images = await Promise.all(input.map((file) => this.fileToBase64(file)));
 
     const response = await this.openai.responses.create({
       model: 'gpt-4.1-mini',
@@ -311,11 +311,14 @@ Respond **ONLY** with a valid JSON object in the exact shape below (no extra tex
 • Ensure all JSON numbers are numeric, not strings.
             `.trim(),
             },
-            {
-              type: 'input_image',
-              image_url: `data:image/jpeg;base64,${base64}`,
-              detail: 'auto',
-            },
+            ...base64Images.map(
+              (base64) =>
+                ({
+                  type: 'input_image',
+                  image_url: `data:image/jpeg;base64,${base64}`,
+                  detail: 'auto',
+                }) as const,
+            ),
           ],
         },
       ],
