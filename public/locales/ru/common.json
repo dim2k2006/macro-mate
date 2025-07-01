@@ -83,5 +83,6 @@
   "percent": "{{percent}}%",
   "aiProductRecognition": "AI распознавание продуктов",
   "attachProductImages": "Нажмите сюда чтобы прикрепить изображения продукта",
-  "recognizeProduct": "Распознать продукт"
+  "recognizeProduct": "Распознать продукт",
+  "recognizeProductError": "Произошла ошибка при распознавании продукта, попробуйте еще раз"
 }
