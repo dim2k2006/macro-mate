@@ -172,7 +172,7 @@ export function useRecognizeMacrosFromImage() {
 
   return useMutation({
     mutationKey: ['recognizeMacrosFromImage'],
-    mutationFn: (file: File) => service.recognizeMacrosFromImage(file),
+    mutationFn: (input: File[]) => service.recognizeMacrosFromImage(input),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['listFoodItems'],
