@@ -123,8 +123,8 @@ class FoodItemServiceImpl implements FoodItemService {
     return this.foodItemRepository.updateFoodItem(id, foodItem);
   }
 
-  async recognizeMacrosFromImage(file: File): Promise<FoodItem> {
-    const { calories, proteins, fats, carbs, dish } = await this.llmProvider.recognizeMacrosFromImage(file);
+  async recognizeMacrosFromImage(input: File[]): Promise<FoodItem> {
+    const { calories, proteins, fats, carbs, dish } = await this.llmProvider.recognizeMacrosFromImage(input);
 
     const foodItem: FoodItem = {
       id: uuidV4(),

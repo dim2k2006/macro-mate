@@ -9,7 +9,7 @@ export interface FoodItemService {
   deleteFoodItem: (id: string) => Promise<void>;
   calculateMacros: (id: string) => Promise<FoodItem>;
   parseMacros: (input: string) => Promise<FoodItem>;
-  recognizeMacrosFromImage: (file: File) => Promise<FoodItem>;
+  recognizeMacrosFromImage: (input: File[]) => Promise<FoodItem>;
 }
 
 export type CreateFoodItemInput = {
