@@ -5,11 +5,14 @@ import { useDisclosure } from '@mantine/hooks';
 import { ActionIcon, Modal, Button, SimpleGrid, Text, Image, Space } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
+import { useNavigate } from 'react-router-dom';
 
 function MacroRecognition() {
   const { t } = useTranslation();
 
-  const { mutate, isPending } = useRecognizeMacrosFromImage();
+  const navigate = useNavigate();
+
+  const { mutate, isPending, isError } = useRecognizeMacrosFromImage();
 
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -52,7 +55,11 @@ function MacroRecognition() {
   const handleFileChange = async () => {
     mutate(files, {
       onSuccess: (foodItem) => {
-        console.log('Macros recognized:', foodItem);
+        close();
+        setFiles([]);
+        navigate(
+          `/produced-food?description=${foodItem.description}&name=${foodItem.name}&calories=${foodItem.calories}&proteins=${foodItem.proteins}&fats=${foodItem.fats}&carbs=${foodItem.carbs}`,
+        ); // Redirect to produced food page with query params
       },
       onError: (error) => {
         console.error('Error recognizing macros:', error);
@@ -77,9 +84,19 @@ function MacroRecognition() {
 
         <Space h="md" />
 
-        <Button variant="outline" onClick={handleFileChange} disabled={files.length === 0 || isPending}>
+        <Button variant="outline" onClick={handleFileChange} disabled={files.length === 0} loading={isPending}>
           {t('recognizeProduct')}
         </Button>
+
+        {isError && (
+          <>
+            <Space h="md" />
+
+            <Text c="red" size="sm" mt="md">
+              {t('recognizeProductError')}
+            </Text>
+          </>
+        )}
       </Modal>
     </>
   );
