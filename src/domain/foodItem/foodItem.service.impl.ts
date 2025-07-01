@@ -122,6 +122,26 @@ class FoodItemServiceImpl implements FoodItemService {
 
     return this.foodItemRepository.updateFoodItem(id, foodItem);
   }
+
+  async recognizeMacrosFromImage(file: File): Promise<FoodItem> {
+    const { calories, proteins, fats, carbs, dish } = await this.llmProvider.recognizeMacrosFromImage(file);
+
+    const foodItem: FoodItem = {
+      id: uuidV4(),
+      state: 'cooked',
+      unit: 'g',
+      description: dish,
+      name: dish,
+      calories,
+      proteins,
+      fats,
+      carbs,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    return this.foodItemRepository.createFoodItem(foodItem);
+  }
 }
 
 export default FoodItemServiceImpl;
