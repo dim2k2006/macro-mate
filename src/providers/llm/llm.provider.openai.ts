@@ -278,6 +278,90 @@ Respond **ONLY** with a valid JSON object in the exact shape below (no extra tex
     };
   }
 
+  async recognizeMacrosFromImage(input: File[]): Promise<CalculateMacrosOutput> {
+    const base64Images = await Promise.all(input.map((file) => this.fileToBase64(file)));
+
+    const response = await this.openai.responses.create({
+      model: 'gpt-4.1-mini',
+      input: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'input_text',
+              text: `
+You are a nutrition‑calculation assistant.
+The user provides image of a product.
+
+Your job: parse the provided macros and product name and return them in a structured format.
+
+**Output**
+Respond **ONLY** with a valid JSON object in the exact shape below (no extra text):
+
+{
+  "dish": "<product name>",
+  "per100_calories": <float 1‑dec>,
+  "per100_proteins": <float 1‑dec>,
+  "per100_fats": <float 1‑dec>,
+  "per100_carbs": <float 1‑dec>
+}
+
+9. **Validation**
+• If any amount or unit is missing/ambiguous, throw an error.
+• Ensure all JSON numbers are numeric, not strings.
+            `.trim(),
+            },
+            ...base64Images.map(
+              (base64) =>
+                ({
+                  type: 'input_image',
+                  image_url: `data:image/jpeg;base64,${base64}`,
+                  detail: 'auto',
+                }) as const,
+            ),
+          ],
+        },
+      ],
+    });
+
+    const result = ParseMacrosResponseSchema.parse(JSON.parse(response.output_text));
+
+    return {
+      dish: result.dish,
+      calories: result.per100_calories,
+      proteins: result.per100_proteins,
+      fats: result.per100_fats,
+      carbs: result.per100_carbs,
+    };
+  }
+
+  private async fileToBase64(file: File): Promise<string> {
+    const maxSize = 1024;
+
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = reject;
+        image.src = reader.result as string;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d')!;
+    const scale = Math.min(maxSize / img.width, maxSize / img.height, 1);
+
+    canvas.width = img.width * scale;
+    canvas.height = img.height * scale;
+
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    return canvas.toDataURL('image/jpeg', 0.7).split(',')[1]; // только base64 часть
+  }
+
   buildChatMessage(input: BuildChatMessageInput): ChatMessage {
     return {
       role: input.role,

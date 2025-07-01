@@ -80,5 +80,9 @@
   "proteinsWithRef": "\uD83E\uDD69 Б {{current}} / {{goal}}",
   "fatsWithRef": "\uD83E\uDD51 Ж {{current}} / {{goal}}",
   "carbsWithRef": "\uD83C\uDF5E У {{current}} / {{goal}}",
-  "percent": "{{percent}}%"
+  "percent": "{{percent}}%",
+  "aiProductRecognition": "AI распознавание продуктов",
+  "attachProductImages": "Нажмите сюда чтобы прикрепить изображения продукта",
+  "recognizeProduct": "Распознать продукт",
+  "recognizeProductError": "Произошла ошибка при распознавании продукта, попробуйте еще раз"
 }

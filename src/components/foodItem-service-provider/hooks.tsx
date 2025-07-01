@@ -164,3 +164,22 @@ export function useParseMacros(id: string) {
     },
   });
 }
+
+export function useRecognizeMacrosFromImage() {
+  const service = useFoodItemService();
+
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ['recognizeMacrosFromImage'],
+    mutationFn: (input: File[]) => service.recognizeMacrosFromImage(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['listFoodItems'],
+      });
+    },
+    onError: (error: Error) => {
+      console.error('Error recognizing macros from image:', error);
+    },
+  });
+}
