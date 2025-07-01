@@ -324,8 +324,6 @@ Respond **ONLY** with a valid JSON object in the exact shape below (no extra tex
       ],
     });
 
-    console.log(response.output_text);
-
     const result = ParseMacrosResponseSchema.parse(JSON.parse(response.output_text));
 
     return {
@@ -338,15 +336,30 @@ Respond **ONLY** with a valid JSON object in the exact shape below (no extra tex
   }
 
   private async fileToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
+    const maxSize = 1024;
+
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
-        const base64 = (reader.result as string).split(',')[1]; // убираем data:image/jpeg;base64,
-        resolve(base64);
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = reject;
+        image.src = reader.result as string;
       };
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d')!;
+    const scale = Math.min(maxSize / img.width, maxSize / img.height, 1);
+
+    canvas.width = img.width * scale;
+    canvas.height = img.height * scale;
+
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    return canvas.toDataURL('image/jpeg', 0.7).split(',')[1]; // только base64 часть
   }
 
   buildChatMessage(input: BuildChatMessageInput): ChatMessage {
