@@ -2,8 +2,9 @@ import { AppShell, Group, Image, ActionIcon, FloatingIndicator, UnstyledButton }
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { IconCameraAi, IconClipboardList } from '@tabler/icons-react';
+import { IconClipboardList } from '@tabler/icons-react';
 import classes from './style.module.css';
+import MacroRecognition from '@/components/macro-recognition';
 
 function Layout({ children }: LayoutProps) {
   const { t } = useTranslation();
@@ -64,16 +65,9 @@ function Layout({ children }: LayoutProps) {
           <Image src="/logo.png" alt="MacroMate logo" h={40} w="auto" fit="contain" />
         </Group>
 
-        <ActionIcon
-          component="a"
-          href="https://chatgpt.com/g/g-6818cee3ed188191876291c0e7eb1f3d"
-          target="_blank"
-          variant="default"
-          size="lg"
-          style={{ position: 'absolute', top: '50%', right: '15px', transform: 'translateY(-50%)' }}
-        >
-          <IconCameraAi size={20} />
-        </ActionIcon>
+        <div style={{ position: 'absolute', top: '50%', right: '15px', transform: 'translateY(-50%)' }}>
+          <MacroRecognition />
+        </div>
       </AppShell.Header>
 
       <AppShell.Main>{children}</AppShell.Main>
