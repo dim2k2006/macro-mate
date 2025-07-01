@@ -140,7 +140,7 @@ class FoodItemServiceImpl implements FoodItemService {
       updatedAt: new Date().toISOString(),
     };
 
-    return this.foodItemRepository.createFoodItem(foodItem);
+    return foodItem;
   }
 }
 
