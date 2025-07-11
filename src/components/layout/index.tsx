@@ -53,12 +53,12 @@ function Layout({ children }: LayoutProps) {
     >
       <AppShell.Header p="sm">
         <ActionIcon
-          onClick={() => navigate('/food')}
+          onClick={() => navigate('/intro')}
           variant="default"
           size="lg"
           style={{ position: 'absolute', top: '50%', left: '15px', transform: 'translateY(-50%)' }}
         >
-          <IconClipboardList size={20} />
+          <IconSettings size={20} />
         </ActionIcon>
 
         <Group justify="center" align="center">
@@ -68,12 +68,12 @@ function Layout({ children }: LayoutProps) {
         </Group>
 
         <ActionIcon
-          onClick={() => navigate('/intro')}
+          onClick={() => navigate('/food')}
           variant="default"
           size="lg"
           style={{ position: 'absolute', top: '50%', right: '15px', transform: 'translateY(-50%)' }}
         >
-          <IconSettings size={20} />
+          <IconClipboardList size={20} />
         </ActionIcon>
       </AppShell.Header>
 
