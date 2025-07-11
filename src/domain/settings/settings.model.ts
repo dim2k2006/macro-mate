@@ -1,6 +1,7 @@
 export type Settings = {
   llmKey: string;
   macroGoals: MacroGoals;
+  lng: string;
 };
 
 type MacroGoals = {
