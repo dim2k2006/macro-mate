@@ -179,6 +179,8 @@ function SettingsForm({ settings }: SettingsFormProps) {
           required
         />
 
+        <Space h="md" />
+
         <Button type="submit" mt="sm" fullWidth disabled={isPending} loading={isPending}>
           {t('saveSettings')}
         </Button>
