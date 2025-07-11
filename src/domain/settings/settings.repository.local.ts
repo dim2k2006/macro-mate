@@ -20,6 +20,7 @@ class SettingsRepositoryLocal implements SettingsRepository {
           fats: 0,
           carbs: 0,
         },
+        lng: 'en',
       };
     }
     return settings;
