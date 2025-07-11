@@ -1,27 +1,60 @@
-import { Box, TextInput, Button, Alert, Space, NumberInput } from '@mantine/core';
+import { Box, TextInput, Button, Alert, Space, NumberInput, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useUpdateSettings, useGetSettings } from '@/components/settings-service-provider';
 import { useNavigate } from 'react-router-dom';
 import { Skeleton } from '@mantine/core';
 import { hasLength, useForm } from '@mantine/form';
+import { Settings } from '@/domain/settings';
 
-function Settings() {
+function SettingsPage() {
+  const { t } = useTranslation();
+
+  const settingsState = useGetSettings();
+
+  if (settingsState.isLoading) {
+    return (
+      <>
+        <Skeleton height={8} radius="xl" />
+        <Skeleton height={8} mt={6} radius="xl" />
+        <Skeleton height={8} mt={6} width="70%" radius="xl" />
+      </>
+    );
+  }
+
+  if (settingsState.isError) {
+    return (
+      <Alert variant="light" color="blue" title={t('failLoadingSettingsTitle')}>
+        {t('failLoadingSettingsMessage')}
+      </Alert>
+    );
+  }
+
+  return <>{settingsState.isSuccess && <SettingsForm settings={settingsState.data} />}</>;
+}
+
+type FormValues = {
+  llmKey: string;
+  calories: number;
+  proteins: number;
+  fats: number;
+  carbs: number;
+};
+
+function SettingsForm({ settings }: SettingsFormProps) {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
-
-  const settingsState = useGetSettings();
 
   const { mutate: updateSettings, isPending, isError } = useUpdateSettings();
 
   const form = useForm({
     mode: 'controlled',
     initialValues: {
-      llmKey: settingsState.data?.llmKey ?? '',
-      calories: settingsState.data?.macroGoals.calories ?? 0,
-      proteins: settingsState.data?.macroGoals.proteins ?? 0,
-      fats: settingsState.data?.macroGoals.fats ?? 0,
-      carbs: settingsState.data?.macroGoals.carbs ?? 0,
+      llmKey: settings.llmKey,
+      calories: settings.macroGoals.calories,
+      proteins: settings.macroGoals.proteins,
+      fats: settings.macroGoals.fats,
+      carbs: settings.macroGoals.carbs,
     },
     validate: {
       llmKey: hasLength({ min: 3 }, t('requiredField')),
@@ -72,16 +105,6 @@ function Settings() {
     },
   });
 
-  if (settingsState.isLoading) {
-    return (
-      <>
-        <Skeleton height={8} radius="xl" />
-        <Skeleton height={8} mt={6} radius="xl" />
-        <Skeleton height={8} mt={6} width="70%" radius="xl" />
-      </>
-    );
-  }
-
   function handleSubmit(values: FormValues) {
     const newSettings = {
       llmKey: values.llmKey,
@@ -100,16 +123,12 @@ function Settings() {
     });
   }
 
-  if (settingsState.isError) {
-    return (
-      <Alert variant="light" color="blue" title={t('failLoadingSettingsTitle')}>
-        {t('failLoadingSettingsMessage')}
-      </Alert>
-    );
-  }
-
   return (
     <Box p="md">
+      <Title order={2}>{t('settings')}</Title>
+
+      <Space h="md" />
+
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput {...form.getInputProps('llmKey')} label={t('llmKeyLabel')} disabled={isPending} required />
 
@@ -169,12 +188,8 @@ function Settings() {
   );
 }
 
-type FormValues = {
-  llmKey: string;
-  calories: number;
-  proteins: number;
-  fats: number;
-  carbs: number;
+type SettingsFormProps = {
+  settings: Settings;
 };
 
-export default Settings;
+export default SettingsPage;
