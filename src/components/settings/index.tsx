@@ -1,4 +1,4 @@
-import { Box, TextInput, Button, Alert, Space, NumberInput, Title } from '@mantine/core';
+import { Box, TextInput, Button, Alert, Space, NumberInput, Title, Select } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useUpdateSettings, useGetSettings } from '@/components/settings-service-provider';
 import { useNavigate } from 'react-router-dom';
@@ -32,14 +32,6 @@ function SettingsPage() {
   return <>{settingsState.isSuccess && <SettingsForm settings={settingsState.data} />}</>;
 }
 
-type FormValues = {
-  llmKey: string;
-  calories: number;
-  proteins: number;
-  fats: number;
-  carbs: number;
-};
-
 function SettingsForm({ settings }: SettingsFormProps) {
   const { t } = useTranslation();
 
@@ -55,6 +47,7 @@ function SettingsForm({ settings }: SettingsFormProps) {
       proteins: settings.macroGoals.proteins,
       fats: settings.macroGoals.fats,
       carbs: settings.macroGoals.carbs,
+      lng: settings.lng || 'en',
     },
     validate: {
       llmKey: hasLength({ min: 3 }, t('requiredField')),
@@ -114,6 +107,7 @@ function SettingsForm({ settings }: SettingsFormProps) {
         fats: values.fats,
         carbs: values.carbs,
       },
+      lng: values.lng,
     };
 
     updateSettings(newSettings, {
@@ -174,6 +168,20 @@ function SettingsForm({ settings }: SettingsFormProps) {
 
         <Space h="md" />
 
+        <Select
+          {...form.getInputProps('lng')}
+          label={t('languageLabel')}
+          data={[
+            { value: 'en', label: t('languageEnglish') },
+            { value: 'ru', label: t('languageRussian') },
+            { value: 'el', label: t('languageGreek') },
+          ]}
+          disabled={isPending}
+          required
+        />
+
+        <Space h="md" />
+
         <Button type="submit" mt="sm" fullWidth disabled={isPending} loading={isPending}>
           {t('saveSettings')}
         </Button>
@@ -190,6 +198,15 @@ function SettingsForm({ settings }: SettingsFormProps) {
 
 type SettingsFormProps = {
   settings: Settings;
+};
+
+type FormValues = {
+  llmKey: string;
+  calories: number;
+  proteins: number;
+  fats: number;
+  carbs: number;
+  lng: string;
 };
 
 export default SettingsPage;

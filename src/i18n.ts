@@ -6,8 +6,8 @@ i18n
   .use(HttpBackend)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'ru',
-    supportedLngs: ['ru', 'en'],
+    fallbackLng: 'en',
+    supportedLngs: ['ru', 'en', 'el'],
     ns: ['common'],
     defaultNS: 'common',
     backend: {
