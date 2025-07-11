@@ -85,5 +85,8 @@
   "attachProductImages": "Click here to attach product images",
   "recognizeProduct": "Recognize Product",
   "recognizeProductError": "An error occurred while recognizing the product, please try again",
-  "settings": "Settings"
+  "settings": "Settings",
+  "languageLabel": "Language",
+  "languageEnglish": "English",
+  "languageRussian": "Russian"
 }
