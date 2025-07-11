@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useGetSettings } from '@/components/settings-service-provider';
+import i18n from '@/i18n';
 import { buildConfig, buildContainer } from '@/container';
 import ConfigProvider from '@/components/config-provider';
 import { FoodItemServiceProvider } from '@/components/foodItem-service-provider';
@@ -21,6 +22,14 @@ function Root() {
   const config = useMemo(() => buildConfig(key), [key]);
 
   const container = useMemo(() => buildContainer(config), [config]);
+
+  useEffect(() => {
+    const language = settingsFetchingState.data?.lng;
+
+    if (language && i18n.language !== language) {
+      i18n.changeLanguage(language);
+    }
+  }, [settingsFetchingState.data]);
 
   return (
     <ConfigProvider config={config}>
