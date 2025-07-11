@@ -174,6 +174,7 @@ function SettingsForm({ settings }: SettingsFormProps) {
           data={[
             { value: 'en', label: t('languageEnglish') },
             { value: 'ru', label: t('languageRussian') },
+            { value: 'el', label: t('languageGreek') },
           ]}
           disabled={isPending}
           required
