@@ -1,8 +1,8 @@
 import { AppShell, Group, Image, ActionIcon, FloatingIndicator, UnstyledButton } from '@mantine/core';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { IconClipboardList } from '@tabler/icons-react';
+import { IconClipboardList, IconSettings } from '@tabler/icons-react';
 import classes from './style.module.css';
 import MacroRecognition from '@/components/macro-recognition';
 
@@ -62,12 +62,19 @@ function Layout({ children }: LayoutProps) {
         </ActionIcon>
 
         <Group justify="center" align="center">
-          <Image src="/logo.png" alt="MacroMate logo" h={40} w="auto" fit="contain" />
+          <Link to="/">
+            <Image src="/logo.png" alt="MacroMate logo" h={40} w="auto" fit="contain" />
+          </Link>
         </Group>
 
-        <div style={{ position: 'absolute', top: '50%', right: '15px', transform: 'translateY(-50%)' }}>
-          <MacroRecognition />
-        </div>
+        <ActionIcon
+          onClick={() => navigate('/intro')}
+          variant="default"
+          size="lg"
+          style={{ position: 'absolute', top: '50%', right: '15px', transform: 'translateY(-50%)' }}
+        >
+          <IconSettings size={20} />
+        </ActionIcon>
       </AppShell.Header>
 
       <AppShell.Main>{children}</AppShell.Main>
@@ -77,6 +84,10 @@ function Layout({ children }: LayoutProps) {
           {controls}
 
           <FloatingIndicator target={controlsRefs[active]} parent={rootRef} className={classes.indicator} />
+        </div>
+
+        <div style={{ position: 'absolute', top: '50%', right: '15px', transform: 'translateY(-50%)' }}>
+          <MacroRecognition />
         </div>
       </AppShell.Footer>
     </AppShell>
