@@ -89,5 +89,7 @@
   "languageLabel": "Язык",
   "languageEnglish": "Английский",
   "languageRussian": "Русский",
-  "languageGreek": "Греческий"
+  "languageGreek": "Греческий",
+  "scanner": "Сканер",
+  "unableToAccessCamera": "Не удается получить доступ к камере. Пожалуйста, проверьте разрешения вашего браузера."
 }

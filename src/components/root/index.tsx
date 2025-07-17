@@ -13,6 +13,7 @@ import Meal from '@/components/meal';
 import ProducedFood from '@/components/produced-food';
 import ProtectedRoute from '@/components/protected-route';
 import Layout from '@/components/layout';
+import { BarcodeScanner } from '@/components/barcode-scanner';
 
 function Root() {
   const settingsFetchingState = useGetSettings();
@@ -55,6 +56,8 @@ function Root() {
                 </Route>
 
                 <Route path="/intro" element={<Settings />} />
+
+                <Route path="/barcode" element={<BarcodeScanner onResult={(result) => console.log(result)} />} />
               </React.Fragment>
             </Routes>
           </Layout>
