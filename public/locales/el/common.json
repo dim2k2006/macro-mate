@@ -89,5 +89,7 @@
   "languageLabel": "Γλώσσα",
   "languageEnglish": "Αγγλικά",
   "languageRussian": "Ρωσικά",
-  "languageGreek": "Ελληνικά"
+  "languageGreek": "Ελληνικά",
+  "scanner": "Σαρωτής",
+  "unableToAccessCamera": "Δεν είναι δυνατή η πρόσβαση στην κάμερα. Παρακαλώ ελέγξτε τα δικαιώματα του προγράμματος περιήγησής σας."
 }
